@@ -1,0 +1,127 @@
+#+TITLE:     Emacs Configuration File
+#+AUTHOR:    Patrick Michael Niedzielski
+#+EMAIL:     patrick@pniedzielski.net
+
+* Org-mode Emacs Configuration
+  This org-mode file contains [[https://pniedzielski.net/][Patrick M. Niedzielski]]’s Emacs
+  configuration, written in a [[https://en.wikipedia.org/wiki/Literate_programming][Literate Programming]] style.  The
+  configuration targets GNU Emacs git-master and, although
+  cross-platform, does not support any other version of GNU Emacs or
+  any other Emacs editor (such as XEmacs).
+
+  This document is the result of declaring [[https://www.emacswiki.org/emacs/DotEmacsBankruptcy][=.emacs= bankruptcy]]
+  during 2016.  At the time, my Emacs configuration was too large and
+  unwieldy to maintain.  It had become difficult to do anything but
+  add more configuration to the end of the file; any modifications to
+  existing configuration ran a very high risk of breaking the entire
+  configuration file.  The result was a long time lost to debugging my
+  text editor, which could have been more productively used on my own
+  projects.  When this became too unbearable, I started anew.
+
+  To make sure that I wouldn’t have to do this again, I decided on two
+  major pillars of my configuration file.  First, and in fact
+  primarily, I would write it in a Literate Programming style.  A big
+  part of the problem in my prior configuration was not knowing the
+  thought process that went into old configurations.  Towards the end
+  of my old configuration file’s life, some of this was solved by good
+  git commit messages, but there was enough cruft that make this not a
+  good solution.  Literate Programming allows me to write prose to
+  describe my intention with a particular piece of configuration, and
+  to link together different parts of configuration that need to be
+  separate in Emacs Lisp, but which make sense together in my prose.
+  Second, I would use John Wiegley’s [[https://github.com/jwiegley/use-package][use-package]] macro, which would
+  make each piece of the configuration code itself declarative.  This
+  would free me from the minutiae of [[info:elisp#Autoload][Emacs’s autoload functionality]]
+  and such.
+
+  Through the years, my primary use of Emacs has shifted.  In 2016, I
+  was primarily writing C++ and Perl code.  Now, though, I use Emacs
+  for reading and writing academic works, and the little code I do
+  write is in Haskell.  I have also needed to use this configuration
+  file different Debian machines (usually my personal machines) and
+  Windows boxes (usually work machines).  Furthermore, as I’ve learned
+  more Emacs, the way I have used it has changed dramatically.  I
+  think it’s a testament to the above two decisions that my
+  configuration is still easy to use and maintain, despite the quite
+  major shifts in what it’s been intended to do.
+
+  Until 2021, my configuration was private, so I did not need to worry
+  about whether to keep secrets like passwords in the file or not.
+  Now, I am migrating the configuration to a public git repository, so
+  others can see what sorts of things I have in my configuration.  I
+  have needed to do this carefully, so in the meantime this repository
+  may not have everything that my active configuration has.  The
+  ultimate goal is to migrate entirely over to this configuration.
+
+** License
+   Copyright © 2016-2021, Patrick M. Niedzielski.
+
+   The following license applies both to this Org file and to the
+   corresponding Emacs configuration file that can be generated from
+   this file (as well as any other derivative works).
+
+   #+name: license
+   #+begin_src emacs-lisp :tangle no
+     ;; This program is free software: you can redistribute it and/or
+     ;; modify it under the terms of the GNU General Public License as
+     ;; published by the Free Software Foundation, either version 3 of the
+     ;; License, or (at your option) any later version.
+     ;;
+     ;; This program is distributed in the hope that it will be useful, but
+     ;; WITHOUT ANY WARRANTY; without even the implied warranty of
+     ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+     ;; General Public License for more details.
+     ;;
+     ;; You should have received a copy of the GNU General Public License
+     ;; along with this program.  If not, see
+     ;; <http://www.gnu.org/licenses/>.
+   #+end_src
+
+** How This Works
+   This Emacs configuration is based on [[http://orgmode.org/worg/org-contrib/babel/intro.][Org Babel]], which allows source
+   code blocks to live inside an org-mode document; the org-mode
+   document can then be *woven* into an output document format (such
+   as HTML or LaTeX) that describes the source code and *tangled* into
+   an output source file (in this case, Emacs Lisp) that can be run.
+   Our actual =init.el= file is a simple stub that tangles this
+   org-mode file and then executes it.
+
+   The tangled file should have the license text and a note reminding
+   us to modify the org-mode file instead of the tangled source file.
+
+   #+begin_src emacs-lisp :noweb yes   :comments no
+     ;;; configuration.el --- Emacs configuration file
+
+     ;; This source file has been generated from an org-mode file.
+     ;; Modifications should be performed on the org-mode file!
+
+     <<license>>
+
+
+   #+end_src
+
+** Tangle this file
+   Although load times don’t matter too much for us, since we use an
+   Emacs daemon, we can still save a bit of time on startup by
+   compiling the elisp we produce.  One way to do this is to tangle
+   and compile this org file every time we save it.  We’ll have to be
+   careful, because if ever the =.elc= file and the =.org= file get
+   out of sync, we’ll have some hard-to-track-down bugs.
+
+   In order to tangle and compile the org file every time we save it,
+   we define a hook that runs every time a file is saved.  If the file
+   is our configuration org file, we tangle it and compile it.  In our
+   =init.el= file, we load the =.elc= file if it exists, and otherwise
+   we tangle and load the =.org= file.
+
+   #+begin_src emacs-lisp
+     (defun pmn/tangle-dotfiles ()
+       "If the current file is this file, the code blocks are tangled."
+       (letrec ((org-file (expand-file-name "configuration.org" user-emacs-directory))
+                (el-file  (concat (file-name-sans-extension org-file) ".el")))
+         (when (equal (buffer-file-name) org-file)
+           (org-babel-tangle nil el-file)
+           (byte-compile-file el-file))))
+
+     (add-hook 'after-save-hook #'pmn/tangle-dotfiles)
+   #+end_src
