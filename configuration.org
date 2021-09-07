@@ -125,3 +125,139 @@
 
      (add-hook 'after-save-hook #'pmn/tangle-dotfiles)
    #+end_src
+
+* Package Installation and Dependencies
+  In this section, we set up the backbone of our configuration:
+  Emacs’s built-in =package.el=, and the =use-package= macro.
+
+** =package.el= Configuration
+   Most of our packages we install using =package.el=, which is
+   bundled with Emacs 24 and later.  There are three major package
+   repositories for Emacs packages; we use the first two listed here.
+
+   * ELPA      :: The repository for GNU-sanctioned packages.
+   * MELPA     :: Contains the largest selection of pcakages and is
+                  built directly from source in the package’s VCS.
+   * Marmalade :: Packages are uploaded by users and so tend to be at
+                  stable (albeit old versions)
+
+   We do not use Marmalade because it often has the same packages as
+   MELPA, only with older versions.  This can sometimes lead to
+   conflicts that we want to avoid.  So, we can set up the two package
+   repositories we plan to use.
+
+   #+begin_src emacs-lisp
+     (require 'package)
+     (setq package-archives '(("gnu"   . "http://elpa.gnu.org/packages/")
+                              ("melpa" . "https://melpa.org/packages/")))
+   #+end_src
+
+   At some point, I’m going to want to look into the new non-GNU ELPA
+   repository, which has some nice packages as well, although they are
+   frequently in MELPA as well.
+
+   It’s very useful to keep all our installed packages in a single
+   place, separate from any local Lisp code we have.  This gives us
+   the option of deleting the installed packages whenever we want to
+   reset our Emacs state, and keeps our Emacs configuration directory
+   tidy.  Let’s put them in the =elpa= directory under our Emacs
+   configuration directory.
+
+   #+begin_src emacs-lisp
+     (setq package-user-dir (concat user-emacs-directory "elpa"))
+   #+end_src
+
+   It’s important for our configuration that packages are not
+   initialized until we have set up all the =use-package= invocations
+   that declare what packages we want to use.  To do this, we tell
+   =package.el= not to activate any packages early on.
+
+   #+begin_src emacs-lisp
+     (setq package-enable-at-sstartup nil)
+   #+end_src
+
+   Finally, we start up =package.el=.
+
+   #+begin_src emacs-lisp
+     (package-initialize)
+   #+end_src
+
+** =use-package= Configuration
+   Now that =package.el= is set up and ready to use, we’re ready to
+   configure =use-package=, which we use to automatically install the
+   packages we want and to track dependencies between them.
+   =use-package= provides us with a macro that centralizes all the
+   configuration for each package, and lets us state the conditions
+   under which we can load the package.
+
+   Before using =use-package=, though, we need to make sure it’s
+   installed, or install it if it’s not already!  We need to bootstrap
+   by using =package.el= to fetch and install =use-package= if it’s
+   not locally installed.  While we’re at it, we pick up the package
+   =diminish=, which lets us control what packages are shown in the
+   modeline, and =bind-key=, which lets us bind keys more easily.
+   Both of these are integrated nicely into =use-package=.
+
+   #+begin_src emacs-lisp   :noweb yes   :comments no
+     (unless (package-installed-p 'use-package)
+       (package-refresh-contents)
+       (package-install 'use-package)
+       (package-install 'diminish))
+     
+     <<use-package-config>>
+     
+     (require 'use-package)
+     (require 'use-package-ensure)
+     (require 'diminish)
+     (require 'bind-key)
+   #+end_src
+
+   Because we can’t use =use-package= itself to configure
+   =use-package=, we’ll have a handful of loose configured options set
+   up here at the start.  We chose to be a bit more verbose in what we
+   output, so that we can keep track of what is going on in the
+   systemd journal.  We also make sure download packages by default if
+   they aren’t already installed (known in =use-package=-speak as
+   /ensuring/).
+
+   #+name: use-package-config
+   #+begin_src emacs-lisp   :tangle no
+     (setq use-package-verbose            t
+           use-package-expand-minimally   nil
+           use-package-compute-statistics t
+           use-package-always-ensure      t)
+   #+end_src
+
+   Finally, to avoid unnecessary garbage collection during start up,
+   we’ll raise the (rather low) garbage collection and process
+   buffering thresholds.  ([2021-09-07 mar]: This seems out of place
+   here, and I didn’t document why I chose this location in the
+   configuration to put these two statements.  It might make sense to
+   break it out later, or at least move it somewhere else.)
+
+   #+begin_src emacs-lisp
+     (setq gc-cons-threshold (* 50 1000 1000))
+     (setq read-process-output-max (* 1024 1024)) ; 1mb
+   #+end_src
+
+** Emacs Server
+   I usually run Emacs as a server on my systems, with emacsclients
+   connecting to the server.  Let’s make sure to enable this
+   functionality.
+
+   #+begin_src emacs-lisp
+     (require 'server)
+   #+end_src
+
+** exec-path-from-shell
+   Finally, I have [[https://github.com/pniedzielski/dotfiles-ng][a lot of modifications to my =PATH= variable and
+   others]] that I want to import into Emacs, regardless of whether it
+   was started with systemd or not.  To do this, we can use the
+   =exec-path-from-shell= package, and only initialize it when Emacs
+   is started as a daemon (non-interactively, so not from a shell).
+
+   #+begin_src emacs-lisp
+     (use-package exec-path-from-shell
+        :config (when (daemonp)
+                  (exec-path-from-shell-initialize)))
+   #+end_src
