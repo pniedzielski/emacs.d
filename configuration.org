@@ -349,6 +349,42 @@
        :bind ("C-=" . er/expand-region))
    #+end_src
 
+** Multiple Cursors
+   I used to be a big user of Emacs rectangle commands, especially for
+   inserting the same text (frequently spaces) on multiple lines.
+   With ~cua-mode~﻿’s visible rectangle highlighting, this was a very
+   nice workflow, using only built-in functionality.  While I still
+   use the rectangle commands for some purposes, their primary utility
+   for me was replaced by the amazing ~multiple-cursors~ package,
+   which lets you insert what seem like multiple points, and do the
+   same edit command at each point.  There are many modes of
+   interacting with this, most of which I haven’t explored in depth,
+   but the one that’s by far the most command and useful is the
+   ~mc/edit-lines~ command, which I have bound to ~C-c m c~.  This
+   inserts a cursor on each line in a region: the mark is changed to a
+   cursor, and every other line gets a cursor of its own at the same
+   column as the point.
+
+   #+begin_src emacs-lisp
+     (use-package multiple-cursors
+       :bind (("C-c m c" . mc/edit-lines)))
+   #+end_src
+
+   ~multiple-cursors~ has some downsides, though, especially in modes
+   that override ~self-insert-command~ for various keys.  Then, the
+   mode will ask if you’re sure you want to do the “unsafe” command at
+   each cursor, and that sometimes screws up what the command was
+   actually meant to do.  This is annoying, and I would eventually
+   like to figure out if there’s a fix.
+
+   Every now and again I see reference to a package called [[https://github.com/victorhge/iedit][~iedit~]],
+   which seems to be in the same vein as this package.  I had heard
+   that ~multiple-cursors~ had superseded it, looking on
+   [2021-09-08 mer] I found that it’s still updated.  It might be
+   worth looking into that as a replacement to ~multiple-cursors~, if
+   I ever find the time (and, significantly, if it doesn’t have the
+   same annoyance as I describe above).
+
 * Writing
   I spend most of my time in Emacs nowadays reading and writing prose,
   so the most important configurations in this document relate to
