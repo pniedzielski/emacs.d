@@ -333,6 +333,22 @@
               ("C-H-b" . backward-page)))
    #+end_src
 
+** Expand Region
+   [[https://github.com/magnars/expand-region.el][~expand-region~]] is a useful little package that expands the region
+   by semantic units: that is for prose, it selects first a word, then
+   a sentence, then a paragraph, and so forth; for code, it selects
+   first a token, then an sexpr, then a statement, and so forth.
+   While there is ~M-@~ (~mark-word~) and others, which accomplish
+   this more immediately, having an interactive command has proven
+   useful to me as well.  Furthermore, there is no ~mark-sentence~
+   command, which I find very useful in editing prose, and
+   ~expand-region~ makes this two keystrokes.
+
+   #+begin_src emacs-lisp
+     (use-package expand-region
+       :bind ("C-=" . er/expand-region))
+   #+end_src
+
 * Writing
   I spend most of my time in Emacs nowadays reading and writing prose,
   so the most important configurations in this document relate to
