@@ -381,4 +381,67 @@
        :after flyspell
        :bind (:map flyspell-mode-map
               ("C-;" . flyspell-correct-wrapper)))
+
+     (use-package flyspell-correct-ivy
+       :after flyspell ivy flyspell-correct)
+   #+end_src
+
+* Completion
+** Ivy
+   Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]]
+   a little while ago.  While it’s more heavyweight than Ido, it’s not
+   too heavy and provides a lot more nice features and integration
+   wit  h other packages.  We’ll make sure it’s installed, then turn it
+   on globally.
+
+   #+begin_src emacs-lisp
+     (use-package ivy :demand
+       :diminish ivy-mode
+       :config
+       (setq ivy-use-virtual-buffers t
+             ivy-count-format "%d/%d ")
+       (ivy-mode 1))
+   #+end_src
+
+   The Counsel package builds on Ivy, to provide more intelligent and
+   more useful completion in a lot of common cases.
+
+   #+begin_src emacs-lisp
+     (use-package counsel :demand
+       :after ivy
+       :diminish counsel-mode
+       :config (counsel-mode))
+   #+end_src
+
+   The third of the Ivy trio is Swiper, which is halfway between
+   Emacs’s search functionality and its ~occur~ functionality.  While
+   some people swear by using it for search, I use Emacs incremental
+   search primarily as a movement command, so that’s not for me.
+   Instead, I use Swiper more like ~occur~, allowing me to see all
+   results and jump between them efficiently.  I bind this to a
+   keybinding under the ~M-s~ search hierarchy, parallel to ~occur~﻿’s.
+
+   #+begin_src emacs-lisp
+     (use-package swiper
+       :after ivy
+       :bind ("M-s s" . swiper ))
+   #+end_src
+
+   One of the nice thing about Ivy is the number of packages that
+   integrate with it in various ways.  One nice-to-have package,
+   although by no means necessary, is the ~ivy-rich~ package, which
+   gives more information in the minibuffer for each completion
+   option.
+
+   #+begin_src emacs-lisp
+     (use-package ivy-rich
+       :config (ivy-rich-mode 1))
+   #+end_src
+
+   I also have found that I like ~ivy-hydra~, which pops up a buffer
+   listing all the operations I can perform on a search result.
+
+   #+begin_src emacs-lisp
+     (use-package ivy-hydra
+       :after ivy)
    #+end_src
