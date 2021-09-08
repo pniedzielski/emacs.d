@@ -336,3 +336,49 @@
    basis, à la [[http://mbork.pl/2014-10-28_Single_vs_double_spaces][this solution by Marcin Borkowski]].  I like the DWIMness
    of it, but there are enough open threads to this solution that,
    again, I think I would find it more annoying than helpful.
+
+** Spell Checking
+   I am terrible at spelling—much more terrible than a recovering
+   Indo-Europeanist should be.  Flyspell marks my spelling errors
+   on-the-fly, underlining in red words that aren’t in my system’s
+   English dictionary.  This does yield a significant number of false
+   positives, but it’s good enough to catch most of my spelling
+   mistakes.
+
+   We turn on flyspell in modes that are derived from ~text-mode~, and
+   we turn on flyspell only in comments for modes that are derived
+   from ~prog-mode~.
+
+   #+begin_src emacs-lisp
+     (use-package flyspell
+       :diminish flyspell
+       :hook ((text-mode . flyspell-mode)
+              (prog-mode . flyspell-prog-mode)))
+   #+end_src
+
+   My systems tend to have Esperanto as their default language (for
+   displaying the interface), but most of the text I write is in
+   English (obviously).  The ~auto-dictionary~ package detects which
+   language the text I’m writing is in and sets the spell-check
+   dictionary to that language.  We’ll turn this on whenever we have
+   flyspell on.
+
+   #+begin_src emacs-lisp
+     (use-package auto-dictionary
+       :after flyspell
+       :hook (flyspell-mode . auto-dictionary-mode))
+   #+end_src
+
+   Once flyspell detects a spelling error, we have two options to fix
+   it.  First, we can use the built-in command ~ispell~, which works
+   on the whole buffer.  I use this pretty frequently.  Alternatively,
+   the ~flyspell-correct~ and ~flyspell-correct-ivy~ packages allow us
+   to correct a spelling at the point, giving us a nice ivy-based
+   completion interface for selecting the correct replacement.
+
+   #+begin_src emacs-lisp
+     (use-package flyspell-correct
+       :after flyspell
+       :bind (:map flyspell-mode-map
+              ("C-;" . flyspell-correct-wrapper)))
+   #+end_src
