@@ -309,6 +309,20 @@
            `((".*" ,(concat user-emacs-directory "backups") t)))
    #+end_src
 
+** EasyPGP
+   [[http://epg.sourceforge.jp/][EasyPGP]], which is bundled with Emacs, lets us easily encrypt and
+   decrypt files with GPG.  This is more or less transparent: you can
+   open a PGP encrypted file, edit the buffer as if it’s normal, and
+   save it back, encrypting it again.  One thing to note is that,
+   because EasyPGP is bundled with Emacs, we don’t want to download it
+   from the package manager, so we are sure to set ~:ensure nil~.
+
+   #+begin_src emacs-lisp
+     (use-package epa-file
+       :ensure nil
+       :config (epa-file-enable))
+   #+end_src
+
 * Movement
   The benefits in movement that Emacs gives are probably its killer
   feature as a text editor for me.  While some people really customize
