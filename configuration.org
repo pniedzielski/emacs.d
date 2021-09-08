@@ -261,3 +261,27 @@
         :config (when (daemonp)
                   (exec-path-from-shell-initialize)))
    #+end_src
+
+* Movement
+  The benefits in movement that Emacs gives are probably its killer
+  feature as a text editor for me.  While some people really customize
+  their editor a lot for keybindings and replacing functionality, I
+  try to use stock keybindings and built-in packages as much as
+  possible.  That said, each configuration I have here is one that
+  made my life significantly better than before, so I don’t feel bad
+  about moving away from the stock functionality here.
+
+** Keybindings
+   There’s some basic movement functionality that I use quite
+   frequently when I’m writing documents: moving by paragraph and
+   moving by page.  Because my keyboard has a hyper key, let’s bind
+   more convenient movement keys to them:
+
+   #+begin_src emacs-lisp
+     (use-package lisp
+       :ensure nil
+       :bind (("H-f" . forward-paragraph)
+              ("H-b" . backward-paragraph)
+              ("C-H-f" . forward-page)
+              ("C-H-b" . backward-page)))
+   #+end_src
