@@ -285,3 +285,54 @@
               ("C-H-f" . forward-page)
               ("C-H-b" . backward-page)))
    #+end_src
+
+* Writing
+  I spend most of my time in Emacs nowadays reading and writing prose,
+  so the most important configurations in this document relate to
+  reading and writing.
+
+  The sections that follow are mostly centered around ~text-mode~ and
+  modes that derive from it.
+
+** Text
+   ~text-mode~ is probably my most-used major mode, directly and via
+   its derivative modes.
+
+   One of the most useful aspects of ~text-mode~ is its understanding
+   of prose structure.  The following keybindings (cognate with the
+   line movement keybindings) skip around the buffer on a
+   sentence-by-sentence basis:
+
+   * ~M-a~ (~backward-sentence~)
+   * ~M-e~ (~forward-sentence~)
+   * ~M-k~ (~kill-sentence~)
+   * ~C-x <DEL>~ (~backward-kill-sentence~)
+
+   See [[info:emacs#Sentences][the *Sentences* section of the Emacs manual]] for more
+   information.
+
+   By default, though, these commands determine sentence boundaries
+   using punctuation followed by two spaces.  In fact, this is how I
+   type myself, so this default works well for prose I write.  I seem
+   to be in the minority, though, and whenever I’m working with text
+   written by someone else, it gets very annoying when the sentence
+   commands don’t see any sentence boundaries.  This is worse than the
+   alternative, where too many false positives are given for possible
+   sentences.  We could tell Emacs to need only a single space for
+   separating sentences, as below:
+
+   #+begin_src emacs-lisp   :tangle no
+     (add-hook 'text-mode-hook
+               (lambda () (setq sentence-end-double-space nil)))
+   #+end_src
+
+   However, there is a problem with this: it deletes the double spaces
+   in my own documents when I reflow paragraphs.  Yuck.  For the
+   moment, I don’t have a good solution to this.  I think I’d rather
+   get annoyed when working with the anemic text documents that lack
+   double spacing, more than have Emacs muck up my own documents.
+   Maybe someday, I’ll write a bit of code to automatically detect
+   whether to set ~sentence-end-double-space~ on a buffer-by-buffer
+   basis, à la [[http://mbork.pl/2014-10-28_Single_vs_double_spaces][this solution by Marcin Borkowski]].  I like the DWIMness
+   of it, but there are enough open threads to this solution that,
+   again, I think I would find it more annoying than helpful.
