@@ -436,6 +436,31 @@
    of it, but there are enough open threads to this solution that,
    again, I think I would find it more annoying than helpful.
 
+** Typo Mode
+   [[https://github.com/jorgenschaefer/typoel][~typo.el~]] is a package that contains two minor modes, ~typo-mode~
+   and ~typo-global-mode~.  The former is what we’re interested in:
+   when enabled, ASCII typographic characters are replaced with
+   Unicode characters while typing.  This is very useful when editing
+   documents, especially now that we’re in a post-ASCII age.
+   ~typo-global-mode~ is also useful: it enables a ~C-c 8~ hierarchy
+   to mirror the built-in ~C-x 8~ hierarchy, which allows us to access
+   much of the same functionality in program modes as we do in text
+   modes, when needed.
+
+   #+begin_src emacs-lisp
+     (use-package typo
+       :hook (text-mode . typo-mode)
+       :config (typo-global-mode 1)
+               (setq-default typo-language "English"))
+   #+end_src
+
+   ~typo.el~ supports converting quotes to their language-specific
+   surface realizations: for English, that looks like “this”, whereas
+   for Esperanto, that looks like „this“.  It would be great to
+   automatically detect which to use based on the ispell dictionary,
+   but for the moment I use English as a default, and manually change
+   the quote style when needed.
+
 ** Spell Checking
    I am terrible at spelling—much more terrible than a recovering
    Indo-Europeanist should be.  Flyspell marks my spelling errors
