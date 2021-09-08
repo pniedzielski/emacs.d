@@ -445,3 +445,23 @@
      (use-package ivy-hydra
        :after ivy)
    #+end_src
+
+** Amx
+   From the [[https://github.com/DarwinAwardWinner/amx/][Amx website]],
+
+   #+begin_quote
+   Amx is an alternative interface for ~M-x~ in Emacs.  IT provides
+   several enhancements over the ordinary ~execute-extended-command~,
+   such as prioritizing your most-used commands in the completion list
+   and showing keyboard shortcuts, and it supports several completion
+   systems for selecting commands, such as ido and ivy.
+   #+end_quote
+
+   Amx is a fork of [[https://github.com/nonsequitur/smex][Smex]], which no longer appears to be maintained
+   (the last commit was on [2015-12-12 sab]).
+
+   #+begin_src emacs-lisp
+     (use-package amx
+       :after ivy
+       :config (amx-mode 1))
+   #+end_src
