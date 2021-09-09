@@ -323,6 +323,17 @@
        :config (epa-file-enable))
    #+end_src
 
+** Auto Compression
+   Similarly, we want to use [[http://www.emacswiki.org/emacs/AutoCompressionMode][auto-compression-mode]] to allow us to
+   automatically compress and decompress files with ~gzip~ or ~bzip~.
+   I don’t know which package to use to store this configuration, so
+   for the moment I’ll just keep it loose.
+
+   #+begin_src emacs-lisp
+     (auto-compression-mode 1)
+     (setq dired-use-gzip-instead-of-compress t)
+   #+end_src
+
 ** Which Key?
    There are /a lot/ of keybindings in Emacs, and there’s no way I can
    remember them all.  Frequently I remember a prefix of a long
