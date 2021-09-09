@@ -529,7 +529,7 @@
    Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]]
    a little while ago.  While it’s more heavyweight than Ido, it’s not
    too heavy and provides a lot more nice features and integration
-   wit  h other packages.  We’ll make sure it’s installed, then turn it
+   with other packages.  We’ll make sure it’s installed, then turn it
    on globally.
 
    #+begin_src emacs-lisp
