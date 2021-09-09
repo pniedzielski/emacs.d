@@ -323,6 +323,40 @@
        :config (epa-file-enable))
    #+end_src
 
+** Which Key?
+   There are /a lot/ of keybindings in Emacs, and there’s no way I can
+   remember them all.  Frequently I remember a prefix of a long
+   keybinding, and then forget the remainder of the keybinding.  The
+   ~which-key~ package is a surprisingly nice solution to this, and
+   made me realize how many keybindings I will never quite remember.
+   It provides a minor mode that pops up a nice buffer listing all
+   keybinding continuations a short while after typing an incomplete
+   keybinding.  This means I can type the start of a keybinding, wait
+   a second, and see all possible completions to that keybinding.
+   This moreover incentivizes me to keep my own keybindings nice and
+   logically organized.
+
+   #+begin_src emacs-lisp
+     (use-package which-key
+       :diminish which-key-mode
+       :config
+       (which-key-mode))
+   #+end_src
+
+** Free keys
+   [[https://github.com/Fuco1/free-keys][~free-keys~]] allows me to see which keys are *not* bound in a
+   particular buffer.  This is in some sense the opposite of
+   [[*Which Key?][~which-key~]], and is helpful for seeing which keybindings I have
+   available for binding.  I need to configure this to also show me
+   keybinding opportunities with the Hyper key, under which I store
+   some of my keybindings.
+
+   #+begin_src emacs-lisp
+     (use-package free-keys
+      :commands free-keys
+      :custom (free-keys-modifier . ("" "C" "M" "C-M" "H" "C-H")))
+   #+end_src
+
 * Movement
   The benefits in movement that Emacs gives are probably its killer
   feature as a text editor for me.  While some people really customize
@@ -744,6 +778,7 @@
    #+name: dimmer-config-packages
    #+begin_src emacs-lisp   :tangle no
      (dimmer-configure-org)
+     (dimmer-configure-which-key)
    #+end_src
 
    For a full list of supported packages, see the [[https://github.com/gonewest818/dimmer.el#configuration][Configuration]]
