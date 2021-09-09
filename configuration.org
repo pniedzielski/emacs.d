@@ -412,7 +412,9 @@
    selected another modifier, but I don’t use shift-selection in org
    mode anyway.  Instead, we apply [[info:org#Conflicts][the documented fix from the Org
    Mode manual]].  I’m not sure if this is the right place to put the
-   fix, but this is where it lives for now.
+   fix, but this is where it lives for now.  Coupled with the [[*Dimming Unused Windows][dimming]]
+   package, I imagine this will become my preferred way of moving
+   among windows.
 
    #+begin_src emacs-lisp
      (use-package windmove
@@ -712,3 +714,37 @@
      (setq left-margin-width  1
            right-margin-width 1)
    #+end_src
+
+** Dimming Unused Windows
+   It can be hard to tell which window has input focus at-a-glance.  I
+   don’t find the visual clues of the mode-line sufficient to help me
+   know where I’m typing.  The [[https://github.com/gonewest818/dimmer.el][~dimmer.el~]] package tones down the
+   colors of windows that are not in focus, making it easier to see
+   which window is in focus.
+
+   #+begin_src emacs-lisp   :noweb yes
+     (use-package dimmer
+       :config <<dimmer-config-fraction>>
+               <<dimmer-config-packages>>
+               (dimmer-mode))
+   #+end_src
+
+   The default dimming fraction (20%) isn’t quite enough to make it
+   easy to see which window is in focus, so I increase this to 40%.
+
+   #+name: dimmer-config-fraction
+   #+begin_src emacs-lisp   :tangle no
+     (setq dimmer-fraction 0.4)
+   #+end_src
+
+   By default, ~dimmer.el~ doesn’t dim the minibuffer and echo areas.
+   There are some packages, though, that use multiple windows in their
+   normal interface.  Among these are [[*Magit][Magit]], [[*Org Mode][Org Mode]], and [[*Which Key?][Which Key?]].
+
+   #+name: dimmer-config-packages
+   #+begin_src emacs-lisp   :tangle no
+     (dimmer-configure-org)
+   #+end_src
+
+   For a full list of supported packages, see the [[https://github.com/gonewest818/dimmer.el#configuration][Configuration]]
+   section of the ~dimmer.el~ documentation.
