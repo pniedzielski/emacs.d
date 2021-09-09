@@ -631,3 +631,84 @@
        :after ivy
        :config (amx-mode 1))
    #+end_src
+
+* Visual Theming
+  This is honestly the least important part of my configuration.
+  Fonts and pretty are nice, and customizing the display to save a bit
+  of space is useful, but setting up my packages and configuration as
+  above is so much more important to me.
+
+  One important aspect of this configuration is that I try my hardest
+  for it to work both with X11 GUI clients and with terminal clients.
+  I use terminal clients significantly more often than I think most
+  Emacs GUI users do, and I don’t want my theming to make terminal
+  clients unusable.
+
+** GUI
+   There are certain GUI defaults in Emacs that I’m not a big fan of,
+   because they either take up space or distract me.  Foremost among
+   these is the toolbar, which I see very little use for: it only has
+   the commonly used buffer and file operations whose keybindings I
+   have no trouble remembering.  Tool tips and blinking cursors are
+   similar—they only distract me when I’m trying to do something.
+   Let’s turn these off:
+
+   #+begin_src emacs-lisp
+     (dolist (mode
+              '(tool-bar-mode
+                tooltip-mode
+                blink-cursor-mode
+                menu-bar-mode
+                scroll-bar-mode))
+       (funcall mode 0))
+   #+end_src
+
+   The final two things we turn off here are ones that I do think have
+   great utility, and that I turn on manually every once in a while.
+   First, ~menu-bar-mode~ is great, especially when learning a new
+   major mode or package.  While my eventual goal is to learn the
+   keybindings or command names, the GUI menu is a great way to
+   discover the functionality of the package.  For that reason, I turn
+   it on manually when I’m training myself on a new package.  By
+   default, though, I keep it off.  Second, ~scroll-bar-mode~ is quite
+   nice for seeing roughly where you are in a large buffer, without
+   taking up much space.  For some of this, I can use the line number
+   on the modeline, coupled with ~count-words~ to see how many lines
+   are in the (maybe narrowed) buffer.  But, it can still be a nice
+   visual reminder.  On those occasions, I turn the scroll bar back on
+   manually.  Otherwise, though, I keep it off, to take up less space.
+
+   My desktop environment uses the mouse to select which X11 window
+   has keyboard input focus.  I’d like this to carry over into Emacs,
+   where the mouse also selects which Emacs window has focus.  This
+   isn’t my primary means of moving between windows (see the [[*Windmove][Windmove]]
+   section for details), but when I’m working with other programs that
+   use the mouse, this makes life a bit easier.
+
+   #+begin_src emacs-lisp
+     (setq-default mouse-autoselect-window t)
+   #+end_src
+
+   We also don’t want to see a startup screen.  Instead, I’d rather be
+   taken directly to scratch—I know how to find the GNU Manifesto on
+   my own.
+
+   #+begin_src emacs-lisp
+     (setq-default inhibit-startup-message t)
+   #+end_src
+
+   We do, though, want the line and column numbers to be displayed on
+   the modeline.
+
+   #+begin_src emacs-lisp
+     (line-number-mode   1)
+     (column-number-mode 1)
+   #+end_src
+
+   Finally, let’s make sure the margins are there, but aren’t bigger
+   than necessary.
+
+   #+begin_src emacs-lisp
+     (setq left-margin-width  1
+           right-margin-width 1)
+   #+end_src
