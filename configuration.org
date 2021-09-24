@@ -790,6 +790,16 @@
            right-margin-width 1)
    #+end_src
 
+** Fonts and Ligatures
+   The font I’m currently using is [[https://github.com/microsoft/cascadia-code][Cascadia Code]] (which, luckily, is
+   packaged in Debian as =fonts-cascadia-code=).  I find this font is
+   very easy to read for long periods of time, and at different sizes;
+   I value that more than its looks or its ligatures.
+
+   #+begin_src emacs-lisp
+     (set-face-attribute 'default nil :font "Cascadia Code PL")
+   #+end_src
+
 ** Dimming Unused Windows
    It can be hard to tell which window has input focus at-a-glance.  I
    don’t find the visual clues of the mode-line sufficient to help me
