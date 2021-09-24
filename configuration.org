@@ -240,6 +240,36 @@
      (setq read-process-output-max (* 1024 1024)) ; 1mb
    #+end_src
 
+** Native Compilation
+   Starting with version 28, Emacs includes functionality to compile
+   Lisp down to native code.  While there has been byte-code
+   compilation for a long time, this still goes through the Lisp
+   interpreter, which introduces some delay—and since Emacs is mostly
+   single-threaded, we want to limit this delay as much as possible,
+   so we can interact with Emacs with less frustration.  Native
+   compilation (formerly GccEmacs), lets you precompile Lisp code so
+   it can run natively, and includes all the optimizations of the GCC
+   backend.  This has had a noticeable impact on the snappiness of my
+   Emacs, especially when using larger packages.
+
+   Luckily, we don’t need to do much to make Emacs use native
+   compilation.  However, there is one quite unfortunate default: when
+   packages are being asynchronously natively compiled, every warning
+   during compilation pops up a buffer that takes away input focus
+   from what I was doing, and sometimes screws up a carefully crafted
+   window layout.  I don’t usually care about compilation warnings in
+   code I didn’t write, and there seems to be quite a lot of that in
+   this transition phase to native-comp Nirvana, so I ignore warnings
+   during these async compilations:
+
+   #+begin_src emacs-lisp
+     (setq warning-minimum-level :error)
+   #+end_src
+
+   This has made asynchronous native compilation so much smoother, and
+   this has the benefit of showing me only actual errors that I should
+   be concerned with.
+
 ** Emacs Server
    I usually run Emacs as a server on my systems, with emacsclients
    connecting to the server.  Let’s make sure to enable this
