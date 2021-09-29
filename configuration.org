@@ -173,7 +173,7 @@
    =package.el= not to activate any packages early on.
 
    #+begin_src emacs-lisp
-     (setq package-enable-at-sstartup nil)
+     (setq package-enable-at-startup nil)
    #+end_src
 
    Finally, we start up =package.el=.
