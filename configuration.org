@@ -635,6 +635,30 @@
        :after flyspell ivy flyspell-correct)
    #+end_src
 
+* Calendar
+** Alerts
+    Emacs’s built-in way of alerting you of something is by appending
+    to the =Messages= buffer, which also shows up in the minibuffer.
+    This is often hard to see, and it doesn’t interface nicely with
+    other notifications my system gives me, using =libnotify=.  John
+    Wiegley’s =alert= package gives us a consistent interface to any
+    number of notification backends; this works on Windows, OSX, and
+    UNIX-y systems, and can be easily extended.  For the moment, since
+    the only systems I use Emacs on are graphical Linux systems, I
+    unconditionally configure =alert= to use a backend that forwards
+    to =libnotify=.  On GNOME Shell, this makes a little notification
+    pop up at the top of the screen, with a customizable title, icon,
+    and actions.
+
+   #+begin_src emacs-lisp
+     (use-package alert
+	:config
+        (setq alert-default-style 'notifications))
+   #+end_src
+
+   Any package that uses =alert= will now show us notifications in
+   GNOME Shell.
+
 * Completion
 ** Ivy
    Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]]
