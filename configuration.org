@@ -132,29 +132,35 @@
 
 ** =package.el= Configuration
    Most of our packages we install using =package.el=, which is
-   bundled with Emacs 24 and later.  There are three major package
-   repositories for Emacs packages; we use the first two listed here.
+   bundled with Emacs 24 and later.  There are four major package
+   repositories for Emacs packages; we use the first three listed
+   here.
 
-   * ELPA      :: The repository for GNU-sanctioned packages.
-   * MELPA     :: Contains the largest selection of pcakages and is
-                  built directly from source in the package’s VCS.
-   * Marmalade :: Packages are uploaded by users and so tend to be at
-                  stable (albeit old versions)
+   * ELPA         :: The repository for packages with FSF-copyright
+                     assignment.
+   * Non-GNU ELPA :: The repository for GNU-sanctioned packages
+                     without copyright assignment.
+   * MELPA        :: Contains the largest selection of pcakages and is
+                     built directly from source in the package’s VCS.
+   * Marmalade    :: Packages are uploaded by users and so tend to be
+                     at stable (albeit old versions)
 
    We do not use Marmalade because it often has the same packages as
    MELPA, only with older versions.  This can sometimes lead to
-   conflicts that we want to avoid.  So, we can set up the two package
-   repositories we plan to use.
+   conflicts that we want to avoid.  So, we can set up the three
+   package repositories we plan to use.
 
    #+begin_src emacs-lisp
      (require 'package)
-     (setq package-archives '(("gnu"   . "http://elpa.gnu.org/packages/")
-                              ("melpa" . "https://melpa.org/packages/")))
+     (setq package-archives '(("gnu"    . "http://elpa.gnu.org/packages/")
+			      ("nongnu" . "http://elpa.gnu.org/nongnu/")
+			      ("melpa"  . "https://melpa.org/packages/")))
    #+end_src
 
-   At some point, I’m going to want to look into the new non-GNU ELPA
-   repository, which has some nice packages as well, although they are
-   frequently in MELPA as well.
+   As of [2021-09-23 ĵaŭ], I’m trying out the Non-GNU ELPA repository.
+   I’m not sure if this will cause conflicts with MELPA or not, but
+   for now I’m prefering to use the official non-GNU package
+   repository where possible.
 
    It’s very useful to keep all our installed packages in a single
    place, separate from any local Lisp code we have.  This gives us
