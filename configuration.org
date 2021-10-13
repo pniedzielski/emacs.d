@@ -635,6 +635,68 @@
        :after flyspell ivy flyspell-correct)
    #+end_src
 
+** Markdown Mode
+   Markdown support isn’t included by default in Emacs, and Emacs doesn’t
+   recognize files with the =.markdown= and =.md= extensions.  We use
+   [[http://jblevins.org/projects/markdown-mode/][markdown-mode]] by Jason Blevins and associate these extensions with it.
+
+   #+begin_src emacs-lisp
+     (use-package markdown-mode
+       :mode "\\.md\\'"
+       :custom
+       (markdown-asymmetric-header t
+        "Only put header markup at the start of the line.")
+       (markdown-enable-highlighting-syntax t
+        "Use ==this== for highlighter support.")
+       (markdown-enable-html t
+        "Font lock for HTML tags and attributes.")
+       (markdown-enable-math t
+        "Font lock for inline LaTeX mathematics.")
+       (markdown-fontify-code-blocks-natively t
+        "Use the right major mode for font locking in source blocks.")
+       (markdown-bold-underscore nil
+        "Use **this** instead of __this__ for boldface.")
+       (markdown-italic-underscore t
+        "Use _this_ instead of *this* for italics.")
+       (markdown-list-indent-width 2
+        "Indent by two spaces for a list."))
+   #+end_src
+
+   Most of the configuration for this mode is in either font-locking
+   or in using some of the convenience features the mode gives.  Most
+   of my consumption of Markdown documents is in reading the
+   unrendered markup code, so I care a lot about making it look nice,
+   and making it easier to read.  This is despite the fact that I
+   write in =org-mode= more frequently these days (even though I think
+   Markdown is an easier-to-read markup language), so I don’t always
+   remember the specifics of using Markdown mode.  That said, I want
+   to make it as easy to write beautiful looking Markdown documents
+   that are as easy-to-read as possible, and these configurations help
+   enable that.
+
+   Most of the keybindings for Markdown mode are under the =C-c C-s=
+   namespace.  The ones I (should) use most often are:
+
+   | Action                                | Keybinding             |
+   |---------------------------------------+------------------------|
+   | Insert heading                        | =C-c C-s H=            |
+   | Bold                                  | =C-c C-s b=            |
+   | Italic                                | =C-c C-s i=            |
+   | Inline code                           | =C-c C-s c=            |
+   | Blockquote                            | =C-c C-s q=            |
+   | Code block                            | =C-c C-s C=            |
+   | Edit code block                       | =C-c '=                |
+   | Insert link                           | =C-c C-l=              |
+   | Insert image                          | =C-c C-i=              |
+   | Follow link                           | =C-c C-o=              |
+   | Insert footnote                       | =C-c C-s f=            |
+   | Jump between reference and definition | =C-c C-d=              |
+   | New list item                         | =M-RET=                |
+   | Promote/demote list item              | =C-c <left>=​/​=<right>= |
+   | Horizontal rule                       | =C-c C-s -=            |
+
+   These were distilled from the [[https://leanpub.com/markdown-mode/read][Guide to Markdown Mode]].
+
 * Calendar
 ** Alerts
     Emacs’s built-in way of alerting you of something is by appending
