@@ -926,3 +926,20 @@
 
    For a full list of supported packages, see the [[https://github.com/gonewest818/dimmer.el#configuration][Configuration]]
    section of the ~dimmer.el~ documentation.
+
+** Pretty Pages
+   I use Emacs’s page functionality quite a lot, so it’s a nice
+   quality of life improvement to have the ugly ~^L~ characters
+   displayed as lines stretching across the window.  There are a few
+   packages that can do this: the big ones seem to be Steve Purcell’s
+   [[https://github.com/purcell/page-break-lines][page-break-lines]] and Vasilij Schneidermann’s [[https://depp.brause.cc/form-feed/][form-feed]].  For
+   whatever reason, I chose the latter, and I haven’t had any problems
+   with it.
+
+   Let’s set up form-feed to prettify our page breaks globally across
+   all Emacs modes and buffers.
+
+   #+begin_src emacs-lisp
+     (use-package form-feed
+       :config (global-form-feed-mode))
+   #+end_src
