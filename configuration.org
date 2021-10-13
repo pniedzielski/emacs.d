@@ -943,3 +943,40 @@
      (use-package form-feed
        :config (global-form-feed-mode))
    #+end_src
+
+** Custom Theme
+   Nowadays, Emacs has built-in support for custom themes.  It used to
+   be that you needed to manually set colors, or load a package
+   =color-theme= to provide a theme, as follows:
+
+   #+begin_src emacs-lisp   :tangle no
+     (use-package color-theme-modern)
+   #+end_src
+
+   Because support for custom themes is built-in, though, we don’t
+   need to do this anymore.
+
+   Normally, I use the [[https://github.com/juba/color-theme-tangoxtango][tangotango theme]], which is a bit old, and
+   doesn’t support everything, but is high contrast where it matters
+   and easy-to-read.
+
+   #+begin_src emacs-lisp
+     (use-package tangotango-theme
+       :defer nil
+       :config
+       (load-theme 'tangotango t))
+   #+end_src
+
+   However, sometimes a dark theme does not work well: for instance,
+   on a laptop screen, the glare can make the dark theme hard-to-read.
+   In this case, it’s useful to have alternative light themes
+   available.  Let’s load some alternative themes up that I can
+   manually engage.
+
+   #+begin_src emacs-lisp
+     (use-package color-theme-modern)
+   #+end_src
+
+   (This package contains all the color themes that the old
+   =color-theme= package contains, but updated for the new, built-in
+   custom theme mechanism.
