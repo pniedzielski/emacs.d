@@ -696,6 +696,31 @@
    | Horizontal rule                       | =C-c C-s -=            |
 
    These were distilled from the [[https://leanpub.com/markdown-mode/read][Guide to Markdown Mode]].
+* Projects
+  For working with my different writing and programming projects, I
+  have some external Emacs packages to make things easier.
+
+** Magit
+   [[http://magit.vc/][Magit]] is *the best* git porcelain, by far. For ease of access, I
+   have the main Magit command, =magit-status=, bound to =C-c g=.
+
+   #+begin_src emacs-lisp
+     (use-package magit
+       :bind ("C-c g" . magit-status)
+       :config (setq magit-completing-read-function 'ivy-completing-read
+                     magit-repository-directories '(("~" . 3)))
+       :commands (magit-status magit-blame magit-log-buffer-file magit-log-all)
+       :after ivy)
+
+     (use-package magit-filenotify :after magit)
+     (use-package forge            :after magit)
+   #+end_src
+
+*** Magit Imerge
+    #+begin_src emacs-lisp
+      (use-package magit-imerge
+        :after magit)
+    #+end_src
 
 * Calendar
 ** Alerts
