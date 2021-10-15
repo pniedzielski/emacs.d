@@ -701,8 +701,13 @@
   have some external Emacs packages to make things easier.
 
 ** Magit
-   [[http://magit.vc/][Magit]] is *the best* git porcelain, by far. For ease of access, I
-   have the main Magit command, =magit-status=, bound to =C-c g=.
+   Version control is a big part of my project management, and I
+   almost exclusively use git as version control.  While git has a
+   very nice data model, its user interface is somewhat lacking.
+   Luckily, the Emacs ecosystem provides us with a much nicer
+   interface to git.  In fact, I would go as far as to say that [[http://magit.vc/][Magit]]
+   is *the best* git porcelain, by far. For ease of access, I have the
+   main Magit command, =magit-status=, bound to =C-c g=.
 
    #+begin_src emacs-lisp
      (use-package magit
@@ -711,7 +716,12 @@
                      magit-repository-directories '(("~" . 3)))
        :commands (magit-status magit-blame magit-log-buffer-file magit-log-all)
        :after ivy)
+   #+end_src
 
+   We want Magit to use [[*Ivy][Ivy]] for completion, and we search for all
+   projects nested three directories under home.
+
+   #+begin_src emacs-lisp
      (use-package magit-filenotify :after magit)
      (use-package forge            :after magit)
    #+end_src
@@ -945,6 +955,7 @@
 
    #+name: dimmer-config-packages
    #+begin_src emacs-lisp   :tangle no
+     (dimmer-configure-magit)
      (dimmer-configure-org)
      (dimmer-configure-which-key)
    #+end_src
