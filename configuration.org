@@ -510,192 +510,201 @@
        (setq windmove-wrap-around t))
    #+end_src
 
-* Writing
-  I spend most of my time in Emacs nowadays reading and writing prose,
-  so the most important configurations in this document relate to
-  reading and writing.
+* Editing
+  Even though I consider [[*Movement][movement]] the killer feature of Emacs as an
+  editor, the actual editing functionality of Emacs is also very
+  useful.  You’ll find that some of these functions are also in other
+  editors, sometimes even better, but when composed with the
+  effortless ability to move about the buffer as you please, they
+  provide for a beautiful editing experience, both for composing prose
+  and developing software.
 
-  The sections that follow are mostly centered around ~text-mode~ and
-  modes that derive from it.
+** Writing
+   I spend most of my time in Emacs nowadays reading and writing prose,
+   so the most important configurations in this document relate to
+   reading and writing.
 
-** Text
-   ~text-mode~ is probably my most-used major mode, directly and via
-   its derivative modes.
+   The sections that follow are mostly centered around ~text-mode~ and
+   modes that derive from it.
 
-   One of the most useful aspects of ~text-mode~ is its understanding
-   of prose structure.  The following keybindings (cognate with the
-   line movement keybindings) skip around the buffer on a
-   sentence-by-sentence basis:
+*** Text
+    ~text-mode~ is probably my most-used major mode, directly and via
+    its derivative modes.
 
-   * ~M-a~ (~backward-sentence~)
-   * ~M-e~ (~forward-sentence~)
-   * ~M-k~ (~kill-sentence~)
-   * ~C-x <DEL>~ (~backward-kill-sentence~)
+    One of the most useful aspects of ~text-mode~ is its understanding
+    of prose structure.  The following keybindings (cognate with the
+    line movement keybindings) skip around the buffer on a
+    sentence-by-sentence basis:
 
-   See [[info:emacs#Sentences][the *Sentences* section of the Emacs manual]] for more
-   information.
+    * ~M-a~ (~backward-sentence~)
+    * ~M-e~ (~forward-sentence~)
+    * ~M-k~ (~kill-sentence~)
+    * ~C-x <DEL>~ (~backward-kill-sentence~)
 
-   By default, though, these commands determine sentence boundaries
-   using punctuation followed by two spaces.  In fact, this is how I
-   type myself, so this default works well for prose I write.  I seem
-   to be in the minority, though, and whenever I’m working with text
-   written by someone else, it gets very annoying when the sentence
-   commands don’t see any sentence boundaries.  This is worse than the
-   alternative, where too many false positives are given for possible
-   sentences.  We could tell Emacs to need only a single space for
-   separating sentences, as below:
+    See [[info:emacs#Sentences][the *Sentences* section of the Emacs manual]] for more
+    information.
 
-   #+begin_src emacs-lisp   :tangle no
-     (add-hook 'text-mode-hook
-               (lambda () (setq sentence-end-double-space nil)))
-   #+end_src
+    By default, though, these commands determine sentence boundaries
+    using punctuation followed by two spaces.  In fact, this is how I
+    type myself, so this default works well for prose I write.  I seem
+    to be in the minority, though, and whenever I’m working with text
+    written by someone else, it gets very annoying when the sentence
+    commands don’t see any sentence boundaries.  This is worse than the
+    alternative, where too many false positives are given for possible
+    sentences.  We could tell Emacs to need only a single space for
+    separating sentences, as below:
 
-   However, there is a problem with this: it deletes the double spaces
-   in my own documents when I reflow paragraphs.  Yuck.  For the
-   moment, I don’t have a good solution to this.  I think I’d rather
-   get annoyed when working with the anemic text documents that lack
-   double spacing, more than have Emacs muck up my own documents.
-   Maybe someday, I’ll write a bit of code to automatically detect
-   whether to set ~sentence-end-double-space~ on a buffer-by-buffer
-   basis, à la [[http://mbork.pl/2014-10-28_Single_vs_double_spaces][this solution by Marcin Borkowski]].  I like the DWIMness
-   of it, but there are enough open threads to this solution that,
-   again, I think I would find it more annoying than helpful.
+    #+begin_src emacs-lisp   :tangle no
+      (add-hook 'text-mode-hook
+		(lambda () (setq sentence-end-double-space nil)))
+    #+end_src
 
-** Typo Mode
-   [[https://github.com/jorgenschaefer/typoel][~typo.el~]] is a package that contains two minor modes, ~typo-mode~
-   and ~typo-global-mode~.  The former is what we’re interested in:
-   when enabled, ASCII typographic characters are replaced with
-   Unicode characters while typing.  This is very useful when editing
-   documents, especially now that we’re in a post-ASCII age.
-   ~typo-global-mode~ is also useful: it enables a ~C-c 8~ hierarchy
-   to mirror the built-in ~C-x 8~ hierarchy, which allows us to access
-   much of the same functionality in program modes as we do in text
-   modes, when needed.
+    However, there is a problem with this: it deletes the double spaces
+    in my own documents when I reflow paragraphs.  Yuck.  For the
+    moment, I don’t have a good solution to this.  I think I’d rather
+    get annoyed when working with the anemic text documents that lack
+    double spacing, more than have Emacs muck up my own documents.
+    Maybe someday, I’ll write a bit of code to automatically detect
+    whether to set ~sentence-end-double-space~ on a buffer-by-buffer
+    basis, à la [[http://mbork.pl/2014-10-28_Single_vs_double_spaces][this solution by Marcin Borkowski]].  I like the DWIMness
+    of it, but there are enough open threads to this solution that,
+    again, I think I would find it more annoying than helpful.
 
-   #+begin_src emacs-lisp
-     (use-package typo
-       :hook (text-mode . typo-mode)
-       :config (typo-global-mode 1)
-               (setq-default typo-language "English"))
-   #+end_src
+*** Typo Mode
+    [[https://github.com/jorgenschaefer/typoel][~typo.el~]] is a package that contains two minor modes, ~typo-mode~
+    and ~typo-global-mode~.  The former is what we’re interested in:
+    when enabled, ASCII typographic characters are replaced with
+    Unicode characters while typing.  This is very useful when editing
+    documents, especially now that we’re in a post-ASCII age.
+    ~typo-global-mode~ is also useful: it enables a ~C-c 8~ hierarchy
+    to mirror the built-in ~C-x 8~ hierarchy, which allows us to access
+    much of the same functionality in program modes as we do in text
+    modes, when needed.
 
-   ~typo.el~ supports converting quotes to their language-specific
-   surface realizations: for English, that looks like “this”, whereas
-   for Esperanto, that looks like „this“.  It would be great to
-   automatically detect which to use based on the ispell dictionary,
-   but for the moment I use English as a default, and manually change
-   the quote style when needed.
+    #+begin_src emacs-lisp
+      (use-package typo
+	:hook (text-mode . typo-mode)
+	:config (typo-global-mode 1)
+		(setq-default typo-language "English"))
+    #+end_src
 
-** Spell Checking
-   I am terrible at spelling—much more terrible than a recovering
-   Indo-Europeanist should be.  Flyspell marks my spelling errors
-   on-the-fly, underlining in red words that aren’t in my system’s
-   English dictionary.  This does yield a significant number of false
-   positives, but it’s good enough to catch most of my spelling
-   mistakes.
+    ~typo.el~ supports converting quotes to their language-specific
+    surface realizations: for English, that looks like “this”, whereas
+    for Esperanto, that looks like „this“.  It would be great to
+    automatically detect which to use based on the ispell dictionary,
+    but for the moment I use English as a default, and manually change
+    the quote style when needed.
 
-   We turn on flyspell in modes that are derived from ~text-mode~, and
-   we turn on flyspell only in comments for modes that are derived
-   from ~prog-mode~.
+*** Spell Checking
+    I am terrible at spelling—much more terrible than a recovering
+    Indo-Europeanist should be.  Flyspell marks my spelling errors
+    on-the-fly, underlining in red words that aren’t in my system’s
+    English dictionary.  This does yield a significant number of false
+    positives, but it’s good enough to catch most of my spelling
+    mistakes.
 
-   #+begin_src emacs-lisp
-     (use-package flyspell
-       :diminish flyspell
-       :hook ((text-mode . flyspell-mode)
-              (prog-mode . flyspell-prog-mode)))
-   #+end_src
+    We turn on flyspell in modes that are derived from ~text-mode~, and
+    we turn on flyspell only in comments for modes that are derived
+    from ~prog-mode~.
 
-   My systems tend to have Esperanto as their default language (for
-   displaying the interface), but most of the text I write is in
-   English (obviously).  The ~auto-dictionary~ package detects which
-   language the text I’m writing is in and sets the spell-check
-   dictionary to that language.  We’ll turn this on whenever we have
-   flyspell on.
+    #+begin_src emacs-lisp
+      (use-package flyspell
+	:diminish flyspell
+	:hook ((text-mode . flyspell-mode)
+               (prog-mode . flyspell-prog-mode)))
+    #+end_src
 
-   #+begin_src emacs-lisp
-     (use-package auto-dictionary
-       :after flyspell
-       :hook (flyspell-mode . auto-dictionary-mode))
-   #+end_src
+    My systems tend to have Esperanto as their default language (for
+    displaying the interface), but most of the text I write is in
+    English (obviously).  The ~auto-dictionary~ package detects which
+    language the text I’m writing is in and sets the spell-check
+    dictionary to that language.  We’ll turn this on whenever we have
+    flyspell on.
 
-   Once flyspell detects a spelling error, we have two options to fix
-   it.  First, we can use the built-in command ~ispell~, which works
-   on the whole buffer.  I use this pretty frequently.  Alternatively,
-   the ~flyspell-correct~ and ~flyspell-correct-ivy~ packages allow us
-   to correct a spelling at the point, giving us a nice ivy-based
-   completion interface for selecting the correct replacement.
+    #+begin_src emacs-lisp
+      (use-package auto-dictionary
+	:after flyspell
+	:hook (flyspell-mode . auto-dictionary-mode))
+    #+end_src
 
-   #+begin_src emacs-lisp
-     (use-package flyspell-correct
-       :after flyspell
-       :bind (:map flyspell-mode-map
-              ("C-;" . flyspell-correct-wrapper)))
+    Once flyspell detects a spelling error, we have two options to fix
+    it.  First, we can use the built-in command ~ispell~, which works
+    on the whole buffer.  I use this pretty frequently.  Alternatively,
+    the ~flyspell-correct~ and ~flyspell-correct-ivy~ packages allow us
+    to correct a spelling at the point, giving us a nice ivy-based
+    completion interface for selecting the correct replacement.
 
-     (use-package flyspell-correct-ivy
-       :after flyspell ivy flyspell-correct)
-   #+end_src
+    #+begin_src emacs-lisp
+      (use-package flyspell-correct
+	:after flyspell
+	:bind (:map flyspell-mode-map
+               ("C-;" . flyspell-correct-wrapper)))
 
-** Markdown Mode
-   Markdown support isn’t included by default in Emacs, and Emacs doesn’t
-   recognize files with the =.markdown= and =.md= extensions.  We use
-   [[http://jblevins.org/projects/markdown-mode/][markdown-mode]] by Jason Blevins and associate these extensions with it.
+      (use-package flyspell-correct-ivy
+	:after flyspell ivy flyspell-correct)
+    #+end_src
 
-   #+begin_src emacs-lisp
-     (use-package markdown-mode
-       :mode "\\.md\\'"
-       :custom
-       (markdown-asymmetric-header t
-        "Only put header markup at the start of the line.")
-       (markdown-enable-highlighting-syntax t
-        "Use ==this== for highlighter support.")
-       (markdown-enable-html t
-        "Font lock for HTML tags and attributes.")
-       (markdown-enable-math t
-        "Font lock for inline LaTeX mathematics.")
-       (markdown-fontify-code-blocks-natively t
-        "Use the right major mode for font locking in source blocks.")
-       (markdown-bold-underscore nil
-        "Use **this** instead of __this__ for boldface.")
-       (markdown-italic-underscore t
-        "Use _this_ instead of *this* for italics.")
-       (markdown-list-indent-width 2
-        "Indent by two spaces for a list."))
-   #+end_src
+*** Markdown Mode
+    Markdown support isn’t included by default in Emacs, and Emacs doesn’t
+    recognize files with the =.markdown= and =.md= extensions.  We use
+    [[http://jblevins.org/projects/markdown-mode/][markdown-mode]] by Jason Blevins and associate these extensions with it.
 
-   Most of the configuration for this mode is in either font-locking
-   or in using some of the convenience features the mode gives.  Most
-   of my consumption of Markdown documents is in reading the
-   unrendered markup code, so I care a lot about making it look nice,
-   and making it easier to read.  This is despite the fact that I
-   write in =org-mode= more frequently these days (even though I think
-   Markdown is an easier-to-read markup language), so I don’t always
-   remember the specifics of using Markdown mode.  That said, I want
-   to make it as easy to write beautiful looking Markdown documents
-   that are as easy-to-read as possible, and these configurations help
-   enable that.
+    #+begin_src emacs-lisp
+      (use-package markdown-mode
+	:mode "\\.md\\'"
+	:custom
+	(markdown-asymmetric-header t
+         "Only put header markup at the start of the line.")
+	(markdown-enable-highlighting-syntax t
+         "Use ==this== for highlighter support.")
+	(markdown-enable-html t
+         "Font lock for HTML tags and attributes.")
+	(markdown-enable-math t
+         "Font lock for inline LaTeX mathematics.")
+	(markdown-fontify-code-blocks-natively t
+         "Use the right major mode for font locking in source blocks.")
+	(markdown-bold-underscore nil
+         "Use **this** instead of __this__ for boldface.")
+	(markdown-italic-underscore t
+         "Use _this_ instead of *this* for italics.")
+	(markdown-list-indent-width 2
+         "Indent by two spaces for a list."))
+    #+end_src
 
-   Most of the keybindings for Markdown mode are under the =C-c C-s=
-   namespace.  The ones I (should) use most often are:
+    Most of the configuration for this mode is in either font-locking
+    or in using some of the convenience features the mode gives.  Most
+    of my consumption of Markdown documents is in reading the
+    unrendered markup code, so I care a lot about making it look nice,
+    and making it easier to read.  This is despite the fact that I
+    write in =org-mode= more frequently these days (even though I think
+    Markdown is an easier-to-read markup language), so I don’t always
+    remember the specifics of using Markdown mode.  That said, I want
+    to make it as easy to write beautiful looking Markdown documents
+    that are as easy-to-read as possible, and these configurations help
+    enable that.
 
-   | Action                                | Keybinding             |
-   |---------------------------------------+------------------------|
-   | Insert heading                        | =C-c C-s H=            |
-   | Bold                                  | =C-c C-s b=            |
-   | Italic                                | =C-c C-s i=            |
-   | Inline code                           | =C-c C-s c=            |
-   | Blockquote                            | =C-c C-s q=            |
-   | Code block                            | =C-c C-s C=            |
-   | Edit code block                       | =C-c '=                |
-   | Insert link                           | =C-c C-l=              |
-   | Insert image                          | =C-c C-i=              |
-   | Follow link                           | =C-c C-o=              |
-   | Insert footnote                       | =C-c C-s f=            |
-   | Jump between reference and definition | =C-c C-d=              |
-   | New list item                         | =M-RET=                |
-   | Promote/demote list item              | =C-c <left>=​/​=<right>= |
-   | Horizontal rule                       | =C-c C-s -=            |
+    Most of the keybindings for Markdown mode are under the =C-c C-s=
+    namespace.  The ones I (should) use most often are:
 
-   These were distilled from the [[https://leanpub.com/markdown-mode/read][Guide to Markdown Mode]].
+    | Action                                | Keybinding             |
+    |---------------------------------------+------------------------|
+    | Insert heading                        | =C-c C-s H=            |
+    | Bold                                  | =C-c C-s b=            |
+    | Italic                                | =C-c C-s i=            |
+    | Inline code                           | =C-c C-s c=            |
+    | Blockquote                            | =C-c C-s q=            |
+    | Code block                            | =C-c C-s C=            |
+    | Edit code block                       | =C-c '=                |
+    | Insert link                           | =C-c C-l=              |
+    | Insert image                          | =C-c C-i=              |
+    | Follow link                           | =C-c C-o=              |
+    | Insert footnote                       | =C-c C-s f=            |
+    | Jump between reference and definition | =C-c C-d=              |
+    | New list item                         | =M-RET=                |
+    | Promote/demote list item              | =C-c <left>=​/​=<right>= |
+    | Horizontal rule                       | =C-c C-s -=            |
+
+    These were distilled from the [[https://leanpub.com/markdown-mode/read][Guide to Markdown Mode]].
 * Projects
   For working with my different writing and programming projects, I
   have some external Emacs packages to make things easier.
