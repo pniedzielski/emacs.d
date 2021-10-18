@@ -556,8 +556,20 @@
    already that have needless amounts of trailing whitespace—a red
    flag, if ever there was one).
 
+   However, it’s an unfortunate fact that certain automatically
+   generated Emacs buffers having rampant trailing whitespace (a red
+   flag, if ever there was one), including Ivy/Counsel in the
+   minibuffer.  While we could create a list of modes to turn this
+   setting off, for the specific problem of special Emacs buffers with
+   trailing whitespace, it appears the best cut is between /buffers I
+   can edit/ and /buffers I cannot/​—or in other words programming and
+   writing buffers on one hand, and other buffers on the other.  What
+   we do, then, is turn =show-trailing-whitespace= on only in
+   =text-mode= and =prog-mode=.
+
    #+begin_src emacs-lisp
-     (setq-default show-trailing-whitespace t)
+     (add-hook 'text-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
+     (add-hook 'prog-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
    #+end_src
 
 ** Writing
