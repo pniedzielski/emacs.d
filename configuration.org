@@ -549,28 +549,28 @@
     (setq-default require-final-newline 'ask)
   #+end_src
 
-   Another global truism is that lines should never have trailing
-   whitespace.  This usually does nothing, and again, we can always
-   turn it off in those specific modes or buffers that require it (or,
-   alternatively, when we’re working with poorly crafted source files
-   already that have needless amounts of trailing whitespace—a red
-   flag, if ever there was one).
+  Another global truism is that lines should never have trailing
+  whitespace.  This usually does nothing, and again, we can always
+  turn it off in those specific modes or buffers that require it (or,
+  alternatively, when we’re working with poorly crafted source files
+  already that have needless amounts of trailing whitespace—a red
+  flag, if ever there was one).
 
-   However, it’s an unfortunate fact that certain automatically
-   generated Emacs buffers having rampant trailing whitespace (a red
-   flag, if ever there was one), including Ivy/Counsel in the
-   minibuffer.  While we could create a list of modes to turn this
-   setting off, for the specific problem of special Emacs buffers with
-   trailing whitespace, it appears the best cut is between /buffers I
-   can edit/ and /buffers I cannot/​—or in other words programming and
-   writing buffers on one hand, and other buffers on the other.  What
-   we do, then, is turn =show-trailing-whitespace= on only in
-   =text-mode= and =prog-mode=.
+  However, it’s an unfortunate fact that certain automatically
+  generated Emacs buffers having rampant trailing whitespace (a red
+  flag, if ever there was one), including Ivy/Counsel in the
+  minibuffer.  While we could create a list of modes to turn this
+  setting off, for the specific problem of special Emacs buffers with
+  trailing whitespace, it appears the best cut is between /buffers I
+  can edit/ and /buffers I cannot/​—or in other words programming and
+  writing buffers on one hand, and other buffers on the other.  What
+  we do, then, is turn =show-trailing-whitespace= on only in
+  =text-mode= and =prog-mode=.
 
-   #+begin_src emacs-lisp
-     (add-hook 'text-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
-     (add-hook 'prog-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
-   #+end_src
+  #+begin_src emacs-lisp
+    (add-hook 'text-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
+    (add-hook 'prog-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
+  #+end_src
 
 ** Writing
    I spend most of my time in Emacs nowadays reading and writing prose,
