@@ -519,6 +519,47 @@
   provide for a beautiful editing experience, both for composing prose
   and developing software.
 
+  Before we get started, though, there are some basic, global settings
+  that I think Emacs got wrong.  I want to set these to sane values
+  before anything else.
+
+  First, we need to never use tabs.  In general, tabs are evil for
+  indentation, but the way Emacs uses them (using tabs just as a
+  replacement for every 8 consecutive spaces, not using them
+  semantically) is even worse.  We turn tabs indent off by default.
+  There are very few times when we’ll need them anyway, and it can be
+  turned back on locally to a project, a mode, or a buffer.
+
+  #+begin_src emacs-lisp
+    (setq-default indent-tabs-mode nil)
+  #+end_src
+
+  Similarly, in UNIX, all files should end with a newline.  Emacs can
+  control this via the variable =require-final-newline=.  While we can
+  tell Emacs to automatically add a newline on saving, on visiting, or
+  both, I feel a bit worried about this happening without my
+  knowledge.  Although most often git will let me know that the final
+  line was modified, I’m not always in a git repo, or I may
+  absentmindedly miss that in the diff.  As an extra line of defense,
+  I tell Emacs to ask me on any buffer that doesn’t have a final
+  newline whether to add one or not when I save that buffer.  This
+  way, I’m in full control.
+
+  #+begin_src emacs-lisp
+    (setq-default require-final-newline 'ask)
+  #+end_src
+
+   Another global truism is that lines should never have trailing
+   whitespace.  This usually does nothing, and again, we can always
+   turn it off in those specific modes or buffers that require it (or,
+   alternatively, when we’re working with poorly crafted source files
+   already that have needless amounts of trailing whitespace—a red
+   flag, if ever there was one).
+
+   #+begin_src emacs-lisp
+     (setq-default show-trailing-whitespace t)
+   #+end_src
+
 ** Writing
    I spend most of my time in Emacs nowadays reading and writing prose,
    so the most important configurations in this document relate to
