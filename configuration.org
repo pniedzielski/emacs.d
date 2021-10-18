@@ -209,9 +209,9 @@
        (package-refresh-contents)
        (package-install 'use-package)
        (package-install 'diminish))
-     
+
      <<use-package-config>>
-     
+
      (require 'use-package)
      (require 'use-package-ensure)
      (require 'diminish)
