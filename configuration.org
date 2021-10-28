@@ -246,6 +246,19 @@
      (setq read-process-output-max (* 1024 1024)) ; 1mb
    #+end_src
 
+** Local Lisp Packages
+   There are still a few packages that are not on MELPA, which I have
+   installed locally (as it used to be, before =package.el=).  I put
+   these packages in a subdirectory of my Emacs directory,
+   ~.config/emacs/lisp/~.  For each local package we load outside of
+   MELPA, we will need to add a directory to the ~load-path~ variable.
+   To make this easy, I add a variable called
+   =pn/local-lisp-directory= that points to the right place.
+
+   #+begin_src emacs-lisp
+     (setq pn/local-lisp-directory (concat user-emacs-directory "lisp/"))
+   #+end_src
+
 ** Native Compilation
    Starting with version 28, Emacs includes functionality to compile
    Lisp down to native code.  While there has been byte-code
