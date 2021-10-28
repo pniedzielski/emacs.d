@@ -747,6 +747,67 @@
                      ("C-c n n" . org-id-get-create))))
     #+end_src
 
+**** Org-roam
+     As of [2021-07-04 dim], I’m trying out the new version of
+     org-roam.  The basic concepts behind org-roam have changed pretty
+     dramatically, as well as its interface, so the configuration for
+     this is very different.  At first, I needed to use Quelpa to
+     download this version, but it has since become the default
+     version on MELPA.
+
+     By default, org-roam sets up no global keybindings, but because
+     it’s such an important part of my workflow, I choose to set up
+     some of my own.  They will live under the ~C-c n~ prefix.
+
+     #+name: org-roam-keybinds
+     #+begin_src emacs-lisp   :tangle no
+       ("C-c n l"   . org-roam-buffer-toggle)
+       ("C-c n f"   . org-roam-node-find)
+       ("C-c n c"   . org-roam-capture)
+       ("C-c n d T" . org-roam-dailies-capture-today)
+       ("C-c n d D" . org-roam-dailies-capture-date)
+       ("C-c n d t" . org-roam-dailies-goto-today)
+       ("C-c n d d" . org-roam-dailies-goto-date)
+     #+end_src
+
+     Furthermore, when we’re in an org-mode buffer, we might want to
+     insert some links to org-roam notes, so we add some mode-local
+     keybindings:
+
+     #+name: org-roam-mode-keybinds
+     #+begin_src emacs-lisp   :tangle no
+       (:map org-mode-map
+             ("C-c n i" . org-roam-node-insert)
+             ("C-c n I" . org-roam-node-insert-immediate))
+     #+end_src
+
+     #+begin_src emacs-lisp   :noweb yes
+       (use-package org-roam
+         :after org
+         :custom
+           (org-roam-directory "~/Dokumentoj/org/notes/")
+           (org-roam-dailies-directory "daily/")
+         :bind
+           <<org-roam-keybinds>>
+           <<org-roam-mode-keybinds>>
+         :init
+           (setq org-roam-v2-ack t) ; Don’t display a warning every time we load org-roam
+         :config
+           (setq org-roam-capture-templates
+                 '(("d" "default" plain "%?"
+                    :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                       "#+title: ${title}\n#+date: %T\n")
+                    :unnarrowed t))
+                 org-roam-dailies-capture-templates
+                 '(("d" "default" entry
+                    "* %?"
+                    :if-new (file+head "%<%Y-%m-%d>.org"
+                                       "#+title: %<%Y-%m-%d>\n"))))
+           (org-roam-db-autosync-enable))
+
+       (use-package org-roam-protocol :ensure nil :after org-roam :demand t)
+     #+end_src
+
 *** Markdown Mode
     Markdown support isn’t included by default in Emacs, and Emacs doesn’t
     recognize files with the =.markdown= and =.md= extensions.  We use
