@@ -828,6 +828,63 @@
        (pdf-tools-disable-cursor pdf-tools-advice-evil-refresh-cursor))
    #+end_src
 
+** Bibliography
+   Being able to read PDFs is not enough.  I also need to be able to
+   organize my corner of the literature, so I can effectively search
+   through it, take notes and process it, and then cite it in my own
+   writing.  There are many tools to do this, even within Emacs, but I
+   would like a system that isn’t exclusive to Emacs: I should be able
+   to easily and effectively add entries and read documents without
+   Emacs (or without any other particular program).
+
+   The natural solution is a plaintext BibLaTeX file and a directory
+   of PDF files.  I could have some hierarchy to these PDF files, but
+   if my BibLaTeX file is good enough, it can serve as an index to
+   them, much as notmuch is an index to my mail.  To that end, I
+   choose a directory [[~/Biblioteko][~Biblioteko~]] under my home directory, which
+   stores a BibLaTeX file [[~/Biblioteko/biblioteko.bib][~biblioteko.bib~]] and a loose collection of
+   PDFs, each named after their BibLaTeX key.  This makes it easy to
+   store in a git annex repository, and thus to sync the library
+   across each computer.  For managing this directory and the files
+   within, I have settled on two packages: Ebib, for editing and
+   organizing the collection, and ivy-bibtex, for searching through
+   and citing entries.
+
+*** BibTeX mode
+    Because our whole enterprise is based on Bib(La)TeX, we need to
+    make sure we set up Emacs’s BibTeX mode up properly.  The most
+    import thing is for me is to make sure it automatically generates
+    keys in format I find most useful.  While some people may find
+    this key format verbose, I find that it makes the backing source
+    code for these citing documents easier to read directly.  While
+    the code to make this happen is a bit verbose, my end goal is to
+    get keys like =chomsky1957syntactic= for Chomsky’s (1957)
+    /Syntactic Structures/.
+
+    #+begin_src emacs-lisp
+      (use-package bibtex
+        :ensure nil
+        :config
+        (setq bibtex-autokey-names 1
+              bibtex-autokey-names-stretch 1
+              bibtex-autokey-additional-names "etal"
+              bibtex-autokey-name-separator ""
+
+              bibtex-autokey-name-year-separator ""
+
+              bibtex-autokey-year-length 4
+
+              bibtex-autokey-year-title-separator ""
+
+              bibtex-autokey-titleword-first-ignore '("the" "a" "if" "and" "an")
+              bibtex-autokey-titleword-length 30
+              bibtex-autokey-titlewords 1
+
+              bibtex-autokey-use-crossref t
+              bibtex-autokey-edit-before-use t
+              bibtex-autokey-before-presentation-function #'downcase))
+    #+end_src
+
 * Projects
   For working with my different writing and programming projects, I
   have some external Emacs packages to make things easier.
