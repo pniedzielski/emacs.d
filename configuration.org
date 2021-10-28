@@ -1089,6 +1089,39 @@
    Any package that uses =alert= will now show us notifications in
    GNOME Shell.
 
+** Org Agenda
+   I use =org-agenda= to manage my TODOs and schedule, so many of the
+   more important parts of my configuration for what I do day-to-day
+   are here.  First, we want to let Emacs know where I keep my TODO
+   files.
+
+   #+begin_src emacs-lisp
+     (setq org-agenda-files  '("~/Dokumentoj/org/"))
+   #+end_src
+
+   Not everything in Emacs land knows about =org-agenda=.  The older,
+   built-in package =diary.el= includes things like BBDB
+   anniversaries, sunrise/sunset times, and more.  In order to include
+   these in the =org-agenda=, we need to set the following variable:
+
+   #+begin_src emacs-lisp
+     (setq org-agenda-include-diary t)
+   #+end_src
+
+   There is [[info:org#Weekly/daily agenda][an alternative way to do the above]], which is apparently
+   somewhat faster: you can add specific diary expressions into your
+   org file, and add only those diary entries (anniversaries,
+   holidays, etc.) that you need.  I haven’t seen any issues with the
+   above, but I will want to keep this in mind just in case.
+
+   #+begin_src emacs-lisp
+     (setq org-agenda-category-icon-alist nil)
+   #+end_src
+
+   #+begin_src emacs-lisp
+     (setq org-agenda-use-time-grid t)
+   #+end_src
+
 * Completion
 ** Ivy
    Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]]
