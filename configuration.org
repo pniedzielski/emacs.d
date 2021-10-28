@@ -710,6 +710,43 @@
 	:after flyspell ivy flyspell-correct)
     #+end_src
 
+*** Org Mode
+    It’s hard to know where to put my [[http://orgmode.org/][Org]] configuration, because of
+    how deeply Org has inserted its tendrils into everything I do.
+    But, I suppose, at its heart, Org mode is a markup language and an
+    Emacs package built on top of that language.  Furthermore, I think
+    the unifying theme of Org mode is one of /writing plain text/;
+    even without the (very useful) Emacs functions built on top of the
+    Org markup, they are enabled almost entirely by the plain text,
+    freely modifiable, and human-readable nature of Org mode.
+
+    #+begin_src emacs-lisp
+      (use-package org
+        :mode "\\.org'"
+        :init
+        (setq org-catch-invisible-edits 'smart
+              org-src-window-setup 'other-window
+              org-indirect-buffers-display 'other-window
+              org-src-fontify-natively t
+              org-highlight-latex-and-related '(native script entities)
+              org-todo-keywords
+              '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                (sequence "DELEGATED(e@/!)" "WAITING(w@/!" "HOLD(h@/!)" "|" "CANCELED(c@/!)" "MEETING(m)"))
+              org-todo-keyword-faces '(("TODO"      :foreground "red"          :weight bold)
+                                            ("NEXT"      :foreground "DeepSkyBlue2" :weight bold)
+                                            ("DONE"      :foreground "forest green" :weight bold)
+                                            ("WAITING"   :foreground "orange"       :weight bold)
+                                            ("DELEGATED" :foreground "orange"       :weight bold)
+                                            ("HOLD"      :foreground "magenta"      :weight bold)
+                                            ("CANCELED"  :foreground "forest green" :weight bold)
+                                            ("MEETING"   :foreground "red"          :weight bold)))
+        :bind (("C-c a" . org-agenda)
+               ("C-c l" . org-store-link)
+               ("C-c !" . org-time-stamp-inactive)
+               (:map org-mode-map
+                     ("C-c n n" . org-id-get-create))))
+    #+end_src
+
 *** Markdown Mode
     Markdown support isn’t included by default in Emacs, and Emacs doesn’t
     recognize files with the =.markdown= and =.md= extensions.  We use
