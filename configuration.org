@@ -885,6 +885,52 @@
               bibtex-autokey-before-presentation-function #'downcase))
     #+end_src
 
+*** Ebib
+    [[https://joostkremers.github.io/ebib/][Ebib]] is a very nice replacement for software programs like
+    [[https://www.mendeley.com/download-reference-manager/][Mendeley]], [[https://www.zotero.org/][Zotero]], and [[https://www.jabref.org/][JabRef]].  Each of these had some downside:
+
+      * [[https://www.zotero.org/support/kb/mendeley_import#mendeley_database_encryption][Mendeley started encrypting its local database of PDFs after
+        Zotero wrote an importer for Mendeley users.]]  How is this
+        okay?
+      * Zotero felt very heavyweight when I tried it briefly, and
+        integrating it with BibLaTeX was a pain.  Furthermore, its
+        apparent killer feature, the ability to download bibliographic
+        information, neither was unique to it nor even gave
+        particularly high quality results.
+      * JabRef was nice, but it’s still a quite heavy Java program for
+        a task so fundamentally simple, hogging more RAM than it has
+        any right to.
+
+    Ebib has served as a good replacement for each of these programs.
+    Because it’s in Emacs, of course, it integrates nicely with other
+    packages, but it also has some nice features of its own: main and
+    dependent databases, a visual editor for BibLaTeX fields, and
+    integration with LaTeX and Org mode for citations and notes.  This
+    makes my workflow quite a bit easier, and makes adding and editing
+    my PDF database a breeze.  Moreover, since its backend is just a
+    BibLaTeX file, I don’t need to worry about interfacing with other
+    authors who use different programs, or importing my database from
+    one system to another.  It should just work.
+
+    The [[info:ebib#Top][ebib manual]] is a good read to understand all that this package
+    can do.  My usage at the moment is quite simple, but like much of
+    Emacs, it’s very easy to grow into the rest of the functionality,
+    as it were.
+
+    #+begin_src emacs-lisp
+      (use-package ebib
+        :bind ("<f7>" . ebib)
+        :custom ((ebib-bibtex-dialect       'biblatex)
+                 (ebib-preload-bib-files    '("biblioteko.bib"))
+                 (ebib-bib-search-dirs      '("~/Biblioteko"))
+                 (ebib-file-search-dirs     '("~/Biblioteko"))
+                 (ebib-reading-list-file    "~/Dokumentoj/org/reading.org")
+                 (ebib-use-timestamp        t)
+                 (ebib-use-timestamp-format "%Y-%m-%d")
+                 (ebib-import-directory     (or (xdg-user-dir "DOWNLOAD") "~/Downloads"))
+                 (ebib-layout               'window)))
+    #+end_src
+
 * Projects
   For working with my different writing and programming projects, I
   have some external Emacs packages to make things easier.
