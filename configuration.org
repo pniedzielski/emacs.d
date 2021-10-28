@@ -771,6 +771,16 @@
     | Horizontal rule                       | =C-c C-s -=            |
 
     These were distilled from the [[https://leanpub.com/markdown-mode/read][Guide to Markdown Mode]].
+* Reading
+  The time I spend in Emacs now is dominated by reading documents of
+  various kinds: academic articles, books, conference proceedings, and
+  so forth.  Unfortunately, this is exactly a place where the built-in
+  functionality of Emacs does not shine (which is not the biggest
+  surprise, as it is at its heart a text editor).  The configurations
+  in this section to me represent the most disheartening, in that they
+  move me the furthest away from what Emacs out-of-the-box is designed
+  to do.
+
 * Projects
   For working with my different writing and programming projects, I
   have some external Emacs packages to make things easier.
