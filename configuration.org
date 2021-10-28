@@ -781,6 +781,53 @@
   move me the furthest away from what Emacs out-of-the-box is designed
   to do.
 
+** PDF Tools
+   While Emacs does come with a built-in document reading package
+   called [[info:emacs#Document View][DocView]], it is a very unpleasant experience to use it.  It
+   can read a wide variety of different document types (including
+   Microsoft Word documents), but where possible, I would like to use
+   better tools.
+
+   [[https://github.com/vedang/pdf-tools][PDF Tools]] is a significantly better tool to read PDFs in Emacs.  It
+   functions as a drop-in replacement for DocView, so any package that
+   opens a PDF can open it in PDF Tools without issue, and some of the
+   basic keybindings for navigation are shared with DocView, making
+   the switch to (or in my case, from) DocView more pleasant.
+   Furthermore, it is fully maintained (writing as of
+   [2021-10-28 ĵaŭ]), and hopefully more features and bugfixes will be
+   on the way.
+
+   The biggest downside of PDF Tools is that it relies on a server
+   program called ~epdfinfo~ that communicates with Emacs and provides
+   it with enough information to handle the complex searching and
+   annotation functionality that the Emacs frontend provides.  This
+   server program must be compiled before the package can be used,
+   which relies on the system having a compiler and development
+   tooling, as well as the required libraries for PDF.  We will set it
+   up to build everything we need when we load a PDF for the first
+   time.
+
+   #+begin_src emacs-lisp
+     (use-package pdf-tools
+       :mode "\\.pdf\\'"
+       :magic ("%PDF" . pdf-view-mode)
+       :config
+       (require 'pdf-tools)
+       (require 'pdf-view)
+       (require 'pdf-misc)
+       (require 'pdf-occur)
+       (require 'pdf-util)
+       (require 'pdf-annot)
+       (require 'pdf-info)
+       (require 'pdf-isearch)
+       (require 'pdf-history)
+       (require 'pdf-links)
+       (pdf-loader-install :no-query)
+       (setq pdf-view-continuous nil)
+       :functions
+       (pdf-tools-disable-cursor pdf-tools-advice-evil-refresh-cursor))
+   #+end_src
+
 * Projects
   For working with my different writing and programming projects, I
   have some external Emacs packages to make things easier.
