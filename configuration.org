@@ -153,8 +153,8 @@
    #+begin_src emacs-lisp
      (require 'package)
      (setq package-archives '(("gnu"    . "http://elpa.gnu.org/packages/")
-			      ("nongnu" . "http://elpa.gnu.org/nongnu/")
-			      ("melpa"  . "https://melpa.org/packages/")))
+                              ("nongnu" . "http://elpa.gnu.org/nongnu/")
+                              ("melpa"  . "https://melpa.org/packages/")))
    #+end_src
 
    As of [2021-09-23 ĵaŭ], I’m trying out the Non-GNU ELPA repository.
@@ -622,7 +622,7 @@
 
     #+begin_src emacs-lisp   :tangle no
       (add-hook 'text-mode-hook
-		(lambda () (setq sentence-end-double-space nil)))
+                (lambda () (setq sentence-end-double-space nil)))
     #+end_src
 
     However, there is a problem with this: it deletes the double spaces
@@ -649,9 +649,9 @@
 
     #+begin_src emacs-lisp
       (use-package typo
-	:hook (text-mode . typo-mode)
-	:config (typo-global-mode 1)
-		(setq-default typo-language "English"))
+        :hook (text-mode . typo-mode)
+        :config (typo-global-mode 1)
+        (setq-default typo-language "English"))
     #+end_src
 
     ~typo.el~ supports converting quotes to their language-specific
@@ -675,8 +675,8 @@
 
     #+begin_src emacs-lisp
       (use-package flyspell
-	:diminish flyspell
-	:hook ((text-mode . flyspell-mode)
+        :diminish flyspell
+        :hook ((text-mode . flyspell-mode)
                (prog-mode . flyspell-prog-mode)))
     #+end_src
 
@@ -689,8 +689,8 @@
 
     #+begin_src emacs-lisp
       (use-package auto-dictionary
-	:after flyspell
-	:hook (flyspell-mode . auto-dictionary-mode))
+        :after flyspell
+        :hook (flyspell-mode . auto-dictionary-mode))
     #+end_src
 
     Once flyspell detects a spelling error, we have two options to fix
@@ -702,12 +702,12 @@
 
     #+begin_src emacs-lisp
       (use-package flyspell-correct
-	:after flyspell
-	:bind (:map flyspell-mode-map
+        :after flyspell
+        :bind (:map flyspell-mode-map
                ("C-;" . flyspell-correct-wrapper)))
 
       (use-package flyspell-correct-ivy
-	:after flyspell ivy flyspell-correct)
+        :after flyspell ivy flyspell-correct)
     #+end_src
 
 *** Org Mode
@@ -838,23 +838,23 @@
 
     #+begin_src emacs-lisp
       (use-package markdown-mode
-	:mode "\\.md\\'"
-	:custom
-	(markdown-asymmetric-header t
+        :mode "\\.md\\'"
+        :custom
+        (markdown-asymmetric-header t
          "Only put header markup at the start of the line.")
-	(markdown-enable-highlighting-syntax t
+        (markdown-enable-highlighting-syntax t
          "Use ==this== for highlighter support.")
-	(markdown-enable-html t
+        (markdown-enable-html t
          "Font lock for HTML tags and attributes.")
-	(markdown-enable-math t
+        (markdown-enable-math t
          "Font lock for inline LaTeX mathematics.")
-	(markdown-fontify-code-blocks-natively t
+        (markdown-fontify-code-blocks-natively t
          "Use the right major mode for font locking in source blocks.")
-	(markdown-bold-underscore nil
+        (markdown-bold-underscore nil
          "Use **this** instead of __this__ for boldface.")
-	(markdown-italic-underscore t
+        (markdown-italic-underscore t
          "Use _this_ instead of *this* for italics.")
-	(markdown-list-indent-width 2
+        (markdown-list-indent-width 2
          "Indent by two spaces for a list."))
     #+end_src
 
@@ -1105,7 +1105,7 @@
 
    #+begin_src emacs-lisp
      (use-package alert
-	:config
+       :config
         (setq alert-default-style 'notifications))
    #+end_src
 
