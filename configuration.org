@@ -720,7 +720,7 @@
     Org markup, they are enabled almost entirely by the plain text,
     freely modifiable, and human-readable nature of Org mode.
 
-    #+begin_src emacs-lisp
+    #+begin_src emacs-lisp   :noweb yes
       (use-package org
         :mode "\\.org'"
         :init
@@ -740,12 +740,41 @@
                                             ("HOLD"      :foreground "magenta"      :weight bold)
                                             ("CANCELED"  :foreground "forest green" :weight bold)
                                             ("MEETING"   :foreground "red"          :weight bold)))
+        <<org-latex-export>>
         :bind (("C-c a" . org-agenda)
                ("C-c l" . org-store-link)
                ("C-c !" . org-time-stamp-inactive)
                (:map org-mode-map
                      ("C-c n n" . org-id-get-create))))
     #+end_src
+
+    Let’s take these configurations in turn:
+
+***** Exporting
+      I didn’t used to have much use for Org mode exporting: my main
+      use of Org mode was for writing, reading, and using the package
+      landscape built-up around Org mode.  However, I’ve found more
+      and more that exporting has a place in my workflow.
+
+      For example, although most of my writing for publication is in
+      LaTeX, I’m trying out doing more and more handouts in Org mode,
+      and then exporting to LaTeX.  This is still somewhat of a manual
+      process, wherein I check and manually modify the LaTeX document,
+      copying in some of the preamble commands I need outside of Org
+      mode.  As I get more confident with the Org export
+      functionality, I will start to put more of this preamble content
+      in configuration here.
+
+      Also, with [[*Org-roam][org-roam-ui]], I’m consuming a lot more Org content in
+      exported HTML format as well.  It’s becoming more and more
+      important to have export set up well, in multiple different
+      formats.
+
+      Let’s get started with our export configuration.
+
+      #+begin_src emacs-lisp   :tangle no   :noweb-ref org-latex-export
+        (setq org-latex-compiler "lualatex")
+      #+end_src
 
 **** Org-roam
      As of [2021-07-04 dim], I’m trying out the new version of
