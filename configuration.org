@@ -1,6 +1,7 @@
-#+TITLE:     Emacs Configuration File
-#+AUTHOR:    Patrick Michael Niedzielski
-#+EMAIL:     patrick@pniedzielski.net
+#+TITLE:         Emacs Configuration File
+#+AUTHOR:        Patrick Michael Niedzielski
+#+EMAIL:         patrick@pniedzielski.net
+#+DESCRIPTION:   Literate Emacs configuration via Org-Mode
 
 * Org-mode Emacs Configuration
   This org-mode file contains [[https://pniedzielski.net/][Patrick M. Niedzielski]]’s Emacs
