@@ -842,17 +842,13 @@
      org-roam-server.  This gives us an interactive view of the
      connections between our org-roam nodes, which gives a bit more of
      a global view of my repository than the default org-roam commands
-     are really able to.  Unfortunately, as of [2021-10-28 ĵaŭ],
-     org-roam-ui is not yet on MELPA or any package repository, so we
-     need to use a local copy instead.
+     are really able to.  Although until recently this was not on
+     MELPA, as of [2021-11-14 dim], I can use normal package downloads
+     to get this package.
 
      #+begin_src emacs-lisp   :tangle no
        (use-package org-roam-ui
          :after (org-roam websocket simple-httpd)
-         :ensure nil
-         :init (add-to-list 'load-path
-                            (directory-file-name
-                             (concat pn/local-lisp-directory "org-roam-ui/")))
          :config
            (setq org-roam-ui-sync-theme        t
                  org-roam-ui-retitle-ref-nodes t
