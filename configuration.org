@@ -918,6 +918,28 @@
     | Horizontal rule                       | =C-c C-s -=            |
 
     These were distilled from the [[https://leanpub.com/markdown-mode/read][Guide to Markdown Mode]].
+** Programming
+*** Tree Sitter
+For historical reasons, a lot of the Emacs programming functionality
+is hacked up around regular expressions, which aren’t powerful enough
+to know much about the underlying structure inherent in the code.  One
+of the ways around this is to use =tree-sitter=, an external project
+that parses code from a large number of programming languages into
+trees.  Emacs can then read these parses and more correctly highlight,
+navigate, and modify our code buffers.
+
+To do this, we need to enable integration between =tree-sitter= and
+Emacs.  Currently, this requires an external package, which we have to
+install separately, and which integrates highlighting, navigation, and
+modification with the results of =tree-sitter=’s parsing.
+
+#+begin_src emacs-lisp
+  (use-package tree-sitter
+    :hook (tree-sitter-after-on . tree-sitter-hl-mode)
+    :config (global-tree-sitter-mode))
+  (use-package tree-sitter-langs)
+#+end_src
+
 * Reading
   The time I spend in Emacs now is dominated by reading documents of
   various kinds: academic articles, books, conference proceedings, and
