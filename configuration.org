@@ -4,920 +4,901 @@
 #+DESCRIPTION:   Literate Emacs configuration via Org-Mode
 
 * Org-mode Emacs Configuration
-  This org-mode file contains [[https://pniedzielski.net/][Patrick M. Niedzielski]]’s Emacs
-  configuration, written in a [[https://en.wikipedia.org/wiki/Literate_programming][Literate Programming]] style.  The
-  configuration targets GNU Emacs git-master and, although
-  cross-platform, does not support any other version of GNU Emacs or
-  any other Emacs editor (such as XEmacs).
+This org-mode file contains [[https://pniedzielski.net/][Patrick M. Niedzielski]]’s Emacs
+configuration, written in a [[https://en.wikipedia.org/wiki/Literate_programming][Literate Programming]] style.  The
+configuration targets GNU Emacs git-master and, although
+cross-platform, does not support any other version of GNU Emacs or any
+other Emacs editor (such as XEmacs).
 
-  This document is the result of declaring [[https://www.emacswiki.org/emacs/DotEmacsBankruptcy][=.emacs= bankruptcy]]
-  during 2016.  At the time, my Emacs configuration was too large and
-  unwieldy to maintain.  It had become difficult to do anything but
-  add more configuration to the end of the file; any modifications to
-  existing configuration ran a very high risk of breaking the entire
-  configuration file.  The result was a long time lost to debugging my
-  text editor, which could have been more productively used on my own
-  projects.  When this became too unbearable, I started anew.
+This document is the result of declaring [[https://www.emacswiki.org/emacs/DotEmacsBankruptcy][=.emacs= bankruptcy]]
+during 2016.  At the time, my Emacs configuration was too large and
+unwieldy to maintain.  It had become difficult to do anything but add
+more configuration to the end of the file; any modifications to
+existing configuration ran a very high risk of breaking the entire
+configuration file.  The result was a long time lost to debugging my
+text editor, which could have been more productively used on my own
+projects.  When this became too unbearable, I started anew.
 
-  To make sure that I wouldn’t have to do this again, I decided on two
-  major pillars of my configuration file.  First, and in fact
-  primarily, I would write it in a Literate Programming style.  A big
-  part of the problem in my prior configuration was not knowing the
-  thought process that went into old configurations.  Towards the end
-  of my old configuration file’s life, some of this was solved by good
-  git commit messages, but there was enough cruft that make this not a
-  good solution.  Literate Programming allows me to write prose to
-  describe my intention with a particular piece of configuration, and
-  to link together different parts of configuration that need to be
-  separate in Emacs Lisp, but which make sense together in my prose.
-  Second, I would use John Wiegley’s [[https://github.com/jwiegley/use-package][use-package]] macro, which would
-  make each piece of the configuration code itself declarative.  This
-  would free me from the minutiae of [[info:elisp#Autoload][Emacs’s autoload functionality]]
-  and such.
+To make sure that I wouldn’t have to do this again, I decided on two
+major pillars of my configuration file.  First, and in fact primarily,
+I would write it in a Literate Programming style.  A big part of the
+problem in my prior configuration was not knowing the thought process
+that went into old configurations.  Towards the end of my old
+configuration file’s life, some of this was solved by good git commit
+messages, but there was enough cruft that make this not a good
+solution.  Literate Programming allows me to write prose to describe
+my intention with a particular piece of configuration, and to link
+together different parts of configuration that need to be separate in
+Emacs Lisp, but which make sense together in my prose.  Second, I
+would use John Wiegley’s [[https://github.com/jwiegley/use-package][use-package]] macro, which would make each
+piece of the configuration code itself declarative.  This would free
+me from the minutiae of [[info:elisp#Autoload][Emacs’s autoload functionality]] and such.
 
-  Through the years, my primary use of Emacs has shifted.  In 2016, I
-  was primarily writing C++ and Perl code.  Now, though, I use Emacs
-  for reading and writing academic works, and the little code I do
-  write is in Haskell.  I have also needed to use this configuration
-  file different Debian machines (usually my personal machines) and
-  Windows boxes (usually work machines).  Furthermore, as I’ve learned
-  more Emacs, the way I have used it has changed dramatically.  I
-  think it’s a testament to the above two decisions that my
-  configuration is still easy to use and maintain, despite the quite
-  major shifts in what it’s been intended to do.
+Through the years, my primary use of Emacs has shifted.  In 2016, I
+was primarily writing C++ and Perl code.  Now, though, I use Emacs for
+reading and writing academic works, and the little code I do write is
+in Haskell.  I have also needed to use this configuration file
+different Debian machines (usually my personal machines) and Windows
+boxes (usually work machines).  Furthermore, as I’ve learned more
+Emacs, the way I have used it has changed dramatically.  I think it’s
+a testament to the above two decisions that my configuration is still
+easy to use and maintain, despite the quite major shifts in what it’s
+been intended to do.
 
-  Until 2021, my configuration was private, so I did not need to worry
-  about whether to keep secrets like passwords in the file or not.
-  Now, I am migrating the configuration to a public git repository, so
-  others can see what sorts of things I have in my configuration.  I
-  have needed to do this carefully, so in the meantime this repository
-  may not have everything that my active configuration has.  The
-  ultimate goal is to migrate entirely over to this configuration.
+Until 2021, my configuration was private, so I did not need to worry
+about whether to keep secrets like passwords in the file or not.  Now,
+I am migrating the configuration to a public git repository, so others
+can see what sorts of things I have in my configuration.  I have
+needed to do this carefully, so in the meantime this repository may
+not have everything that my active configuration has.  The ultimate
+goal is to migrate entirely over to this configuration.
 
 ** License
-   Copyright © 2016-2021, Patrick M. Niedzielski.
+Copyright © 2016-2022, Patrick M. Niedzielski.
 
-   The following license applies both to this Org file and to the
-   corresponding Emacs configuration file that can be generated from
-   this file (as well as any other derivative works).
+The following license applies both to this Org file and to the
+corresponding Emacs configuration file that can be generated from this
+file (as well as any other derivative works).
 
-   #+name: license
-   #+begin_src emacs-lisp :tangle no
-     ;; This program is free software: you can redistribute it and/or
-     ;; modify it under the terms of the GNU General Public License as
-     ;; published by the Free Software Foundation, either version 3 of the
-     ;; License, or (at your option) any later version.
-     ;;
-     ;; This program is distributed in the hope that it will be useful, but
-     ;; WITHOUT ANY WARRANTY; without even the implied warranty of
-     ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-     ;; General Public License for more details.
-     ;;
-     ;; You should have received a copy of the GNU General Public License
-     ;; along with this program.  If not, see
-     ;; <http://www.gnu.org/licenses/>.
-   #+end_src
+#+name: license
+#+begin_src emacs-lisp :tangle no
+  ;; This program is free software: you can redistribute it and/or
+  ;; modify it under the terms of the GNU General Public License as
+  ;; published by the Free Software Foundation, either version 3 of the
+  ;; License, or (at your option) any later version.
+  ;;
+  ;; This program is distributed in the hope that it will be useful, but
+  ;; WITHOUT ANY WARRANTY; without even the implied warranty of
+  ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  ;; General Public License for more details.
+  ;;
+  ;; You should have received a copy of the GNU General Public License
+  ;; along with this program.  If not, see
+  ;; <http://www.gnu.org/licenses/>.
+#+end_src
 
 ** How This Works
-   This Emacs configuration is based on [[http://orgmode.org/worg/org-contrib/babel/intro.][Org Babel]], which allows source
-   code blocks to live inside an org-mode document; the org-mode
-   document can then be *woven* into an output document format (such
-   as HTML or LaTeX) that describes the source code and *tangled* into
-   an output source file (in this case, Emacs Lisp) that can be run.
-   Our actual =init.el= file is a simple stub that tangles this
-   org-mode file and then executes it.
+This Emacs configuration is based on [[http://orgmode.org/worg/org-contrib/babel/intro.][Org Babel]], which allows source
+code blocks to live inside an org-mode document; the org-mode document
+can then be *woven* into an output document format (such as HTML or
+LaTeX) that describes the source code and *tangled* into an output
+source file (in this case, Emacs Lisp) that can be run.  Our actual
+=init.el= file is a simple stub that tangles this org-mode file and
+then executes it.
 
-   The tangled file should have the license text and a note reminding
-   us to modify the org-mode file instead of the tangled source file.
+The tangled file should have the license text and a note reminding us
+to modify the org-mode file instead of the tangled source file.
 
-   #+begin_src emacs-lisp :noweb yes   :comments no
-     ;;; configuration.el --- Emacs configuration file
+#+begin_src emacs-lisp :noweb yes   :comments no
+  ;;; configuration.el --- Emacs configuration file
 
-     ;; This source file has been generated from an org-mode file.
-     ;; Modifications should be performed on the org-mode file!
+  ;; This source file has been generated from an org-mode file.
+  ;; Modifications should be performed on the org-mode file!
 
-     <<license>>
+  <<license>>
 
 
-   #+end_src
+#+end_src
 
 ** Tangle this file
-   Although load times don’t matter too much for us, since we use an
-   Emacs daemon, we can still save a bit of time on startup by
-   compiling the elisp we produce.  One way to do this is to tangle
-   and compile this org file every time we save it.  We’ll have to be
-   careful, because if ever the =.elc= file and the =.org= file get
-   out of sync, we’ll have some hard-to-track-down bugs.
+Although load times don’t matter too much for us, since we use an
+Emacs daemon, we can still save a bit of time on startup by compiling
+the elisp we produce.  One way to do this is to tangle and compile
+this org file every time we save it.  We’ll have to be careful,
+because if ever the =.elc= file and the =.org= file get out of sync,
+we’ll have some hard-to-track-down bugs.
 
-   In order to tangle and compile the org file every time we save it,
-   we define a hook that runs every time a file is saved.  If the file
-   is our configuration org file, we tangle it and compile it.  In our
-   =init.el= file, we load the =.elc= file if it exists, and otherwise
-   we tangle and load the =.org= file.
+In order to tangle and compile the org file every time we save it, we
+define a hook that runs every time a file is saved.  If the file is
+our configuration org file, we tangle it and compile it.  In our
+=init.el= file, we load the =.elc= file if it exists, and otherwise we
+tangle and load the =.org= file.
 
-   #+begin_src emacs-lisp
-     (defun pmn/tangle-dotfiles ()
-       "If the current file is this file, the code blocks are tangled."
-       (letrec ((org-file (expand-file-name "configuration.org" user-emacs-directory))
-                (el-file  (concat (file-name-sans-extension org-file) ".el")))
-         (when (equal (buffer-file-name) org-file)
-           (org-babel-tangle nil el-file)
-           (byte-compile-file el-file))))
+#+begin_src emacs-lisp
+  (defun pmn/tangle-dotfiles ()
+    "If the current file is this file, the code blocks are tangled."
+    (letrec ((org-file (expand-file-name "configuration.org" user-emacs-directory))
+             (el-file  (concat (file-name-sans-extension org-file) ".el")))
+      (when (equal (buffer-file-name) org-file)
+        (org-babel-tangle nil el-file)
+        (byte-compile-file el-file))))
 
-     (add-hook 'after-save-hook #'pmn/tangle-dotfiles)
-   #+end_src
+  (add-hook 'after-save-hook #'pmn/tangle-dotfiles)
+#+end_src
 
 * Package Installation and Dependencies
-  In this section, we set up the backbone of our configuration:
-  Emacs’s built-in =package.el=, and the =use-package= macro.
+In this section, we set up the backbone of our configuration: Emacs’s
+built-in =package.el=, and the =use-package= macro.
 
 ** =package.el= Configuration
-   Most of our packages we install using =package.el=, which is
-   bundled with Emacs 24 and later.  There are four major package
-   repositories for Emacs packages; we use the first three listed
-   here.
+Most of our packages we install using =package.el=, which is bundled
+with Emacs 24 and later.  There are four major package repositories
+for Emacs packages; we use the first three listed here.
 
-   * ELPA         :: The repository for packages with FSF-copyright
-                     assignment.
-   * Non-GNU ELPA :: The repository for GNU-sanctioned packages
-                     without copyright assignment.
-   * MELPA        :: Contains the largest selection of pcakages and is
-                     built directly from source in the package’s VCS.
-   * Marmalade    :: Packages are uploaded by users and so tend to be
-                     at stable (albeit old versions)
+  * ELPA         :: The repository for packages with FSF-copyright
+                    assignment.
+  * Non-GNU ELPA :: The repository for GNU-sanctioned packages without
+                    copyright assignment.
+  * MELPA        :: Contains the largest selection of pcakages and is
+                    built directly from source in the package’s VCS.
+  * Marmalade    :: Packages are uploaded by users and so tend to be
+                    at stable (albeit old versions)
 
-   We do not use Marmalade because it often has the same packages as
-   MELPA, only with older versions.  This can sometimes lead to
-   conflicts that we want to avoid.  So, we can set up the three
-   package repositories we plan to use.
+We do not use Marmalade because it often has the same packages as
+MELPA, only with older versions.  This can sometimes lead to conflicts
+that we want to avoid.  So, we can set up the three package
+repositories we plan to use.
 
-   #+begin_src emacs-lisp
-     (require 'package)
-     (setq package-archives '(("gnu"    . "http://elpa.gnu.org/packages/")
-                              ("nongnu" . "http://elpa.gnu.org/nongnu/")
-                              ("melpa"  . "https://melpa.org/packages/")))
-   #+end_src
+#+begin_src emacs-lisp
+  (require 'package)
+  (setq package-archives '(("gnu"    . "http://elpa.gnu.org/packages/")
+                           ("nongnu" . "http://elpa.gnu.org/nongnu/")
+                           ("melpa"  . "https://melpa.org/packages/")))
+#+end_src
 
-   As of [2021-09-23 ĵaŭ], I’m trying out the Non-GNU ELPA repository.
-   I’m not sure if this will cause conflicts with MELPA or not, but
-   for now I’m prefering to use the official non-GNU package
-   repository where possible.
+As of [2021-09-23 ĵaŭ], I’m trying out the Non-GNU ELPA repository.
+I’m not sure if this will cause conflicts with MELPA or not, but for
+now I’m prefering to use the official non-GNU package repository where
+possible.
 
-   It’s very useful to keep all our installed packages in a single
-   place, separate from any local Lisp code we have.  This gives us
-   the option of deleting the installed packages whenever we want to
-   reset our Emacs state, and keeps our Emacs configuration directory
-   tidy.  Let’s put them in the =elpa= directory under our Emacs
-   configuration directory.
+It’s very useful to keep all our installed packages in a single place,
+separate from any local Lisp code we have.  This gives us the option
+of deleting the installed packages whenever we want to reset our Emacs
+state, and keeps our Emacs configuration directory tidy.  Let’s put
+them in the =elpa= directory under our Emacs configuration directory.
 
-   #+begin_src emacs-lisp
-     (setq package-user-dir (concat user-emacs-directory "elpa"))
-   #+end_src
+#+begin_src emacs-lisp
+  (setq package-user-dir (concat user-emacs-directory "elpa"))
+#+end_src
 
-   It’s important for our configuration that packages are not
-   initialized until we have set up all the =use-package= invocations
-   that declare what packages we want to use.  To do this, we tell
-   =package.el= not to activate any packages early on.
+It’s important for our configuration that packages are not initialized
+until we have set up all the =use-package= invocations that declare
+what packages we want to use.  To do this, we tell =package.el= not to
+activate any packages early on.
 
-   #+begin_src emacs-lisp
-     (setq package-enable-at-startup nil)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq package-enable-at-startup nil)
+#+end_src
 
-   Finally, we start up =package.el=.
+Finally, we start up =package.el=.
 
-   #+begin_src emacs-lisp
-     (package-initialize)
-   #+end_src
+#+begin_src emacs-lisp
+  (package-initialize)
+#+end_src
 
 ** =use-package= Configuration
-   Now that =package.el= is set up and ready to use, we’re ready to
-   configure =use-package=, which we use to automatically install the
-   packages we want and to track dependencies between them.
-   =use-package= provides us with a macro that centralizes all the
-   configuration for each package, and lets us state the conditions
-   under which we can load the package.
+Now that =package.el= is set up and ready to use, we’re ready to
+configure =use-package=, which we use to automatically install the
+packages we want and to track dependencies between them.
+=use-package= provides us with a macro that centralizes all the
+configuration for each package, and lets us state the conditions under
+which we can load the package.
 
-   Before using =use-package=, though, we need to make sure it’s
-   installed, or install it if it’s not already!  We need to bootstrap
-   by using =package.el= to fetch and install =use-package= if it’s
-   not locally installed.  While we’re at it, we pick up the package
-   =diminish=, which lets us control what packages are shown in the
-   modeline, and =bind-key=, which lets us bind keys more easily.
-   Both of these are integrated nicely into =use-package=.
+Before using =use-package=, though, we need to make sure it’s
+installed, or install it if it’s not already!  We need to bootstrap by
+using =package.el= to fetch and install =use-package= if it’s not
+locally installed.  While we’re at it, we pick up the package
+=diminish=, which lets us control what packages are shown in the
+modeline, and =bind-key=, which lets us bind keys more easily.  Both
+of these are integrated nicely into =use-package=.
 
-   #+begin_src emacs-lisp   :noweb yes   :comments no
-     (unless (package-installed-p 'use-package)
-       (package-refresh-contents)
-       (package-install 'use-package)
-       (package-install 'diminish))
+#+begin_src emacs-lisp   :noweb yes   :comments no
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package)
+    (package-install 'diminish))
 
-     <<use-package-config>>
+  <<use-package-config>>
 
-     (require 'use-package)
-     (require 'use-package-ensure)
-     (require 'diminish)
-     (require 'bind-key)
-   #+end_src
+  (require 'use-package)
+  (require 'use-package-ensure)
+  (require 'diminish)
+  (require 'bind-key)
+#+end_src
 
-   Because we can’t use =use-package= itself to configure
-   =use-package=, we’ll have a handful of loose configured options set
-   up here at the start.  We chose to be a bit more verbose in what we
-   output, so that we can keep track of what is going on in the
-   systemd journal.  We also make sure download packages by default if
-   they aren’t already installed (known in =use-package=-speak as
-   /ensuring/).
+Because we can’t use =use-package= itself to configure =use-package=,
+we’ll have a handful of loose configured options set up here at the
+start.  We chose to be a bit more verbose in what we output, so that
+we can keep track of what is going on in the systemd journal.  We also
+make sure download packages by default if they aren’t already
+installed (known in =use-package=-speak as /ensuring/).
 
-   #+name: use-package-config
-   #+begin_src emacs-lisp   :tangle no
-     (setq use-package-verbose            t
-           use-package-expand-minimally   nil
-           use-package-compute-statistics t
-           use-package-always-ensure      t)
-   #+end_src
+#+name: use-package-config
+#+begin_src emacs-lisp   :tangle no
+  (setq use-package-verbose            t
+        use-package-expand-minimally   nil
+        use-package-compute-statistics t
+        use-package-always-ensure      t)
+#+end_src
 
-   Finally, to avoid unnecessary garbage collection during start up,
-   we’ll raise the (rather low) garbage collection and process
-   buffering thresholds.  ([2021-09-07 mar]: This seems out of place
-   here, and I didn’t document why I chose this location in the
-   configuration to put these two statements.  It might make sense to
-   break it out later, or at least move it somewhere else.)
+Finally, to avoid unnecessary garbage collection during start up,
+we’ll raise the (rather low) garbage collection and process buffering
+thresholds.  ([2021-09-07 mar]: This seems out of place here, and I
+didn’t document why I chose this location in the configuration to put
+these two statements.  It might make sense to break it out later, or
+at least move it somewhere else.)
 
-   #+begin_src emacs-lisp
-     (setq gc-cons-threshold (* 50 1000 1000))
-     (setq read-process-output-max (* 1024 1024)) ; 1mb
-   #+end_src
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold (* 50 1000 1000))
+  (setq read-process-output-max (* 1024 1024)) ; 1mb
+#+end_src
 
 ** Local Lisp Packages
-   There are still a few packages that are not on MELPA, which I have
-   installed locally (as it used to be, before =package.el=).  I put
-   these packages in a subdirectory of my Emacs directory,
-   ~.config/emacs/lisp/~.  For each local package we load outside of
-   MELPA, we will need to add a directory to the ~load-path~ variable.
-   To make this easy, I add a variable called
-   =pn/local-lisp-directory= that points to the right place.
+There are still a few packages that are not on MELPA, which I have
+installed locally (as it used to be, before =package.el=).  I put
+these packages in a subdirectory of my Emacs directory,
+~.config/emacs/lisp/~.  For each local package we load outside of
+MELPA, we will need to add a directory to the ~load-path~ variable.
+To make this easy, I add a variable called =pn/local-lisp-directory=
+that points to the right place.
 
-   #+begin_src emacs-lisp
-     (setq pn/local-lisp-directory (concat user-emacs-directory "lisp/"))
-   #+end_src
+#+begin_src emacs-lisp
+  (setq pn/local-lisp-directory (concat user-emacs-directory "lisp/"))
+#+end_src
 
 ** Native Compilation
-   Starting with version 28, Emacs includes functionality to compile
-   Lisp down to native code.  While there has been byte-code
-   compilation for a long time, this still goes through the Lisp
-   interpreter, which introduces some delay—and since Emacs is mostly
-   single-threaded, we want to limit this delay as much as possible,
-   so we can interact with Emacs with less frustration.  Native
-   compilation (formerly GccEmacs), lets you precompile Lisp code so
-   it can run natively, and includes all the optimizations of the GCC
-   backend.  This has had a noticeable impact on the snappiness of my
-   Emacs, especially when using larger packages.
+Starting with version 28, Emacs includes functionality to compile Lisp
+down to native code.  While there has been byte-code compilation for a
+long time, this still goes through the Lisp interpreter, which
+introduces some delay—and since Emacs is mostly single-threaded, we
+want to limit this delay as much as possible, so we can interact with
+Emacs with less frustration.  Native compilation (formerly GccEmacs),
+lets you precompile Lisp code so it can run natively, and includes all
+the optimizations of the GCC backend.  This has had a noticeable
+impact on the snappiness of my Emacs, especially when using larger
+packages.
 
-   Luckily, we don’t need to do much to make Emacs use native
-   compilation.  However, there is one quite unfortunate default: when
-   packages are being asynchronously natively compiled, every warning
-   during compilation pops up a buffer that takes away input focus
-   from what I was doing, and sometimes screws up a carefully crafted
-   window layout.  I don’t usually care about compilation warnings in
-   code I didn’t write, and there seems to be quite a lot of that in
-   this transition phase to native-comp Nirvana, so I ignore warnings
-   during these async compilations:
+Luckily, we don’t need to do much to make Emacs use native
+compilation.  However, there is one quite unfortunate default: when
+packages are being asynchronously natively compiled, every warning
+during compilation pops up a buffer that takes away input focus from
+what I was doing, and sometimes screws up a carefully crafted window
+layout.  I don’t usually care about compilation warnings in code I
+didn’t write, and there seems to be quite a lot of that in this
+transition phase to native-comp Nirvana, so I ignore warnings during
+these async compilations:
 
-   #+begin_src emacs-lisp
-     (setq warning-minimum-level :error)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq warning-minimum-level :error)
+#+end_src
 
-   This has made asynchronous native compilation so much smoother, and
-   this has the benefit of showing me only actual errors that I should
-   be concerned with.
+This has made asynchronous native compilation so much smoother, and
+this has the benefit of showing me only actual errors that I should be
+concerned with.
 
 ** Emacs Server
-   I usually run Emacs as a server on my systems, with emacsclients
-   connecting to the server.  Let’s make sure to enable this
-   functionality.
+I usually run Emacs as a server on my systems, with emacsclients
+connecting to the server.  Let’s make sure to enable this
+functionality.
 
-   #+begin_src emacs-lisp
-     (require 'server)
-   #+end_src
+#+begin_src emacs-lisp
+  (require 'server)
+#+end_src
 
 ** exec-path-from-shell
-   Finally, I have [[https://github.com/pniedzielski/dotfiles-ng][a lot of modifications to my =PATH= variable and
-   others]] that I want to import into Emacs, regardless of whether it
-   was started with systemd or not.  To do this, we can use the
-   =exec-path-from-shell= package, and only initialize it when Emacs
-   is started as a daemon (non-interactively, so not from a shell).
+Finally, I have [[https://github.com/pniedzielski/dotfiles-ng][a lot of modifications to my =PATH= variable and
+others]] that I want to import into Emacs, regardless of whether it was
+started with systemd or not.  To do this, we can use the
+=exec-path-from-shell= package, and only initialize it when Emacs is
+started as a daemon (non-interactively, so not from a shell).
 
-   #+begin_src emacs-lisp
-     (use-package exec-path-from-shell
-        :config (when (daemonp)
-                  (exec-path-from-shell-initialize)))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+     :config (when (daemonp)
+               (exec-path-from-shell-initialize)))
+#+end_src
 
 * Global Configuration
-  This section describes some configuration options that are globally
-  important, but don’t really fit anywhere else.
+This section describes some configuration options that are globally
+important, but don’t really fit anywhere else.
 
 ** User Configuration
-   Set my name and (public, personal) email address for whenever Emacs
-   needs it.
+Set my name and (public, personal) email address for whenever Emacs
+needs it.
 
-   #+begin_src emacs-lisp
-     (setq user-full-name    "Patrick M. Niedzielski"
-           user-mail-address "patrick@pniedzielski.net")
-   #+end_src
+#+begin_src emacs-lisp
+  (setq user-full-name    "Patrick M. Niedzielski"
+        user-mail-address "patrick@pniedzielski.net")
+#+end_src
 
 ** Custom File
-   By default, Emacs modifies our ~init.el~ file to save
-   customizations made with the /Customize/ mode.  I don’t want to
-   mess up my ~init.el~ file, so we keep these customizations in a
-   different file.  I’ll first tell Emacs where that file is, and then
-   I’ll load any customizations we had.
+By default, Emacs modifies our ~init.el~ file to save customizations
+made with the /Customize/ mode.  I don’t want to mess up my ~init.el~
+file, so we keep these customizations in a different file.  I’ll first
+tell Emacs where that file is, and then I’ll load any customizations
+we had.
 
-   #+begin_src emacs-lisp
-     (setq custom-file (concat user-emacs-directory "custom.el"))
-     (load custom-file)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq custom-file (concat user-emacs-directory "custom.el"))
+  (load custom-file)
+#+end_src
 
 ** Language Settings
-   I want to use Unicode by default, and UTF-8 is best on Unix ([[https://utf8everywhere.org/][and
-   everywhere]]).
+I want to use Unicode by default, and UTF-8 is best on Unix ([[https://utf8everywhere.org/][and
+everywhere]]).
 
-   #+begin_src emacs-lisp
-     (set-language-environment "UTF-8")
-     (setq locale-coding-system 'utf-8)
-     (prefer-coding-system 'utf-8)
-   #+end_src
+#+begin_src emacs-lisp
+  (set-language-environment "UTF-8")
+  (setq locale-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+#+end_src
 
 ** Backups
-   Emacs places backups in the same directory as the normal file by
-   default.  This is almost certainly not what we want, so we put them
-   in a separate directory under our user directory.
+Emacs places backups in the same directory as the normal file by
+default.  This is almost certainly not what we want, so we put them in
+a separate directory under our user directory.
 
-   #+begin_src emacs-lisp
-     (setq backup-directory-alist
-           `((".*" . ,(concat user-emacs-directory "backups")))
-           auto-save-file-name-transforms
-           `((".*" ,(concat user-emacs-directory "backups") t)))
-   #+end_src
+#+begin_src emacs-lisp
+  (setq backup-directory-alist
+        `((".*" . ,(concat user-emacs-directory "backups")))
+        auto-save-file-name-transforms
+        `((".*" ,(concat user-emacs-directory "backups") t)))
+#+end_src
 
 ** EasyPGP
-   [[http://epg.sourceforge.jp/][EasyPGP]], which is bundled with Emacs, lets us easily encrypt and
-   decrypt files with GPG.  This is more or less transparent: you can
-   open a PGP encrypted file, edit the buffer as if it’s normal, and
-   save it back, encrypting it again.  One thing to note is that,
-   because EasyPGP is bundled with Emacs, we don’t want to download it
-   from the package manager, so we are sure to set ~:ensure nil~.
+[[http://epg.sourceforge.jp/][EasyPGP]], which is bundled with Emacs, lets us easily encrypt and
+decrypt files with GPG.  This is more or less transparent: you can
+open a PGP encrypted file, edit the buffer as if it’s normal, and save
+it back, encrypting it again.  One thing to note is that, because
+EasyPGP is bundled with Emacs, we don’t want to download it from the
+package manager, so we are sure to set ~:ensure nil~.
 
-   #+begin_src emacs-lisp
-     (use-package epa-file
-       :ensure nil
-       :config (epa-file-enable))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package epa-file
+    :ensure nil
+    :config (epa-file-enable))
+#+end_src
 
 ** Auto Compression
-   Similarly, we want to use [[http://www.emacswiki.org/emacs/AutoCompressionMode][auto-compression-mode]] to allow us to
-   automatically compress and decompress files with ~gzip~ or ~bzip~.
-   I don’t know which package to use to store this configuration, so
-   for the moment I’ll just keep it loose.
+Similarly, we want to use [[http://www.emacswiki.org/emacs/AutoCompressionMode][auto-compression-mode]] to allow us to
+automatically compress and decompress files with ~gzip~ or ~bzip~.  I
+don’t know which package to use to store this configuration, so for
+the moment I’ll just keep it loose.
 
-   #+begin_src emacs-lisp
-     (auto-compression-mode 1)
-     (setq dired-use-gzip-instead-of-compress t)
-   #+end_src
+#+begin_src emacs-lisp
+  (auto-compression-mode 1)
+  (setq dired-use-gzip-instead-of-compress t)
+#+end_src
 
 ** Which Key?
-   There are /a lot/ of keybindings in Emacs, and there’s no way I can
-   remember them all.  Frequently I remember a prefix of a long
-   keybinding, and then forget the remainder of the keybinding.  The
-   ~which-key~ package is a surprisingly nice solution to this, and
-   made me realize how many keybindings I will never quite remember.
-   It provides a minor mode that pops up a nice buffer listing all
-   keybinding continuations a short while after typing an incomplete
-   keybinding.  This means I can type the start of a keybinding, wait
-   a second, and see all possible completions to that keybinding.
-   This moreover incentivizes me to keep my own keybindings nice and
-   logically organized.
+There are /a lot/ of keybindings in Emacs, and there’s no way I can
+remember them all.  Frequently I remember a prefix of a long
+keybinding, and then forget the remainder of the keybinding.  The
+~which-key~ package is a surprisingly nice solution to this, and made
+me realize how many keybindings I will never quite remember.  It
+provides a minor mode that pops up a nice buffer listing all
+keybinding continuations a short while after typing an incomplete
+keybinding.  This means I can type the start of a keybinding, wait a
+second, and see all possible completions to that keybinding.  This
+moreover incentivizes me to keep my own keybindings nice and logically
+organized.
 
-   #+begin_src emacs-lisp
-     (use-package which-key
-       :diminish which-key-mode
-       :config
-       (which-key-mode))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package which-key
+    :diminish which-key-mode
+    :config
+    (which-key-mode))
+#+end_src
 
 ** Free keys
-   [[https://github.com/Fuco1/free-keys][~free-keys~]] allows me to see which keys are *not* bound in a
-   particular buffer.  This is in some sense the opposite of
-   [[*Which Key?][~which-key~]], and is helpful for seeing which keybindings I have
-   available for binding.  I need to configure this to also show me
-   keybinding opportunities with the Hyper key, under which I store
-   some of my keybindings.
+[[https://github.com/Fuco1/free-keys][~free-keys~]] allows me to see which keys are *not* bound in a
+particular buffer.  This is in some sense the opposite of [[*Which Key?][~which-key~]],
+and is helpful for seeing which keybindings I have available for
+binding.  I need to configure this to also show me keybinding
+opportunities with the Hyper key, under which I store some of my
+keybindings.
 
-   #+begin_src emacs-lisp
-     (use-package free-keys
-      :commands free-keys
-      :custom (free-keys-modifier . ("" "C" "M" "C-M" "H" "C-H")))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package free-keys
+   :commands free-keys
+   :custom (free-keys-modifier . ("" "C" "M" "C-M" "H" "C-H")))
+#+end_src
 
 * Movement
-  The benefits in movement that Emacs gives are probably its killer
-  feature as a text editor for me.  While some people really customize
-  their editor a lot for keybindings and replacing functionality, I
-  try to use stock keybindings and built-in packages as much as
-  possible.  That said, each configuration I have here is one that
-  made my life significantly better than before, so I don’t feel bad
-  about moving away from the stock functionality here.
+The benefits in movement that Emacs gives are probably its killer
+feature as a text editor for me.  While some people really customize
+their editor a lot for keybindings and replacing functionality, I try
+to use stock keybindings and built-in packages as much as possible.
+That said, each configuration I have here is one that made my life
+significantly better than before, so I don’t feel bad about moving
+away from the stock functionality here.
 
 ** Keybindings
-   There’s some basic movement functionality that I use quite
-   frequently when I’m writing documents: moving by paragraph and
-   moving by page.  Because my keyboard has a hyper key, let’s bind
-   more convenient movement keys to them:
+There’s some basic movement functionality that I use quite frequently
+when I’m writing documents: moving by paragraph and moving by page.
+Because my keyboard has a hyper key, let’s bind more convenient
+movement keys to them:
 
-   #+begin_src emacs-lisp
-     (use-package lisp
-       :ensure nil
-       :bind (("H-f"   . forward-paragraph)
-              ("H-b"   . backward-paragraph)
-              ("C-H-f" . forward-page)
-              ("C-H-b" . backward-page)))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package lisp
+    :ensure nil
+    :bind (("H-f"   . forward-paragraph)
+           ("H-b"   . backward-paragraph)
+           ("C-H-f" . forward-page)
+           ("C-H-b" . backward-page)))
+#+end_src
 
 ** Expand Region
-   [[https://github.com/magnars/expand-region.el][~expand-region~]] is a useful little package that expands the region
-   by semantic units: that is for prose, it selects first a word, then
-   a sentence, then a paragraph, and so forth; for code, it selects
-   first a token, then an sexpr, then a statement, and so forth.
-   While there is ~M-@~ (~mark-word~) and others, which accomplish
-   this more immediately, having an interactive command has proven
-   useful to me as well.  Furthermore, there is no ~mark-sentence~
-   command, which I find very useful in editing prose, and
-   ~expand-region~ makes this two keystrokes.
+[[https://github.com/magnars/expand-region.el][~expand-region~]] is a useful little package that expands the region by
+semantic units: that is for prose, it selects first a word, then a
+sentence, then a paragraph, and so forth; for code, it selects first a
+token, then an sexpr, then a statement, and so forth.  While there is
+~M-@~ (~mark-word~) and others, which accomplish this more
+immediately, having an interactive command has proven useful to me as
+well.  Furthermore, there is no ~mark-sentence~ command, which I find
+very useful in editing prose, and ~expand-region~ makes this two
+keystrokes.
 
-   #+begin_src emacs-lisp
-     (use-package expand-region
-       :bind ("C-=" . er/expand-region))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package expand-region
+    :bind ("C-=" . er/expand-region))
+#+end_src
 
 ** Multiple Cursors
-   I used to be a big user of Emacs rectangle commands, especially for
-   inserting the same text (frequently spaces) on multiple lines.
-   With ~cua-mode~﻿’s visible rectangle highlighting, this was a very
-   nice workflow, using only built-in functionality.  While I still
-   use the rectangle commands for some purposes, their primary utility
-   for me was replaced by the amazing ~multiple-cursors~ package,
-   which lets you insert what seem like multiple points, and do the
-   same edit command at each point.  There are many modes of
-   interacting with this, most of which I haven’t explored in depth,
-   but the one that’s by far the most command and useful is the
-   ~mc/edit-lines~ command, which I have bound to ~C-c m c~.  This
-   inserts a cursor on each line in a region: the mark is changed to a
-   cursor, and every other line gets a cursor of its own at the same
-   column as the point.
+I used to be a big user of Emacs rectangle commands, especially for
+inserting the same text (frequently spaces) on multiple lines.  With
+~cua-mode~﻿’s visible rectangle highlighting, this was a very nice
+workflow, using only built-in functionality.  While I still use the
+rectangle commands for some purposes, their primary utility for me was
+replaced by the amazing ~multiple-cursors~ package, which lets you
+insert what seem like multiple points, and do the same edit command at
+each point.  There are many modes of interacting with this, most of
+which I haven’t explored in depth, but the one that’s by far the most
+command and useful is the ~mc/edit-lines~ command, which I have bound
+to ~C-c m c~.  This inserts a cursor on each line in a region: the
+mark is changed to a cursor, and every other line gets a cursor of its
+own at the same column as the point.
 
-   #+begin_src emacs-lisp
-     (use-package multiple-cursors
-       :bind (("C-c m c" . mc/edit-lines)))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :bind (("C-c m c" . mc/edit-lines)))
+#+end_src
 
-   ~multiple-cursors~ has some downsides, though, especially in modes
-   that override ~self-insert-command~ for various keys.  Then, the
-   mode will ask if you’re sure you want to do the “unsafe” command at
-   each cursor, and that sometimes screws up what the command was
-   actually meant to do.  This is annoying, and I would eventually
-   like to figure out if there’s a fix.
+~multiple-cursors~ has some downsides, though, especially in modes
+that override ~self-insert-command~ for various keys.  Then, the mode
+will ask if you’re sure you want to do the “unsafe” command at each
+cursor, and that sometimes screws up what the command was actually
+meant to do.  This is annoying, and I would eventually like to figure
+out if there’s a fix.
 
-   Every now and again I see reference to a package called [[https://github.com/victorhge/iedit][~iedit~]],
-   which seems to be in the same vein as this package.  I had heard
-   that ~multiple-cursors~ had superseded it, looking on
-   [2021-09-08 mer] I found that it’s still updated.  It might be
-   worth looking into that as a replacement to ~multiple-cursors~, if
-   I ever find the time (and, significantly, if it doesn’t have the
-   same annoyance as I describe above).
+Every now and again I see reference to a package called [[https://github.com/victorhge/iedit][~iedit~]], which
+seems to be in the same vein as this package.  I had heard that
+~multiple-cursors~ had superseded it, looking on [2021-09-08 mer] I
+found that it’s still updated.  It might be worth looking into that as
+a replacement to ~multiple-cursors~, if I ever find the time (and,
+significantly, if it doesn’t have the same annoyance as I describe
+above).
 
 ** Windmove                                                         :testing:
-   I’m trying out the the ~windmove.el~ package, which is included in
-   Emacs.  I think this will end up being quicker and more intuitive
-   than the default ~C-x o~ and ~C-- C-x o~ keybindings for navigating
-   around frames with more than two windows.  The default bindings I
-   set up here use shift and arrows to move the currently selected
-   window.
+I’m trying out the the ~windmove.el~ package, which is included in
+Emacs.  I think this will end up being quicker and more intuitive than
+the default ~C-x o~ and ~C-- C-x o~ keybindings for navigating around
+frames with more than two windows.  The default bindings I set up here
+use shift and arrows to move the currently selected window.
 
-   There is a minor conflict between org mode and this package, where
-   org mode wants to take over ~S-<UP>~ and so forth.  We could have
-   selected another modifier, but I don’t use shift-selection in org
-   mode anyway.  Instead, we apply [[info:org#Conflicts][the documented fix from the Org
-   Mode manual]].  I’m not sure if this is the right place to put the
-   fix, but this is where it lives for now.  Coupled with the [[*Dimming Unused Windows][dimming]]
-   package, I imagine this will become my preferred way of moving
-   among windows.
+There is a minor conflict between org mode and this package, where org
+mode wants to take over ~S-<UP>~ and so forth.  We could have selected
+another modifier, but I don’t use shift-selection in org mode anyway.
+Instead, we apply [[info:org#Conflicts][the documented fix from the Org Mode manual]].  I’m
+not sure if this is the right place to put the fix, but this is where
+it lives for now.  Coupled with the [[*Dimming Unused Windows][dimming]] package, I imagine this
+will become my preferred way of moving among windows.
 
-   #+begin_src emacs-lisp
-     (use-package windmove
-       :ensure nil
-       ;; Make windmove work in org mode.
-       :hook ((org-shiftup-final-hook    . windmove-up)
-              (org-shiftleft-final-hook  . windmove-left)
-              (org-shiftdown-final-hook  . windmove-down)
-              (org-shiftright-final-hook . windmove-right))
-       :config
-       (windmove-default-keybindings)
-       (setq windmove-wrap-around t))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package windmove
+    :ensure nil
+    ;; Make windmove work in org mode.
+    :hook ((org-shiftup-final-hook    . windmove-up)
+           (org-shiftleft-final-hook  . windmove-left)
+           (org-shiftdown-final-hook  . windmove-down)
+           (org-shiftright-final-hook . windmove-right))
+    :config
+    (windmove-default-keybindings)
+    (setq windmove-wrap-around t))
+#+end_src
 
 * Editing
-  Even though I consider [[*Movement][movement]] the killer feature of Emacs as an
-  editor, the actual editing functionality of Emacs is also very
-  useful.  You’ll find that some of these functions are also in other
-  editors, sometimes even better, but when composed with the
-  effortless ability to move about the buffer as you please, they
-  provide for a beautiful editing experience, both for composing prose
-  and developing software.
+Even though I consider [[*Movement][movement]] the killer feature of Emacs as an
+editor, the actual editing functionality of Emacs is also very useful.
+You’ll find that some of these functions are also in other editors,
+sometimes even better, but when composed with the effortless ability
+to move about the buffer as you please, they provide for a beautiful
+editing experience, both for composing prose and developing software.
 
-  Before we get started, though, there are some basic, global settings
-  that I think Emacs got wrong.  I want to set these to sane values
-  before anything else.
+Before we get started, though, there are some basic, global settings
+that I think Emacs got wrong.  I want to set these to sane values
+before anything else.
 
-  First, we need to never use tabs.  In general, tabs are evil for
-  indentation, but the way Emacs uses them (using tabs just as a
-  replacement for every 8 consecutive spaces, not using them
-  semantically) is even worse.  We turn tabs indent off by default.
-  There are very few times when we’ll need them anyway, and it can be
-  turned back on locally to a project, a mode, or a buffer.
+First, we need to never use tabs.  In general, tabs are evil for
+indentation, but the way Emacs uses them (using tabs just as a
+replacement for every 8 consecutive spaces, not using them
+semantically) is even worse.  We turn tabs indent off by default.
+There are very few times when we’ll need them anyway, and it can be
+turned back on locally to a project, a mode, or a buffer.
 
-  #+begin_src emacs-lisp
-    (setq-default indent-tabs-mode nil)
-  #+end_src
+#+begin_src emacs-lisp
+  (setq-default indent-tabs-mode nil)
+#+end_src
 
-  Similarly, in UNIX, all files should end with a newline.  Emacs can
-  control this via the variable =require-final-newline=.  While we can
-  tell Emacs to automatically add a newline on saving, on visiting, or
-  both, I feel a bit worried about this happening without my
-  knowledge.  Although most often git will let me know that the final
-  line was modified, I’m not always in a git repo, or I may
-  absentmindedly miss that in the diff.  As an extra line of defense,
-  I tell Emacs to ask me on any buffer that doesn’t have a final
-  newline whether to add one or not when I save that buffer.  This
-  way, I’m in full control.
+Similarly, in UNIX, all files should end with a newline.  Emacs can
+control this via the variable =require-final-newline=.  While we can
+tell Emacs to automatically add a newline on saving, on visiting, or
+both, I feel a bit worried about this happening without my knowledge.
+Although most often git will let me know that the final line was
+modified, I’m not always in a git repo, or I may absentmindedly miss
+that in the diff.  As an extra line of defense, I tell Emacs to ask me
+on any buffer that doesn’t have a final newline whether to add one or
+not when I save that buffer.  This way, I’m in full control.
 
-  #+begin_src emacs-lisp
-    (setq-default require-final-newline 'ask)
-  #+end_src
+#+begin_src emacs-lisp
+  (setq-default require-final-newline 'ask)
+#+end_src
 
-  Another global truism is that lines should never have trailing
-  whitespace.  This usually does nothing, and again, we can always
-  turn it off in those specific modes or buffers that require it (or,
-  alternatively, when we’re working with poorly crafted source files
-  already that have needless amounts of trailing whitespace—a red
-  flag, if ever there was one).
+Another global truism is that lines should never have trailing
+whitespace.  This usually does nothing, and again, we can always turn
+it off in those specific modes or buffers that require it (or,
+alternatively, when we’re working with poorly crafted source files
+already that have needless amounts of trailing whitespace—a red flag,
+if ever there was one).
 
-  However, it’s an unfortunate fact that certain automatically
-  generated Emacs buffers having rampant trailing whitespace (a red
-  flag, if ever there was one), including Ivy/Counsel in the
-  minibuffer.  While we could create a list of modes to turn this
-  setting off, for the specific problem of special Emacs buffers with
-  trailing whitespace, it appears the best cut is between /buffers I
-  can edit/ and /buffers I cannot/​—or in other words programming and
-  writing buffers on one hand, and other buffers on the other.  What
-  we do, then, is turn =show-trailing-whitespace= on only in
-  =text-mode= and =prog-mode=.
+However, it’s an unfortunate fact that certain automatically generated
+Emacs buffers having rampant trailing whitespace (a red flag, if ever
+there was one), including Ivy/Counsel in the minibuffer.  While we
+could create a list of modes to turn this setting off, for the
+specific problem of special Emacs buffers with trailing whitespace, it
+appears the best cut is between /buffers I can edit/ and /buffers I
+cannot/​—or in other words programming and writing buffers on one hand,
+and other buffers on the other.  What we do, then, is turn
+=show-trailing-whitespace= on only in =text-mode= and =prog-mode=.
 
-  #+begin_src emacs-lisp
-    (add-hook 'text-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
-    (add-hook 'prog-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
-  #+end_src
+#+begin_src emacs-lisp
+  (add-hook 'text-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
+  (add-hook 'prog-mode-hook #'(lambda () (setq show-trailing-whitespace t)))
+#+end_src
 
 ** Writing
-   I spend most of my time in Emacs nowadays reading and writing prose,
-   so the most important configurations in this document relate to
-   reading and writing.
+I spend most of my time in Emacs nowadays reading and writing prose,
+so the most important configurations in this document relate to
+reading and writing.
 
-   The sections that follow are mostly centered around ~text-mode~ and
-   modes that derive from it.
+The sections that follow are mostly centered around ~text-mode~ and
+modes that derive from it.
 
 *** Text
-    ~text-mode~ is probably my most-used major mode, directly and via
-    its derivative modes.
+~text-mode~ is probably my most-used major mode, directly and via its
+derivative modes.
 
-    One of the most useful aspects of ~text-mode~ is its understanding
-    of prose structure.  The following keybindings (cognate with the
-    line movement keybindings) skip around the buffer on a
-    sentence-by-sentence basis:
+One of the most useful aspects of ~text-mode~ is its understanding of
+prose structure.  The following keybindings (cognate with the line
+movement keybindings) skip around the buffer on a sentence-by-sentence
+basis:
 
-    * ~M-a~ (~backward-sentence~)
-    * ~M-e~ (~forward-sentence~)
-    * ~M-k~ (~kill-sentence~)
-    * ~C-x <DEL>~ (~backward-kill-sentence~)
+  * ~M-a~ (~backward-sentence~)
+  * ~M-e~ (~forward-sentence~)
+  * ~M-k~ (~kill-sentence~)
+  * ~C-x <DEL>~ (~backward-kill-sentence~)
 
-    See [[info:emacs#Sentences][the *Sentences* section of the Emacs manual]] for more
-    information.
+See [[info:emacs#Sentences][the *Sentences* section of the Emacs manual]] for more information.
 
-    By default, though, these commands determine sentence boundaries
-    using punctuation followed by two spaces.  In fact, this is how I
-    type myself, so this default works well for prose I write.  I seem
-    to be in the minority, though, and whenever I’m working with text
-    written by someone else, it gets very annoying when the sentence
-    commands don’t see any sentence boundaries.  This is worse than the
-    alternative, where too many false positives are given for possible
-    sentences.  We could tell Emacs to need only a single space for
-    separating sentences, as below:
+By default, though, these commands determine sentence boundaries using
+punctuation followed by two spaces.  In fact, this is how I type
+myself, so this default works well for prose I write.  I seem to be in
+the minority, though, and whenever I’m working with text written by
+someone else, it gets very annoying when the sentence commands don’t
+see any sentence boundaries.  This is worse than the alternative,
+where too many false positives are given for possible sentences.  We
+could tell Emacs to need only a single space for separating sentences,
+as below:
 
-    #+begin_src emacs-lisp   :tangle no
-      (add-hook 'text-mode-hook
-                (lambda () (setq sentence-end-double-space nil)))
-    #+end_src
+#+begin_src emacs-lisp   :tangle no
+  (add-hook 'text-mode-hook
+            (lambda () (setq sentence-end-double-space nil)))
+#+end_src
 
-    However, there is a problem with this: it deletes the double spaces
-    in my own documents when I reflow paragraphs.  Yuck.  For the
-    moment, I don’t have a good solution to this.  I think I’d rather
-    get annoyed when working with the anemic text documents that lack
-    double spacing, more than have Emacs muck up my own documents.
-    Maybe someday, I’ll write a bit of code to automatically detect
-    whether to set ~sentence-end-double-space~ on a buffer-by-buffer
-    basis, à la [[http://mbork.pl/2014-10-28_Single_vs_double_spaces][this solution by Marcin Borkowski]].  I like the DWIMness
-    of it, but there are enough open threads to this solution that,
-    again, I think I would find it more annoying than helpful.
+However, there is a problem with this: it deletes the double spaces in
+my own documents when I reflow paragraphs.  Yuck.  For the moment, I
+don’t have a good solution to this.  I think I’d rather get annoyed
+when working with the anemic text documents that lack double spacing,
+more than have Emacs muck up my own documents.  Maybe someday, I’ll
+write a bit of code to automatically detect whether to set
+~sentence-end-double-space~ on a buffer-by-buffer basis, à la [[http://mbork.pl/2014-10-28_Single_vs_double_spaces][this
+solution by Marcin Borkowski]].  I like the DWIMness of it, but there
+are enough open threads to this solution that, again, I think I would
+find it more annoying than helpful.
 
 *** Typo Mode
-    [[https://github.com/jorgenschaefer/typoel][~typo.el~]] is a package that contains two minor modes, ~typo-mode~
-    and ~typo-global-mode~.  The former is what we’re interested in:
-    when enabled, ASCII typographic characters are replaced with
-    Unicode characters while typing.  This is very useful when editing
-    documents, especially now that we’re in a post-ASCII age.
-    ~typo-global-mode~ is also useful: it enables a ~C-c 8~ hierarchy
-    to mirror the built-in ~C-x 8~ hierarchy, which allows us to access
-    much of the same functionality in program modes as we do in text
-    modes, when needed.
+[[https://github.com/jorgenschaefer/typoel][~typo.el~]] is a package that contains two minor modes, ~typo-mode~ and
+~typo-global-mode~.  The former is what we’re interested in: when
+enabled, ASCII typographic characters are replaced with Unicode
+characters while typing.  This is very useful when editing documents,
+especially now that we’re in a post-ASCII age.  ~typo-global-mode~ is
+also useful: it enables a ~C-c 8~ hierarchy to mirror the built-in
+~C-x 8~ hierarchy, which allows us to access much of the same
+functionality in program modes as we do in text modes, when needed.
 
-    #+begin_src emacs-lisp
-      (use-package typo
-        :hook (text-mode . typo-mode)
-        :config (typo-global-mode 1)
-        (setq-default typo-language "English"))
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package typo
+    :hook (text-mode . typo-mode)
+    :config (typo-global-mode 1)
+    (setq-default typo-language "English"))
+#+end_src
 
-    ~typo.el~ supports converting quotes to their language-specific
-    surface realizations: for English, that looks like “this”, whereas
-    for Esperanto, that looks like „this“.  It would be great to
-    automatically detect which to use based on the ispell dictionary,
-    but for the moment I use English as a default, and manually change
-    the quote style when needed.
+~typo.el~ supports converting quotes to their language-specific
+surface realizations: for English, that looks like “this”, whereas for
+Esperanto, that looks like „this“.  It would be great to automatically
+detect which to use based on the ispell dictionary, but for the moment
+I use English as a default, and manually change the quote style when
+needed.
 
 *** Spell Checking
-    I am terrible at spelling—much more terrible than a recovering
-    Indo-Europeanist should be.  Flyspell marks my spelling errors
-    on-the-fly, underlining in red words that aren’t in my system’s
-    English dictionary.  This does yield a significant number of false
-    positives, but it’s good enough to catch most of my spelling
-    mistakes.
+I am terrible at spelling—much more terrible than a recovering
+Indo-Europeanist should be.  Flyspell marks my spelling errors
+on-the-fly, underlining in red words that aren’t in my system’s
+English dictionary.  This does yield a significant number of false
+positives, but it’s good enough to catch most of my spelling mistakes.
 
-    We turn on flyspell in modes that are derived from ~text-mode~, and
-    we turn on flyspell only in comments for modes that are derived
-    from ~prog-mode~.
+We turn on flyspell in modes that are derived from ~text-mode~, and we
+turn on flyspell only in comments for modes that are derived from
+~prog-mode~.
 
-    #+begin_src emacs-lisp
-      (use-package flyspell
-        :diminish flyspell
-        :hook ((text-mode . flyspell-mode)
-               (prog-mode . flyspell-prog-mode)))
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :diminish flyspell
+    :hook ((text-mode . flyspell-mode)
+           (prog-mode . flyspell-prog-mode)))
+#+end_src
 
-    My systems tend to have Esperanto as their default language (for
-    displaying the interface), but most of the text I write is in
-    English (obviously).  The ~auto-dictionary~ package detects which
-    language the text I’m writing is in and sets the spell-check
-    dictionary to that language.  We’ll turn this on whenever we have
-    flyspell on.
+My systems tend to have Esperanto as their default language (for
+displaying the interface), but most of the text I write is in English
+(obviously).  The ~auto-dictionary~ package detects which language the
+text I’m writing is in and sets the spell-check dictionary to that
+language.  We’ll turn this on whenever we have flyspell on.
 
-    #+begin_src emacs-lisp
-      (use-package auto-dictionary
-        :after flyspell
-        :hook (flyspell-mode . auto-dictionary-mode))
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package auto-dictionary
+    :after flyspell
+    :hook (flyspell-mode . auto-dictionary-mode))
+#+end_src
 
-    Once flyspell detects a spelling error, we have two options to fix
-    it.  First, we can use the built-in command ~ispell~, which works
-    on the whole buffer.  I use this pretty frequently.  Alternatively,
-    the ~flyspell-correct~ and ~flyspell-correct-ivy~ packages allow us
-    to correct a spelling at the point, giving us a nice ivy-based
-    completion interface for selecting the correct replacement.
+Once flyspell detects a spelling error, we have two options to fix it.
+First, we can use the built-in command ~ispell~, which works on the
+whole buffer.  I use this pretty frequently.  Alternatively, the
+~flyspell-correct~ and ~flyspell-correct-ivy~ packages allow us to
+correct a spelling at the point, giving us a nice ivy-based completion
+interface for selecting the correct replacement.
 
-    #+begin_src emacs-lisp
-      (use-package flyspell-correct
-        :after flyspell
-        :bind (:map flyspell-mode-map
-               ("C-;" . flyspell-correct-wrapper)))
+#+begin_src emacs-lisp
+  (use-package flyspell-correct
+    :after flyspell
+    :bind (:map flyspell-mode-map
+           ("C-;" . flyspell-correct-wrapper)))
 
-      (use-package flyspell-correct-ivy
-        :after flyspell ivy flyspell-correct)
-    #+end_src
+  (use-package flyspell-correct-ivy
+    :after flyspell ivy flyspell-correct)
+#+end_src
 
 *** Org Mode
-    It’s hard to know where to put my [[http://orgmode.org/][Org]] configuration, because of
-    how deeply Org has inserted its tendrils into everything I do.
-    But, I suppose, at its heart, Org mode is a markup language and an
-    Emacs package built on top of that language.  Furthermore, I think
-    the unifying theme of Org mode is one of /writing plain text/;
-    even without the (very useful) Emacs functions built on top of the
-    Org markup, they are enabled almost entirely by the plain text,
-    freely modifiable, and human-readable nature of Org mode.
+It’s hard to know where to put my [[http://orgmode.org/][Org]] configuration, because of how
+deeply Org has inserted its tendrils into everything I do.  But, I
+suppose, at its heart, Org mode is a markup language and an Emacs
+package built on top of that language.  Furthermore, I think the
+unifying theme of Org mode is one of /writing plain text/; even
+without the (very useful) Emacs functions built on top of the Org
+markup, they are enabled almost entirely by the plain text, freely
+modifiable, and human-readable nature of Org mode.
 
-    #+begin_src emacs-lisp   :noweb yes
-      (use-package org
-        :mode "\\.org'"
-        :init
-        (setq org-catch-invisible-edits 'smart
-              org-src-window-setup 'other-window
-              org-indirect-buffers-display 'other-window
-              org-src-fontify-natively t
-              org-highlight-latex-and-related '(native script entities)
-              org-todo-keywords
-              '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                (sequence "DELEGATED(e@/!)" "WAITING(w@/!" "HOLD(h@/!)" "|" "CANCELED(c@/!)" "MEETING(m)"))
-              org-todo-keyword-faces '(("TODO"      :foreground "red"          :weight bold)
-                                            ("NEXT"      :foreground "DeepSkyBlue2" :weight bold)
-                                            ("DONE"      :foreground "forest green" :weight bold)
-                                            ("WAITING"   :foreground "orange"       :weight bold)
-                                            ("DELEGATED" :foreground "orange"       :weight bold)
-                                            ("HOLD"      :foreground "magenta"      :weight bold)
-                                            ("CANCELED"  :foreground "forest green" :weight bold)
-                                            ("MEETING"   :foreground "red"          :weight bold)))
-        <<org-latex-export>>
-        :bind (("C-c a" . org-agenda)
-               ("C-c l" . org-store-link)
-               ("C-c !" . org-time-stamp-inactive)
-               (:map org-mode-map
-                     ("C-c n n" . org-id-get-create))))
-    #+end_src
+#+begin_src emacs-lisp   :noweb yes
+  (use-package org
+    :mode "\\.org'"
+    :init
+    (setq org-catch-invisible-edits 'smart
+          org-src-window-setup 'other-window
+          org-indirect-buffers-display 'other-window
+          org-src-fontify-natively t
+          org-highlight-latex-and-related '(native script entities)
+          org-todo-keywords
+          '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+            (sequence "DELEGATED(e@/!)" "WAITING(w@/!" "HOLD(h@/!)" "|" "CANCELED(c@/!)" "MEETING(m)"))
+          org-todo-keyword-faces '(("TODO"      :foreground "red"          :weight bold)
+                                        ("NEXT"      :foreground "DeepSkyBlue2" :weight bold)
+                                        ("DONE"      :foreground "forest green" :weight bold)
+                                        ("WAITING"   :foreground "orange"       :weight bold)
+                                        ("DELEGATED" :foreground "orange"       :weight bold)
+                                        ("HOLD"      :foreground "magenta"      :weight bold)
+                                        ("CANCELED"  :foreground "forest green" :weight bold)
+                                        ("MEETING"   :foreground "red"          :weight bold)))
+    <<org-latex-export>>
+    :bind (("C-c a" . org-agenda)
+           ("C-c l" . org-store-link)
+           ("C-c !" . org-time-stamp-inactive)
+           (:map org-mode-map
+                 ("C-c n n" . org-id-get-create))))
+#+end_src
 
-    Let’s take these configurations in turn:
+Let’s take these configurations in turn.
 
 ***** Exporting
-      I didn’t used to have much use for Org mode exporting: my main
-      use of Org mode was for writing, reading, and using the package
-      landscape built-up around Org mode.  However, I’ve found more
-      and more that exporting has a place in my workflow.
+I didn’t used to have much use for Org mode exporting: my main use of
+Org mode was for writing, reading, and using the package landscape
+built-up around Org mode.  However, I’ve found more and more that
+exporting has a place in my workflow.
 
-      For example, although most of my writing for publication is in
-      LaTeX, I’m trying out doing more and more handouts in Org mode,
-      and then exporting to LaTeX.  This is still somewhat of a manual
-      process, wherein I check and manually modify the LaTeX document,
-      copying in some of the preamble commands I need outside of Org
-      mode.  As I get more confident with the Org export
-      functionality, I will start to put more of this preamble content
-      in configuration here.
+For example, although most of my writing for publication is in LaTeX,
+I’m trying out doing more and more handouts in Org mode, and then
+exporting to LaTeX.  This is still somewhat of a manual process,
+wherein I check and manually modify the LaTeX document, copying in
+some of the preamble commands I need outside of Org mode.  As I get
+more confident with the Org export functionality, I will start to put
+more of this preamble content in configuration here.
 
-      Also, with [[*Org-roam][org-roam-ui]], I’m consuming a lot more Org content in
-      exported HTML format as well.  It’s becoming more and more
-      important to have export set up well, in multiple different
-      formats.
+Also, with [[*Org-roam][org-roam-ui]], I’m consuming a lot more Org content in
+exported HTML format as well.  It’s becoming more and more important
+to have export set up well, in multiple different formats.
 
-      Let’s get started with our export configuration.
+Let’s get started with our export configuration.
 
-      #+begin_src emacs-lisp   :tangle no   :noweb-ref org-latex-export
-        (setq org-latex-compiler "lualatex")
-      #+end_src
+#+begin_src emacs-lisp   :tangle no   :noweb-ref org-latex-export
+  (setq org-latex-compiler "lualatex")
+#+end_src
 
 **** Org-roam
-     As of [2021-07-04 dim], I’m trying out the new version of
-     org-roam.  The basic concepts behind org-roam have changed pretty
-     dramatically, as well as its interface, so the configuration for
-     this is very different.  At first, I needed to use Quelpa to
-     download this version, but it has since become the default
-     version on MELPA.
+As of [2021-07-04 dim], I’m trying out the new version of org-roam.
+The basic concepts behind org-roam have changed pretty dramatically,
+as well as its interface, so the configuration for this is very
+different.  At first, I needed to use Quelpa to download this version,
+but it has since become the default version on MELPA.
 
-     By default, org-roam sets up no global keybindings, but because
-     it’s such an important part of my workflow, I choose to set up
-     some of my own.  They will live under the ~C-c n~ prefix.
+By default, org-roam sets up no global keybindings, but because it’s
+such an important part of my workflow, I choose to set up some of my
+own.  They will live under the ~C-c n~ prefix.
 
-     #+name: org-roam-keybinds
-     #+begin_src emacs-lisp   :tangle no
-       ("C-c n l"   . org-roam-buffer-toggle)
-       ("C-c n f"   . org-roam-node-find)
-       ("C-c n c"   . org-roam-capture)
-       ("C-c n d T" . org-roam-dailies-capture-today)
-       ("C-c n d D" . org-roam-dailies-capture-date)
-       ("C-c n d t" . org-roam-dailies-goto-today)
-       ("C-c n d d" . org-roam-dailies-goto-date)
-     #+end_src
+#+name: org-roam-keybinds
+#+begin_src emacs-lisp   :tangle no
+  ("C-c n l"   . org-roam-buffer-toggle)
+  ("C-c n f"   . org-roam-node-find)
+  ("C-c n c"   . org-roam-capture)
+  ("C-c n d T" . org-roam-dailies-capture-today)
+  ("C-c n d D" . org-roam-dailies-capture-date)
+  ("C-c n d t" . org-roam-dailies-goto-today)
+  ("C-c n d d" . org-roam-dailies-goto-date)
+#+end_src
 
-     Furthermore, when we’re in an org-mode buffer, we might want to
-     insert some links to org-roam notes, so we add some mode-local
-     keybindings:
+Furthermore, when we’re in an org-mode buffer, we might want to insert
+some links to org-roam notes, so we add some mode-local keybindings:
 
-     #+name: org-roam-mode-keybinds
-     #+begin_src emacs-lisp   :tangle no
-       (:map org-mode-map
-             ("C-c n i" . org-roam-node-insert)
-             ("C-c n I" . org-roam-node-insert-immediate))
-     #+end_src
+#+name: org-roam-mode-keybinds
+#+begin_src emacs-lisp   :tangle no
+  (:map org-mode-map
+        ("C-c n i" . org-roam-node-insert)
+        ("C-c n I" . org-roam-node-insert-immediate))
+#+end_src
 
-     #+begin_src emacs-lisp   :noweb yes
-       (use-package org-roam
-         :after org
-         :custom
-           (org-roam-directory "~/Dokumentoj/org/notes/")
-           (org-roam-dailies-directory "daily/")
-         :bind
-           <<org-roam-keybinds>>
-           <<org-roam-mode-keybinds>>
-         :init
-           (setq org-roam-v2-ack t) ; Don’t display a warning every time we load org-roam
-         :config
-           (setq org-roam-capture-templates
-                 '(("d" "default" plain "%?"
-                    :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                                       "#+title: ${title}\n#+date: %T\n")
-                    :unnarrowed t))
-                 org-roam-dailies-capture-templates
-                 '(("d" "default" entry
-                    "* %?"
-                    :if-new (file+head "%<%Y-%m-%d>.org"
-                                       "#+title: %<%Y-%m-%d>\n"))))
-           (org-roam-db-autosync-enable))
+#+begin_src emacs-lisp   :noweb yes
+  (use-package org-roam
+    :after org
+    :custom
+      (org-roam-directory "~/Dokumentoj/org/notes/")
+      (org-roam-dailies-directory "daily/")
+    :bind
+      <<org-roam-keybinds>>
+      <<org-roam-mode-keybinds>>
+    :init
+      (setq org-roam-v2-ack t) ; Don’t display a warning every time we load org-roam
+    :config
+      (setq org-roam-capture-templates
+            '(("d" "default" plain "%?"
+               :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                                  "#+title: ${title}\n#+date: %T\n")
+               :unnarrowed t))
+            org-roam-dailies-capture-templates
+            '(("d" "default" entry
+               "* %?"
+               :if-new (file+head "%<%Y-%m-%d>.org"
+                                  "#+title: %<%Y-%m-%d>\n"))))
+      (org-roam-db-autosync-enable))
 
-       (use-package org-roam-protocol :ensure nil :after org-roam :demand t)
-     #+end_src
+  (use-package org-roam-protocol :ensure nil :after org-roam :demand t)
+#+end_src
 
-     Next, we can set up org-roam-ui, which replaces the old
-     org-roam-server.  This gives us an interactive view of the
-     connections between our org-roam nodes, which gives a bit more of
-     a global view of my repository than the default org-roam commands
-     are really able to.  Although until recently this was not on
-     MELPA, as of [2021-11-14 dim], I can use normal package downloads
-     to get this package.
+Next, we can set up org-roam-ui, which replaces the old
+org-roam-server.  This gives us an interactive view of the connections
+between our org-roam nodes, which gives a bit more of a global view of
+my repository than the default org-roam commands are really able to.
+Although until recently this was not on MELPA, as of [2021-11-14 dim],
+I can use normal package downloads to get this package.
 
-     #+begin_src emacs-lisp   :tangle no
-       (use-package org-roam-ui
-         :after (org-roam websocket simple-httpd)
-         :config
-           (setq org-roam-ui-sync-theme        t
-                 org-roam-ui-retitle-ref-nodes t
-                 org-roam-ui-follow            t
-                 org-roam-ui-update-on-save    t
-                 org-roam-ui-open-on-start     t))
-     #+end_src
+#+begin_src emacs-lisp   :tangle no
+  (use-package org-roam-ui
+    :after (org-roam websocket simple-httpd)
+    :config
+      (setq org-roam-ui-sync-theme        t
+            org-roam-ui-retitle-ref-nodes t
+            org-roam-ui-follow            t
+            org-roam-ui-update-on-save    t
+            org-roam-ui-open-on-start     t))
+#+end_src
 
 *** Markdown Mode
-    Markdown support isn’t included by default in Emacs, and Emacs doesn’t
-    recognize files with the =.markdown= and =.md= extensions.  We use
-    [[http://jblevins.org/projects/markdown-mode/][markdown-mode]] by Jason Blevins and associate these extensions with it.
+Markdown support isn’t included by default in Emacs, and Emacs doesn’t
+recognize files with the =.markdown= and =.md= extensions.  We use
+[[http://jblevins.org/projects/markdown-mode/][markdown-mode]] by Jason Blevins and associate these extensions with it.
 
-    #+begin_src emacs-lisp
-      (use-package markdown-mode
-        :mode "\\.md\\'"
-        :custom
-        (markdown-asymmetric-header t
-         "Only put header markup at the start of the line.")
-        (markdown-enable-highlighting-syntax t
-         "Use ==this== for highlighter support.")
-        (markdown-enable-html t
-         "Font lock for HTML tags and attributes.")
-        (markdown-enable-math t
-         "Font lock for inline LaTeX mathematics.")
-        (markdown-fontify-code-blocks-natively t
-         "Use the right major mode for font locking in source blocks.")
-        (markdown-bold-underscore nil
-         "Use **this** instead of __this__ for boldface.")
-        (markdown-italic-underscore t
-         "Use _this_ instead of *this* for italics.")
-        (markdown-list-indent-width 2
-         "Indent by two spaces for a list."))
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :mode "\\.md\\'"
+    :custom
+    (markdown-asymmetric-header t
+     "Only put header markup at the start of the line.")
+    (markdown-enable-highlighting-syntax t
+     "Use ==this== for highlighter support.")
+    (markdown-enable-html t
+     "Font lock for HTML tags and attributes.")
+    (markdown-enable-math t
+     "Font lock for inline LaTeX mathematics.")
+    (markdown-fontify-code-blocks-natively t
+     "Use the right major mode for font locking in source blocks.")
+    (markdown-bold-underscore nil
+     "Use **this** instead of __this__ for boldface.")
+    (markdown-italic-underscore t
+     "Use _this_ instead of *this* for italics.")
+    (markdown-list-indent-width 2
+     "Indent by two spaces for a list."))
+#+end_src
 
-    Most of the configuration for this mode is in either font-locking
-    or in using some of the convenience features the mode gives.  Most
-    of my consumption of Markdown documents is in reading the
-    unrendered markup code, so I care a lot about making it look nice,
-    and making it easier to read.  This is despite the fact that I
-    write in =org-mode= more frequently these days (even though I think
-    Markdown is an easier-to-read markup language), so I don’t always
-    remember the specifics of using Markdown mode.  That said, I want
-    to make it as easy to write beautiful looking Markdown documents
-    that are as easy-to-read as possible, and these configurations help
-    enable that.
+Most of the configuration for this mode is in either font-locking or
+in using some of the convenience features the mode gives.  Most of my
+consumption of Markdown documents is in reading the unrendered markup
+code, so I care a lot about making it look nice, and making it easier
+to read.  This is despite the fact that I write in =org-mode= more
+frequently these days (even though I think Markdown is an
+easier-to-read markup language), so I don’t always remember the
+specifics of using Markdown mode.  That said, I want to make it as
+easy to write beautiful looking Markdown documents that are as
+easy-to-read as possible, and these configurations help enable that.
 
-    Most of the keybindings for Markdown mode are under the =C-c C-s=
-    namespace.  The ones I (should) use most often are:
+Most of the keybindings for Markdown mode are under the =C-c C-s=
+namespace.  The ones I (should) use most often are:
 
-    | Action                                | Keybinding             |
-    |---------------------------------------+------------------------|
-    | Insert heading                        | =C-c C-s H=            |
-    | Bold                                  | =C-c C-s b=            |
-    | Italic                                | =C-c C-s i=            |
-    | Inline code                           | =C-c C-s c=            |
-    | Blockquote                            | =C-c C-s q=            |
-    | Code block                            | =C-c C-s C=            |
-    | Edit code block                       | =C-c '=                |
-    | Insert link                           | =C-c C-l=              |
-    | Insert image                          | =C-c C-i=              |
-    | Follow link                           | =C-c C-o=              |
-    | Insert footnote                       | =C-c C-s f=            |
-    | Jump between reference and definition | =C-c C-d=              |
-    | New list item                         | =M-RET=                |
-    | Promote/demote list item              | =C-c <left>=​/​=<right>= |
-    | Horizontal rule                       | =C-c C-s -=            |
+| Action                                | Keybinding             |
+|---------------------------------------+------------------------|
+| Insert heading                        | =C-c C-s H=            |
+| Bold                                  | =C-c C-s b=            |
+| Italic                                | =C-c C-s i=            |
+| Inline code                           | =C-c C-s c=            |
+| Blockquote                            | =C-c C-s q=            |
+| Code block                            | =C-c C-s C=            |
+| Edit code block                       | =C-c '=                |
+| Insert link                           | =C-c C-l=              |
+| Insert image                          | =C-c C-i=              |
+| Follow link                           | =C-c C-o=              |
+| Insert footnote                       | =C-c C-s f=            |
+| Jump between reference and definition | =C-c C-d=              |
+| New list item                         | =M-RET=                |
+| Promote/demote list item              | =C-c <left>=​/​=<right>= |
+| Horizontal rule                       | =C-c C-s -=            |
 
-    These were distilled from the [[https://leanpub.com/markdown-mode/read][Guide to Markdown Mode]].
+These were distilled from the [[https://leanpub.com/markdown-mode/read][Guide to Markdown Mode]].
+
 ** Programming
 *** Tree Sitter
 For historical reasons, a lot of the Emacs programming functionality
@@ -941,515 +922,501 @@ modification with the results of =tree-sitter=’s parsing.
 #+end_src
 
 * Reading
-  The time I spend in Emacs now is dominated by reading documents of
-  various kinds: academic articles, books, conference proceedings, and
-  so forth.  Unfortunately, this is exactly a place where the built-in
-  functionality of Emacs does not shine (which is not the biggest
-  surprise, as it is at its heart a text editor).  The configurations
-  in this section to me represent the most disheartening, in that they
-  move me the furthest away from what Emacs out-of-the-box is designed
-  to do.
+The time I spend in Emacs now is dominated by reading documents of
+various kinds: academic articles, books, conference proceedings, and
+so forth.  Unfortunately, this is exactly a place where the built-in
+functionality of Emacs does not shine (which is not the biggest
+surprise, as it is at its heart a text editor).  The configurations in
+this section to me represent the most disheartening, in that they move
+me the furthest away from what Emacs out-of-the-box is designed to do.
 
 ** PDF Tools
-   While Emacs does come with a built-in document reading package
-   called [[info:emacs#Document View][DocView]], it is a very unpleasant experience to use it.  It
-   can read a wide variety of different document types (including
-   Microsoft Word documents), but where possible, I would like to use
-   better tools.
+While Emacs does come with a built-in document reading package, called
+[[info:emacs#Document View][DocView]], it is a very unpleasant experience to use it.  It can read a
+wide variety of different document types (including Microsoft Word
+documents), but where possible, I would like to use better tools.
 
-   [[https://github.com/vedang/pdf-tools][PDF Tools]] is a significantly better tool to read PDFs in Emacs.  It
-   functions as a drop-in replacement for DocView, so any package that
-   opens a PDF can open it in PDF Tools without issue, and some of the
-   basic keybindings for navigation are shared with DocView, making
-   the switch to (or in my case, from) DocView more pleasant.
-   Furthermore, it is fully maintained (writing as of
-   [2021-10-28 ĵaŭ]), and hopefully more features and bugfixes will be
-   on the way.
+[[https://github.com/vedang/pdf-tools][PDF Tools]] is a significantly better tool to read PDFs in Emacs.  It
+functions as a drop-in replacement for DocView, so any package that
+opens a PDF can open it in PDF Tools without issue, and some of the
+basic keybindings for navigation are shared with DocView, making the
+switch to (or in my case, from) DocView more pleasant.  Furthermore,
+it is fully maintained (writing as of [2021-10-28 ĵaŭ]), and hopefully
+more features and bugfixes will be on the way.
 
-   The biggest downside of PDF Tools is that it relies on a server
-   program called ~epdfinfo~ that communicates with Emacs and provides
-   it with enough information to handle the complex searching and
-   annotation functionality that the Emacs frontend provides.  This
-   server program must be compiled before the package can be used,
-   which relies on the system having a compiler and development
-   tooling, as well as the required libraries for PDF.  We will set it
-   up to build everything we need when we load a PDF for the first
-   time.
+The biggest downside of PDF Tools is that it relies on a server
+program called ~epdfinfo~ that communicates with Emacs and provides it
+with enough information to handle the complex searching and annotation
+functionality that the Emacs frontend provides.  This server program
+must be compiled before the package can be used, which relies on the
+system having a compiler and development tooling, as well as the
+required libraries for PDF.  We will set it up to build everything we
+need when we load a PDF for the first time.
 
-   #+begin_src emacs-lisp
-     (use-package pdf-tools
-       :mode "\\.pdf\\'"
-       :magic ("%PDF" . pdf-view-mode)
-       :config
-       (require 'pdf-tools)
-       (require 'pdf-view)
-       (require 'pdf-misc)
-       (require 'pdf-occur)
-       (require 'pdf-util)
-       (require 'pdf-annot)
-       (require 'pdf-info)
-       (require 'pdf-isearch)
-       (require 'pdf-history)
-       (require 'pdf-links)
-       (pdf-loader-install :no-query)
-       (setq pdf-view-continuous nil)
-       :functions
-       (pdf-tools-disable-cursor pdf-tools-advice-evil-refresh-cursor))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :mode "\\.pdf\\'"
+    :magic ("%PDF" . pdf-view-mode)
+    :config
+    (require 'pdf-tools)
+    (require 'pdf-view)
+    (require 'pdf-misc)
+    (require 'pdf-occur)
+    (require 'pdf-util)
+    (require 'pdf-annot)
+    (require 'pdf-info)
+    (require 'pdf-isearch)
+    (require 'pdf-history)
+    (require 'pdf-links)
+    (pdf-loader-install :no-query)
+    (setq pdf-view-continuous nil)
+    :functions
+    (pdf-tools-disable-cursor pdf-tools-advice-evil-refresh-cursor))
+#+end_src
 
 ** Bibliography
-   Being able to read PDFs is not enough.  I also need to be able to
-   organize my corner of the literature, so I can effectively search
-   through it, take notes and process it, and then cite it in my own
-   writing.  There are many tools to do this, even within Emacs, but I
-   would like a system that isn’t exclusive to Emacs: I should be able
-   to easily and effectively add entries and read documents without
-   Emacs (or without any other particular program).
+Being able to read PDFs is not enough.  I also need to be able to
+organize my corner of the literature, so I can effectively search
+through it, take notes and process it, and then cite it in my own
+writing.  There are many tools to do this, even within Emacs, but I
+would like a system that isn’t exclusive to Emacs: I should be able to
+easily and effectively add entries and read documents without Emacs
+(or without any other particular program).
 
-   The natural solution is a plaintext BibLaTeX file and a directory
-   of PDF files.  I could have some hierarchy to these PDF files, but
-   if my BibLaTeX file is good enough, it can serve as an index to
-   them, much as notmuch is an index to my mail.  To that end, I
-   choose a directory [[~/Biblioteko][~Biblioteko~]] under my home directory, which
-   stores a BibLaTeX file [[~/Biblioteko/biblioteko.bib][~biblioteko.bib~]] and a loose collection of
-   PDFs, each named after their BibLaTeX key.  This makes it easy to
-   store in a git annex repository, and thus to sync the library
-   across each computer.  For managing this directory and the files
-   within, I have settled on two packages: Ebib, for editing and
-   organizing the collection, and ivy-bibtex, for searching through
-   and citing entries.
+The natural solution is a plaintext BibLaTeX file and a directory of
+PDF files.  I could have some hierarchy to these PDF files, but if my
+BibLaTeX file is good enough, it can serve as an index to them, much
+as notmuch is an index to my mail.  To that end, I choose a directory
+[[~/Biblioteko][~Biblioteko~]] under my home directory, which stores a BibLaTeX file
+[[~/Biblioteko/biblioteko.bib][~biblioteko.bib~]] and a loose collection of PDFs, each named after
+their BibLaTeX key.  This makes it easy to store in a git annex
+repository, and thus to sync the library across each computer.  For
+managing this directory and the files within, I have settled on two
+packages: Ebib, for editing and organizing the collection, and
+ivy-bibtex, for searching through and citing entries.
 
 *** BibTeX mode
-    Because our whole enterprise is based on Bib(La)TeX, we need to
-    make sure we set up Emacs’s BibTeX mode up properly.  The most
-    import thing is for me is to make sure it automatically generates
-    keys in format I find most useful.  While some people may find
-    this key format verbose, I find that it makes the backing source
-    code for these citing documents easier to read directly.  While
-    the code to make this happen is a bit verbose, my end goal is to
-    get keys like =chomsky1957syntactic= for Chomsky’s (1957)
-    /Syntactic Structures/.
+Because our whole enterprise is based on Bib(La)TeX, we need to make
+sure we set up Emacs’s BibTeX mode up properly.  The most import thing
+is for me is to make sure it automatically generates keys in format I
+find most useful.  While some people may find this key format verbose,
+I find that it makes the backing source code for these citing
+documents easier to read directly.  While the code to make this happen
+is a bit verbose, my end goal is to get keys like
+=chomsky1957syntactic= for Chomsky’s (1957) /Syntactic Structures/.
 
-    #+begin_src emacs-lisp
-      (use-package bibtex
-        :ensure nil
-        :config
-        (setq bibtex-autokey-names 1
-              bibtex-autokey-names-stretch 1
-              bibtex-autokey-additional-names "etal"
-              bibtex-autokey-name-separator ""
+#+begin_src emacs-lisp
+  (use-package bibtex
+    :ensure nil
+    :config
+    (setq bibtex-autokey-names 1
+          bibtex-autokey-names-stretch 1
+          bibtex-autokey-additional-names "etal"
+          bibtex-autokey-name-separator ""
 
-              bibtex-autokey-name-year-separator ""
+          bibtex-autokey-name-year-separator ""
 
-              bibtex-autokey-year-length 4
+          bibtex-autokey-year-length 4
 
-              bibtex-autokey-year-title-separator ""
+          bibtex-autokey-year-title-separator ""
 
-              bibtex-autokey-titleword-first-ignore '("the" "a" "if" "and" "an")
-              bibtex-autokey-titleword-length 30
-              bibtex-autokey-titlewords 1
+          bibtex-autokey-titleword-first-ignore '("the" "a" "if" "and" "an")
+          bibtex-autokey-titleword-length 30
+          bibtex-autokey-titlewords 1
 
-              bibtex-autokey-use-crossref t
-              bibtex-autokey-edit-before-use t
-              bibtex-autokey-before-presentation-function #'downcase))
-    #+end_src
+          bibtex-autokey-use-crossref t
+          bibtex-autokey-edit-before-use t
+          bibtex-autokey-before-presentation-function #'downcase))
+#+end_src
 
 *** Ebib
-    [[https://joostkremers.github.io/ebib/][Ebib]] is a very nice replacement for software programs like
-    [[https://www.mendeley.com/download-reference-manager/][Mendeley]], [[https://www.zotero.org/][Zotero]], and [[https://www.jabref.org/][JabRef]].  Each of these had some downside:
+[[https://joostkremers.github.io/ebib/][Ebib]] is a very nice replacement for software programs like [[https://www.mendeley.com/download-reference-manager/][Mendeley]],
+[[https://www.zotero.org/][Zotero]], and [[https://www.jabref.org/][JabRef]].  Each of these had some downside:
 
-      * [[https://www.zotero.org/support/kb/mendeley_import#mendeley_database_encryption][Mendeley started encrypting its local database of PDFs after
-        Zotero wrote an importer for Mendeley users.]]  How is this
-        okay?
-      * Zotero felt very heavyweight when I tried it briefly, and
-        integrating it with BibLaTeX was a pain.  Furthermore, its
-        apparent killer feature, the ability to download bibliographic
-        information, neither was unique to it nor even gave
-        particularly high quality results.
-      * JabRef was nice, but it’s still a quite heavy Java program for
-        a task so fundamentally simple, hogging more RAM than it has
-        any right to.
+  * [[https://www.zotero.org/support/kb/mendeley_import#mendeley_database_encryption][Mendeley started encrypting its local database of PDFs after
+    Zotero wrote an importer for Mendeley users.]]  How is this okay?
+  * Zotero felt very heavyweight when I tried it briefly, and
+    integrating it with BibLaTeX was a pain.  Furthermore, its
+    apparent killer feature, the ability to download bibliographic
+    information, neither was unique to it nor even gave particularly
+    high quality results.
+  * JabRef was nice, but it’s still a quite heavy Java program for a
+    task so fundamentally simple, hogging more RAM than it has any
+    right to.
 
-    Ebib has served as a good replacement for each of these programs.
-    Because it’s in Emacs, of course, it integrates nicely with other
-    packages, but it also has some nice features of its own: main and
-    dependent databases, a visual editor for BibLaTeX fields, and
-    integration with LaTeX and Org mode for citations and notes.  This
-    makes my workflow quite a bit easier, and makes adding and editing
-    my PDF database a breeze.  Moreover, since its backend is just a
-    BibLaTeX file, I don’t need to worry about interfacing with other
-    authors who use different programs, or importing my database from
-    one system to another.  It should just work.
+Ebib has served as a good replacement for each of these programs.
+Because it’s in Emacs, of course, it integrates nicely with other
+packages, but it also has some nice features of its own: main and
+dependent databases, a visual editor for BibLaTeX fields, and
+integration with LaTeX and Org mode for citations and notes.  This
+makes my workflow quite a bit easier, and makes adding and editing my
+PDF database a breeze.  Moreover, since its backend is just a BibLaTeX
+file, I don’t need to worry about interfacing with other authors who
+use different programs, or importing my database from one system to
+another.  It should just work.
 
-    The [[info:ebib#Top][ebib manual]] is a good read to understand all that this package
-    can do.  My usage at the moment is quite simple, but like much of
-    Emacs, it’s very easy to grow into the rest of the functionality,
-    as it were.
+The [[info:ebib#Top][ebib manual]] is a good read to understand all that this package can
+do.  My usage at the moment is quite simple, but like much of Emacs,
+it’s very easy to grow into the rest of the functionality, as it were.
 
-    #+begin_src emacs-lisp
-      (use-package ebib
-        :bind ("<f7>" . ebib)
-        :custom ((ebib-bibtex-dialect       'biblatex)
-                 (ebib-preload-bib-files    '("biblioteko.bib"))
-                 (ebib-bib-search-dirs      '("~/Biblioteko"))
-                 (ebib-file-search-dirs     '("~/Biblioteko"))
-                 (ebib-reading-list-file    "~/Dokumentoj/org/reading.org")
-                 (ebib-use-timestamp        t)
-                 (ebib-use-timestamp-format "%Y-%m-%d")
-                 (ebib-import-directory     (or (xdg-user-dir "DOWNLOAD") "~/Downloads"))
-                 (ebib-layout               'window)))
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package ebib
+    :bind ("<f7>" . ebib)
+    :custom ((ebib-bibtex-dialect       'biblatex)
+             (ebib-preload-bib-files    '("biblioteko.bib"))
+             (ebib-bib-search-dirs      '("~/Biblioteko"))
+             (ebib-file-search-dirs     '("~/Biblioteko"))
+             (ebib-reading-list-file    "~/Dokumentoj/org/reading.org")
+             (ebib-use-timestamp        t)
+             (ebib-use-timestamp-format "%Y-%m-%d")
+             (ebib-import-directory     (or (xdg-user-dir "DOWNLOAD") "~/Downloads"))
+             (ebib-layout               'window)))
+#+end_src
 
 * Projects
-  For working with my different writing and programming projects, I
-  have some external Emacs packages to make things easier.
+For working with my different writing and programming projects, I have
+some external Emacs packages to make things easier.
 
 ** Magit
-   Version control is a big part of my project management, and I
-   almost exclusively use git as version control.  While git has a
-   very nice data model, its user interface is somewhat lacking.
-   Luckily, the Emacs ecosystem provides us with a much nicer
-   interface to git.  In fact, I would go as far as to say that [[http://magit.vc/][Magit]]
-   is *the best* git porcelain, by far. For ease of access, I have the
-   main Magit command, =magit-status=, bound to =C-c g=.
+Version control is a big part of my project management, and I almost
+exclusively use git as version control.  While git has a very nice
+data model, its user interface is somewhat lacking.  Luckily, the
+Emacs ecosystem provides us with a much nicer interface to git.  In
+fact, I would go as far as to say that [[http://magit.vc/][Magit]] is *the best* git
+porcelain, by far. For ease of access, I have the main Magit command,
+=magit-status=, bound to =C-c g=.
 
-   #+begin_src emacs-lisp
-     (use-package magit
-       :bind ("C-c g" . magit-status)
-       :config (setq magit-completing-read-function 'ivy-completing-read
-                     magit-repository-directories '(("~" . 3)))
-       :commands (magit-status magit-blame magit-log-buffer-file magit-log-all)
-       :after ivy)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package magit
+    :bind ("C-c g" . magit-status)
+    :config (setq magit-completing-read-function 'ivy-completing-read
+                  magit-repository-directories '(("~" . 3)))
+    :commands (magit-status magit-blame magit-log-buffer-file magit-log-all)
+    :after ivy)
+#+end_src
 
-   We want Magit to use [[*Ivy][Ivy]] for completion, and we search for all
-   projects nested three directories under home.
+We want Magit to use [[*Ivy][Ivy]] for completion, and we search for all
+projects nested three directories under home.
 
-   #+begin_src emacs-lisp
-     (use-package magit-filenotify :after magit)
-     (use-package forge            :after magit)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package magit-filenotify :after magit)
+  (use-package forge            :after magit)
+#+end_src
 
 *** Magit Imerge
-    #+begin_src emacs-lisp
-      (use-package magit-imerge
-        :after magit)
-    #+end_src
+#+begin_src emacs-lisp
+  (use-package magit-imerge
+    :after magit)
+#+end_src
 
 * Calendar
 ** Alerts
-    Emacs’s built-in way of alerting you of something is by appending
-    to the =Messages= buffer, which also shows up in the minibuffer.
-    This is often hard to see, and it doesn’t interface nicely with
-    other notifications my system gives me, using =libnotify=.  John
-    Wiegley’s =alert= package gives us a consistent interface to any
-    number of notification backends; this works on Windows, OSX, and
-    UNIX-y systems, and can be easily extended.  For the moment, since
-    the only systems I use Emacs on are graphical Linux systems, I
-    unconditionally configure =alert= to use a backend that forwards
-    to =libnotify=.  On GNOME Shell, this makes a little notification
-    pop up at the top of the screen, with a customizable title, icon,
-    and actions.
+Emacs’s built-in way of alerting you of something is by appending to
+the =Messages= buffer, which also shows up in the minibuffer.  This is
+often hard to see, and it doesn’t interface nicely with other
+notifications my system gives me, using =libnotify=.  John Wiegley’s
+=alert= package gives us a consistent interface to any number of
+notification backends; this works on Windows, OSX, and UNIX-y systems,
+and can be easily extended.  For the moment, since the only systems I
+use Emacs on are graphical Linux systems, I unconditionally configure
+=alert= to use a backend that forwards to =libnotify=.  On GNOME
+Shell, this makes a little notification pop up at the top of the
+screen, with a customizable title, icon, and actions.
 
-   #+begin_src emacs-lisp
-     (use-package alert
-       :config
-        (setq alert-default-style 'notifications))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package alert
+    :config
+     (setq alert-default-style 'notifications))
+#+end_src
 
-   Any package that uses =alert= will now show us notifications in
-   GNOME Shell.
+Any package that uses =alert= will now show us notifications in GNOME
+Shell.
 
 ** Org Agenda
-   I use =org-agenda= to manage my TODOs and schedule, so many of the
-   more important parts of my configuration for what I do day-to-day
-   are here.  First, we want to let Emacs know where I keep my TODO
-   files.
+I use =org-agenda= to manage my TODOs and schedule, so many of the
+more important parts of my configuration for what I do day-to-day are
+here.  First, we want to let Emacs know where I keep my TODO files.
 
-   #+begin_src emacs-lisp
-     (setq org-agenda-files  '("~/Dokumentoj/org/"))
-   #+end_src
+#+begin_src emacs-lisp
+  (setq org-agenda-files  '("~/Dokumentoj/org/"))
+#+end_src
 
-   Not everything in Emacs land knows about =org-agenda=.  The older,
-   built-in package =diary.el= includes things like BBDB
-   anniversaries, sunrise/sunset times, and more.  In order to include
-   these in the =org-agenda=, we need to set the following variable:
+Not everything in Emacs land knows about =org-agenda=.  The older,
+built-in package =diary.el= includes things like BBDB anniversaries,
+sunrise/sunset times, and more.  In order to include these in the
+=org-agenda=, we need to set the following variable:
 
-   #+begin_src emacs-lisp
-     (setq org-agenda-include-diary t)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq org-agenda-include-diary t)
+#+end_src
 
-   There is [[info:org#Weekly/daily agenda][an alternative way to do the above]], which is apparently
-   somewhat faster: you can add specific diary expressions into your
-   org file, and add only those diary entries (anniversaries,
-   holidays, etc.) that you need.  I haven’t seen any issues with the
-   above, but I will want to keep this in mind just in case.
+There is [[info:org#Weekly/daily agenda][an alternative way to do the above]], which is apparently
+somewhat faster: you can add specific diary expressions into your org
+file, and add only those diary entries (anniversaries, holidays, etc.)
+that you need.  I haven’t seen any issues with the above, but I will
+want to keep this in mind just in case.
 
-   #+begin_src emacs-lisp
-     (setq org-agenda-category-icon-alist nil)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq org-agenda-category-icon-alist nil)
+#+end_src
 
-   #+begin_src emacs-lisp
-     (setq org-agenda-use-time-grid t)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq org-agenda-use-time-grid t)
+#+end_src
 
 * Completion
 ** Ivy
-   Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]]
-   a little while ago.  While it’s more heavyweight than Ido, it’s not
-   too heavy and provides a lot more nice features and integration
-   with other packages.  We’ll make sure it’s installed, then turn it
-   on globally.
+Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]] a
+little while ago.  While it’s more heavyweight than Ido, it’s not too
+heavy and provides a lot more nice features and integration with other
+packages.  We’ll make sure it’s installed, then turn it on globally.
 
-   #+begin_src emacs-lisp
-     (use-package ivy :demand
-       :diminish ivy-mode
-       :config
-       (setq ivy-use-virtual-buffers t
-             ivy-count-format "%d/%d ")
-       (ivy-mode 1))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package ivy :demand
+    :diminish ivy-mode
+    :config
+    (setq ivy-use-virtual-buffers t
+          ivy-count-format "%d/%d ")
+    (ivy-mode 1))
+#+end_src
 
-   The Counsel package builds on Ivy, to provide more intelligent and
-   more useful completion in a lot of common cases.
+The Counsel package builds on Ivy, to provide more intelligent and
+more useful completion in a lot of common cases.
 
-   #+begin_src emacs-lisp
-     (use-package counsel :demand
-       :after ivy
-       :diminish counsel-mode
-       :config (counsel-mode))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package counsel :demand
+    :after ivy
+    :diminish counsel-mode
+    :config (counsel-mode))
+#+end_src
 
-   The third of the Ivy trio is Swiper, which is halfway between
-   Emacs’s search functionality and its ~occur~ functionality.  While
-   some people swear by using it for search, I use Emacs incremental
-   search primarily as a movement command, so that’s not for me.
-   Instead, I use Swiper more like ~occur~, allowing me to see all
-   results and jump between them efficiently.  I bind this to a
-   keybinding under the ~M-s~ search hierarchy, parallel to ~occur~﻿’s.
+The third of the Ivy trio is Swiper, which is halfway between Emacs’s
+search functionality and its ~occur~ functionality.  While some people
+swear by using it for search, I use Emacs incremental search primarily
+as a movement command, so that’s not for me.  Instead, I use Swiper
+more like ~occur~, allowing me to see all results and jump between
+them efficiently.  I bind this to a keybinding under the ~M-s~ search
+hierarchy, parallel to ~occur~﻿’s.
 
-   #+begin_src emacs-lisp
-     (use-package swiper
-       :after ivy
-       :bind ("M-s s" . swiper ))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package swiper
+    :after ivy
+    :bind ("M-s s" . swiper ))
+#+end_src
 
-   One of the nice thing about Ivy is the number of packages that
-   integrate with it in various ways.  One nice-to-have package,
-   although by no means necessary, is the ~ivy-rich~ package, which
-   gives more information in the minibuffer for each completion
-   option.
+One of the nice thing about Ivy is the number of packages that
+integrate with it in various ways.  One nice-to-have package, although
+by no means necessary, is the ~ivy-rich~ package, which gives more
+information in the minibuffer for each completion option.
 
-   #+begin_src emacs-lisp
-     (use-package ivy-rich
-       :config (ivy-rich-mode 1))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package ivy-rich
+    :config (ivy-rich-mode 1))
+#+end_src
 
-   I also have found that I like ~ivy-hydra~, which pops up a buffer
-   listing all the operations I can perform on a search result.
+I also have found that I like ~ivy-hydra~, which pops up a buffer
+listing all the operations I can perform on a search result.
 
-   #+begin_src emacs-lisp
-     (use-package ivy-hydra
-       :after ivy)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package ivy-hydra
+    :after ivy)
+#+end_src
 
 ** Amx
-   From the [[https://github.com/DarwinAwardWinner/amx/][Amx website]],
+From the [[https://github.com/DarwinAwardWinner/amx/][Amx website]],
 
-   #+begin_quote
-   Amx is an alternative interface for ~M-x~ in Emacs.  IT provides
-   several enhancements over the ordinary ~execute-extended-command~,
-   such as prioritizing your most-used commands in the completion list
-   and showing keyboard shortcuts, and it supports several completion
-   systems for selecting commands, such as ido and ivy.
-   #+end_quote
+#+begin_quote
+Amx is an alternative interface for ~M-x~ in Emacs.  IT provides
+several enhancements over the ordinary ~execute-extended-command~,
+such as prioritizing your most-used commands in the completion list
+and showing keyboard shortcuts, and it supports several completion
+systems for selecting commands, such as ido and ivy.
+#+end_quote
 
-   Amx is a fork of [[https://github.com/nonsequitur/smex][Smex]], which no longer appears to be maintained
-   (the last commit was on [2015-12-12 sab]).
+Amx is a fork of [[https://github.com/nonsequitur/smex][Smex]], which no longer appears to be maintained (the
+last commit was on [2015-12-12 sab]).
 
-   #+begin_src emacs-lisp
-     (use-package amx
-       :after ivy
-       :config (amx-mode 1))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package amx
+    :after ivy
+    :config (amx-mode 1))
+#+end_src
 
 * Visual Theming
-  This is honestly the least important part of my configuration.
-  Fonts and pretty are nice, and customizing the display to save a bit
-  of space is useful, but setting up my packages and configuration as
-  above is so much more important to me.
+This is honestly the least important part of my configuration.  Fonts
+and pretty are nice, and customizing the display to save a bit of
+space is useful, but setting up my packages and configuration as above
+is so much more important to me.
 
-  One important aspect of this configuration is that I try my hardest
-  for it to work both with X11 GUI clients and with terminal clients.
-  I use terminal clients significantly more often than I think most
-  Emacs GUI users do, and I don’t want my theming to make terminal
-  clients unusable.
+One important aspect of this configuration is that I try my hardest
+for it to work both with X11 GUI clients and with terminal clients.  I
+use terminal clients significantly more often than I think most Emacs
+GUI users do, and I don’t want my theming to make terminal clients
+unusable.
 
 ** GUI
-   There are certain GUI defaults in Emacs that I’m not a big fan of,
-   because they either take up space or distract me.  Foremost among
-   these is the toolbar, which I see very little use for: it only has
-   the commonly used buffer and file operations whose keybindings I
-   have no trouble remembering.  Tool tips and blinking cursors are
-   similar—they only distract me when I’m trying to do something.
-   Let’s turn these off:
+There are certain GUI defaults in Emacs that I’m not a big fan of,
+because they either take up space or distract me.  Foremost among
+these is the toolbar, which I see very little use for: it only has the
+commonly used buffer and file operations whose keybindings I have no
+trouble remembering.  Tool tips and blinking cursors are similar—they
+only distract me when I’m trying to do something.  Let’s turn these
+off:
 
-   #+begin_src emacs-lisp
-     (dolist (mode
-              '(tool-bar-mode
-                tooltip-mode
-                blink-cursor-mode
-                menu-bar-mode
-                scroll-bar-mode))
-       (funcall mode 0))
-   #+end_src
+#+begin_src emacs-lisp
+  (dolist (mode
+           '(tool-bar-mode
+             tooltip-mode
+             blink-cursor-mode
+             menu-bar-mode
+             scroll-bar-mode))
+    (funcall mode 0))
+#+end_src
 
-   The final two things we turn off here are ones that I do think have
-   great utility, and that I turn on manually every once in a while.
-   First, ~menu-bar-mode~ is great, especially when learning a new
-   major mode or package.  While my eventual goal is to learn the
-   keybindings or command names, the GUI menu is a great way to
-   discover the functionality of the package.  For that reason, I turn
-   it on manually when I’m training myself on a new package.  By
-   default, though, I keep it off.  Second, ~scroll-bar-mode~ is quite
-   nice for seeing roughly where you are in a large buffer, without
-   taking up much space.  For some of this, I can use the line number
-   on the modeline, coupled with ~count-words~ to see how many lines
-   are in the (maybe narrowed) buffer.  But, it can still be a nice
-   visual reminder.  On those occasions, I turn the scroll bar back on
-   manually.  Otherwise, though, I keep it off, to take up less space.
+The final two things we turn off here are ones that I do think have
+great utility, and that I turn on manually every once in a while.
+First, ~menu-bar-mode~ is great, especially when learning a new major
+mode or package.  While my eventual goal is to learn the keybindings
+or command names, the GUI menu is a great way to discover the
+functionality of the package.  For that reason, I turn it on manually
+when I’m training myself on a new package.  By default, though, I keep
+it off.  Second, ~scroll-bar-mode~ is quite nice for seeing roughly
+where you are in a large buffer, without taking up much space.  For
+some of this, I can use the line number on the modeline, coupled with
+~count-words~ to see how many lines are in the (maybe narrowed)
+buffer.  But, it can still be a nice visual reminder.  On those
+occasions, I turn the scroll bar back on manually.  Otherwise, though,
+I keep it off, to take up less space.
 
-   My desktop environment uses the mouse to select which X11 window
-   has keyboard input focus.  I’d like this to carry over into Emacs,
-   where the mouse also selects which Emacs window has focus.  This
-   isn’t my primary means of moving between windows (see the [[*Windmove][Windmove]]
-   section for details), but when I’m working with other programs that
-   use the mouse, this makes life a bit easier.
+My desktop environment uses the mouse to select which X11 window has
+keyboard input focus.  I’d like this to carry over into Emacs, where
+the mouse also selects which Emacs window has focus.  This isn’t my
+primary means of moving between windows (see the [[*Windmove][Windmove]] section for
+details), but when I’m working with other programs that use the mouse,
+this makes life a bit easier.
 
-   #+begin_src emacs-lisp
-     (setq-default mouse-autoselect-window t)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq-default mouse-autoselect-window t)
+#+end_src
 
-   We also don’t want to see a startup screen.  Instead, I’d rather be
-   taken directly to scratch—I know how to find the GNU Manifesto on
-   my own.
+We also don’t want to see a startup screen.  Instead, I’d rather be
+taken directly to scratch—I know how to find the GNU Manifesto on my
+own.
 
-   #+begin_src emacs-lisp
-     (setq-default inhibit-startup-message t)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq-default inhibit-startup-message t)
+#+end_src
 
-   We do, though, want the line and column numbers to be displayed on
-   the modeline.
+We do, though, want the line and column numbers to be displayed on the
+modeline.
 
-   #+begin_src emacs-lisp
-     (line-number-mode   1)
-     (column-number-mode 1)
-   #+end_src
+#+begin_src emacs-lisp
+  (line-number-mode   1)
+  (column-number-mode 1)
+#+end_src
 
-   Finally, let’s make sure the margins are there, but aren’t bigger
-   than necessary.
+Finally, let’s make sure the margins are there, but aren’t bigger than
+necessary.
 
-   #+begin_src emacs-lisp
-     (setq left-margin-width  1
-           right-margin-width 1)
-   #+end_src
+#+begin_src emacs-lisp
+  (setq left-margin-width  1
+        right-margin-width 1)
+#+end_src
 
 ** Fonts and Ligatures
-   The font I’m currently using is [[https://github.com/microsoft/cascadia-code][Cascadia Code]] (which, luckily, is
-   packaged in Debian as =fonts-cascadia-code=).  I find this font is
-   very easy to read for long periods of time, and at different sizes;
-   I value that more than its looks or its ligatures.
+The font I’m currently using is [[https://github.com/microsoft/cascadia-code][Cascadia Code]] (which, luckily, is
+packaged in Debian as =fonts-cascadia-code=).  I find this font is
+very easy to read for long periods of time, and at different sizes; I
+value that more than its looks or its ligatures.
 
-   #+begin_src emacs-lisp
-     (set-face-attribute 'default nil :font "Cascadia Code PL")
-   #+end_src
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil :font "Cascadia Code PL")
+#+end_src
 
 ** Dimming Unused Windows
-   It can be hard to tell which window has input focus at-a-glance.  I
-   don’t find the visual clues of the mode-line sufficient to help me
-   know where I’m typing.  The [[https://github.com/gonewest818/dimmer.el][~dimmer.el~]] package tones down the
-   colors of windows that are not in focus, making it easier to see
-   which window is in focus.
+It can be hard to tell which window has input focus at-a-glance.  I
+don’t find the visual clues of the mode-line sufficient to help me
+know where I’m typing.  The [[https://github.com/gonewest818/dimmer.el][~dimmer.el~]] package tones down the colors
+of windows that are not in focus, making it easier to see which window
+is in focus.
 
-   #+begin_src emacs-lisp   :noweb yes
-     (use-package dimmer
-       :config <<dimmer-config-fraction>>
-               <<dimmer-config-packages>>
-               (dimmer-mode))
-   #+end_src
+#+begin_src emacs-lisp   :noweb yes
+  (use-package dimmer
+    :config <<dimmer-config-fraction>>
+            <<dimmer-config-packages>>
+            (dimmer-mode))
+#+end_src
 
-   The default dimming fraction (20%) isn’t quite enough to make it
-   easy to see which window is in focus, so I increase this to 40%.
+The default dimming fraction (20%) isn’t quite enough to make it easy
+to see which window is in focus, so I increase this to 40%.
 
-   #+name: dimmer-config-fraction
-   #+begin_src emacs-lisp   :tangle no
-     (setq dimmer-fraction 0.4)
-   #+end_src
+#+name: dimmer-config-fraction
+#+begin_src emacs-lisp   :tangle no
+  (setq dimmer-fraction 0.4)
+#+end_src
 
-   By default, ~dimmer.el~ doesn’t dim the minibuffer and echo areas.
-   There are some packages, though, that use multiple windows in their
-   normal interface.  Among these are [[*Magit][Magit]], [[*Org Mode][Org Mode]], and [[*Which Key?][Which Key?]].
+By default, ~dimmer.el~ doesn’t dim the minibuffer and echo areas.
+There are some packages, though, that use multiple windows in their
+normal interface.  Among these are [[*Magit][Magit]], [[*Org Mode][Org Mode]], and [[*Which Key?][Which Key?]].
 
-   #+name: dimmer-config-packages
-   #+begin_src emacs-lisp   :tangle no
-     (dimmer-configure-magit)
-     (dimmer-configure-org)
-     (dimmer-configure-which-key)
-   #+end_src
+#+name: dimmer-config-packages
+#+begin_src emacs-lisp   :tangle no
+  (dimmer-configure-magit)
+  (dimmer-configure-org)
+  (dimmer-configure-which-key)
+#+end_src
 
-   For a full list of supported packages, see the [[https://github.com/gonewest818/dimmer.el#configuration][Configuration]]
-   section of the ~dimmer.el~ documentation.
+For a full list of supported packages, see the [[https://github.com/gonewest818/dimmer.el#configuration][Configuration]] section
+of the ~dimmer.el~ documentation.
 
 ** Pretty Pages
-   I use Emacs’s page functionality quite a lot, so it’s a nice
-   quality of life improvement to have the ugly ~^L~ characters
-   displayed as lines stretching across the window.  There are a few
-   packages that can do this: the big ones seem to be Steve Purcell’s
-   [[https://github.com/purcell/page-break-lines][page-break-lines]] and Vasilij Schneidermann’s [[https://depp.brause.cc/form-feed/][form-feed]].  For
-   whatever reason, I chose the latter, and I haven’t had any problems
-   with it.
+I use Emacs’s page functionality quite a lot, so it’s a nice quality
+of life improvement to have the ugly ~^L~ characters displayed as
+lines stretching across the window.  There are a few packages that can
+do this: the big ones seem to be Steve Purcell’s [[https://github.com/purcell/page-break-lines][page-break-lines]] and
+Vasilij Schneidermann’s [[https://depp.brause.cc/form-feed/][form-feed]].  For whatever reason, I chose the
+latter, and I haven’t had any problems with it.
 
-   Let’s set up form-feed to prettify our page breaks globally across
-   all Emacs modes and buffers.
+Let’s set up form-feed to prettify our page breaks globally across all
+Emacs modes and buffers.
 
-   #+begin_src emacs-lisp
-     (use-package form-feed
-       :config (global-form-feed-mode))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package form-feed
+    :config (global-form-feed-mode))
+#+end_src
 
 ** Custom Theme
-   Nowadays, Emacs has built-in support for custom themes.  It used to
-   be that you needed to manually set colors, or load a package
-   =color-theme= to provide a theme, as follows:
+Nowadays, Emacs has built-in support for custom themes.  It used to be
+that you needed to manually set colors, or load a package
+=color-theme= to provide a theme, as follows:
 
-   #+begin_src emacs-lisp   :tangle no
-     (use-package color-theme-modern)
-   #+end_src
+#+begin_src emacs-lisp   :tangle no
+  (use-package color-theme-modern)
+#+end_src
 
-   Because support for custom themes is built-in, though, we don’t
-   need to do this anymore.
+Because support for custom themes is built-in, though, we don’t need
+to do this anymore.
 
-   Normally, I use the [[https://github.com/juba/color-theme-tangoxtango][tangotango theme]], which is a bit old, and
-   doesn’t support everything, but is high contrast where it matters
-   and easy-to-read.
+Normally, I use the [[https://github.com/juba/color-theme-tangoxtango][tangotango theme]], which is a bit old, and doesn’t
+support everything, but is high contrast where it matters and
+easy-to-read.
 
-   #+begin_src emacs-lisp
-     (use-package tangotango-theme
-       :defer nil
-       :config
-       (load-theme 'tangotango t))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package tangotango-theme
+    :defer nil
+    :config
+    (load-theme 'tangotango t))
+#+end_src
 
-   However, sometimes a dark theme does not work well: for instance,
-   on a laptop screen, the glare can make the dark theme hard-to-read.
-   In this case, it’s useful to have alternative light themes
-   available.  Let’s load some alternative themes up that I can
-   manually engage.
+However, sometimes a dark theme does not work well: for instance, on a
+laptop screen, the glare can make the dark theme hard-to-read.  In
+this case, it’s useful to have alternative light themes available.
+Let’s load some alternative themes up that I can manually engage.
 
-   #+begin_src emacs-lisp
-     (use-package color-theme-modern)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package color-theme-modern)
+#+end_src
 
-   (This package contains all the color themes that the old
-   =color-theme= package contains, but updated for the new, built-in
-   custom theme mechanism.
+(This package contains all the color themes that the old =color-theme=
+package contains, but updated for the new, built-in custom theme
+mechanism.
