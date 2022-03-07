@@ -955,6 +955,76 @@ modification with the results of =tree-sitter=’s parsing.
   (use-package tree-sitter-langs)
 #+end_src
 
+*** LSP
+While [[*Tree Sitter][Tree Sitter]] adds syntactic information to Emacs’s editing
+capabilities, the Language Server Protocol (LSP) adds semantic
+information to it.  LSP is another client-server protocol, where Emacs
+is the client, and each programming language project has its own
+server that Emacs starts.  This server uses information derived from
+linters, or the compiler toolchain, or other semantic analysis
+software, to enable easy refactoring, code navigation, and completion,
+among many other things.  In short, it gives Emacs many of the tools
+of modern IDEs, without needing to implement them separately for each
+Emacs major mode.
+
+As is to be expected, there are two different packages for Emacs that
+implement an LSP client.
+
+  * [[https://github.com/joaotavora/eglot][eglot]] :: Of the two, this feels the most “Emacs” to me.  It’s
+    lightweight, and it doesn’t radically change the interaction with
+    Emacs, which I like—in its own words, it “stays out of your way”.
+    Furthermore, it integrates with many built-in packages, like xref,
+    eldoc, and Flymake.
+
+  * [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]] :: This is the batteries-included LSP client out of the
+    two.  It feels like it integrates with every package ever,
+    especially ones that I don’t use.  It can be a bit heavyweight,
+    and some of the UI elements can feel a bit intrusive when I don’t
+    want them.
+
+For a long time I used lsp-mode, because I wasn’t able to get eglot
+working.  However, as I started documenting this section of my
+configuration file on [2022-03-07 lun], I decided to give eglot
+another try.
+
+Eglot works by starting a server using the current buffer major mode,
+scoped local to the project (using =project.el=).  Information from
+the server is exposed mostly through other packages, mirroring the
+built-in functionality for writing Emacs LISP code in particular.
+
+  * finding symbols can be done with =xref=,
+
+  * diagnostics can be given using =flymake=,
+
+  * symbol documentation can be given using =eldoc= and optionally
+    =markdown=,
+
+  * completion is taken care of by =completion-at-point= and
+    =company=, and
+
+  * code snippets can be inserted by =yasnappet=.
+
+LSP does provide some additional functionality that isn’t exactly
+replicated by existing Emacs packages, such as
+
+  * =eglot-rename= to rename symbols across the entire project,
+
+  * =eglot-format= to automatically format a piece of code, and
+
+  * =eglot-code-actions= (and some predefined shortcuts
+    =eglot-code-action-X= for action /X/) to modify the code on a
+    language-by-language basis.
+
+Configuring eglot is trivial:
+
+#+begin_src emacs-lisp
+  (use-package eglot)
+#+end_src
+
+Perhaps I may eventually set up keybindings for some of those actions,
+but I don’t use them frequently enough at the moment to worry about
+that.
+
 * Reading
 The time I spend in Emacs now is dominated by reading documents of
 various kinds: academic articles, books, conference proceedings, and
