@@ -1025,6 +1025,32 @@ Perhaps I may eventually set up keybindings for some of those actions,
 but I don’t use them frequently enough at the moment to worry about
 that.
 
+*** Haskell Mode
+The language I spend most of my time in as of [2022-03-07 lun] is
+Haskell.  Although I’m a systems programmer at heart, Haskell lets me
+write code for my research that is very close to the mathematical
+formalisms I’m working with.
+
+First of all, the biggest configuration we can do is turn on [[*LSP][LSP]] with
+eglot.  Otherwise, Haskell Mode comes with quite a number of minor
+modes we can turn on, many of which are useful.  We set up our mode
+hook to turn on the ones we want.
+
+#+begin_src emacs-lisp
+  (use-package haskell-mode
+    :hook (haskell-mode . eglot)
+          (haskell-mode . turn-on-haskell-unicode-input-method)
+          (haskell-mode . haskell-indentation-mode)
+          (haskell-mode . haskell-decl-scan-mode)
+          (haskell-mode . interactive-haskell-mode))
+#+end_src
+
+There are some keybindings in Haskell Mode that are very useful, but
+that I have a particularly bad time remembering:
+
+  * =M-x haskell-mode-format-imports= (=C-c C-,=) sorts and aligns the
+    imports at the top of a file.
+
 * Reading
 The time I spend in Emacs now is dominated by reading documents of
 various kinds: academic articles, books, conference proceedings, and
