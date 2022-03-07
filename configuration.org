@@ -697,6 +697,40 @@ interface for selecting the correct replacement.
     :after flyspell ivy flyspell-correct)
 #+end_src
 
+*** Dictionary
+In addition to spell checking, it’s very useful to be able to lookup
+the definitions of words in some text.  Luckily, Emacs has a built-in
+package to search through [[https://datatracker.ietf.org/doc/html/rfc2229][RFC 2229 DICT servers]], called
+~dictionary.el~.  By default, this will first query a locally
+installed DICT server, and if that fails, it will query the default
+[[https://dict.org][dict.org]], which aggregates a handful of free sources, including
+WordNet.
+
+Ideally for me, either the OED or Wiktionary would have DICT
+interfaces.  The former has amazing entries, and the latter has
+English definitions for words in many foreign languages.
+Unfortunately, I haven’t been able to find a working gateway for
+either of them—[[https://hewgill.com/dict/][the only gateway that I could]] find seems to be
+inaccessible.  Similarly, the only local dictionaries I can find on
+Debian are of lower quality than the ones on dict.org.  Perhaps
+someday I will install a local dictionary server, but for the moment I
+will rely on an internet connection.
+
+What this means is that we need to tell ~dictionary.el~ to just use
+dict.org rather than first trying localhost, and warning us that there
+is no DICT server running on the machine.  At the same time, we set up
+a keybinding that is very similar to the keybinding for correcting
+spelling, but prefixed with ~C-c~.
+
+#+begin_src emacs-lisp
+  (use-package dictionary
+    :custom
+    (dictionary-server "dict.org"
+     "Don’t use localhost dictionary preferentially")
+    :bind
+    ("C-c M-TAB" . dictionary-search))
+#+end_src
+
 *** Org Mode
 It’s hard to know where to put my [[http://orgmode.org/][Org]] configuration, because of how
 deeply Org has inserted its tendrils into everything I do.  But, I
