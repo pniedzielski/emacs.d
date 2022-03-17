@@ -1299,6 +1299,16 @@ want to keep this in mind just in case.
   (setq org-agenda-use-time-grid t)
 #+end_src
 
+I also use the ~LOCATION~ property quite frequently in my tasks, and I
+would like to see those in my agenda along with the time.  Do do this,
+we reach for the ~org-agenda-property~ package, which is a very small
+addition to org-agenda, but gives this information to be very easily.
+
+#+begin_src emacs-lisp
+  (use-package org-agenda-property
+    :custom (org-agenda-property-list '("LOCATION")))
+#+end_src
+
 * Completion
 ** Ivy
 Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]] a
