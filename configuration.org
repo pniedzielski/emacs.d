@@ -1272,7 +1272,8 @@ more important parts of my configuration for what I do day-to-day are
 here.  First, we want to let Emacs know where I keep my TODO files.
 
 #+begin_src emacs-lisp
-  (setq org-agenda-files  '("~/Dokumentoj/org/"))
+  (setq org-agenda-files  '("~/Dokumentoj/org/"
+                            "~/Dokumentoj/org/notes/daily/"))
 #+end_src
 
 Not everything in Emacs land knows about =org-agenda=.  The older,
