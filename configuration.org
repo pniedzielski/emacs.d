@@ -843,6 +843,10 @@ some links to org-roam notes, so we add some mode-local keybindings:
             '(("d" "default" plain "%?"
                :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                                   "#+title: ${title}\n#+date: %T\n")
+               :unnarrowed t)
+              ("p" "person" plain "%?"
+               :if-new (file+head "${slug}.org"
+                                  "#+title: ${titel}\n#+date: %T\n#+filetags: person\n")
                :unnarrowed t))
             org-roam-dailies-capture-templates
             '(("d" "default" entry
