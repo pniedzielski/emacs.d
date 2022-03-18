@@ -879,7 +879,7 @@ I can use normal package downloads to get this package.
             org-roam-ui-open-on-start     t))
 #+end_src
 
-*** Markdown Mode
+*** Markdown
 Markdown support isn’t included by default in Emacs, and Emacs doesn’t
 recognize files with the =.markdown= and =.md= extensions.  We use
 [[http://jblevins.org/projects/markdown-mode/][markdown-mode]] by Jason Blevins and associate these extensions with it.
