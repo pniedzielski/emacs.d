@@ -1310,6 +1310,64 @@ addition to org-agenda, but gives this information to be very easily.
     :custom (org-agenda-property-list '("LOCATION")))
 #+end_src
 
+* Internet
+Plain text is incredibly versatile as a means for interacting with
+computers, and Emacs is incredibly versatile as a means for
+interacting with plain text.  A substantial amount of my time is spent
+in Emacs, and that includes working with networked applications.  This
+section details my configuration for several important such
+applications, all entirely in plain text!
+
+** Email
+My email is synced locally using IMAP and SMTP, so I always have a
+copy of my email archives.  Because these archives are all stored in
+Maildirs, I can read them, search them, and interact with them in my
+choice of mail clients; if any of them ever fails me, it’s little
+effort to use another one temporarily.  My preferred mail clients have
+all been applications within Emacs, though.  Though early on I used
+the builtin GNUS, I found it too heavyweight and confusing to use
+daily.  For a while, I used mu4e, which I loved, but it physically
+moves mail messages within my maildirs when I retag messages.  This
+always worried me, as I do not want to lose any mail accidentally.
+
+So instead, I’ve settled on notmuch for indexing my mail, and the
+included notmuch Emacs interface for reading my mail.  Notmuch is
+blazingly fast, integrates with other mail clients, like ~mutt~, and
+also comes with a nice command line interface for working with my
+large mail archive.  Moreover, and most importantly, it maintains a
+separate index of my email archive, so it doesn’t touch the ground
+truth: the emails themselves.
+
+Because the notmuch binary and the notmuch Emacs interface are tightly
+coupled, we don’t want to search for the latest notmuch package on
+MELPA or such.  Instead, we just load the package that is already
+installed on the system.
+
+#+begin_src emacs-lisp
+  (use-package notmuch
+    :ensure nil
+    :bind   (("<f6>" . notmuch))
+    :init
+    (setenv "EMAIL_QUEUE_QUIET" "true")
+    (setq sendmail-program "/home/pniedzielski/.local/bin/msmtpq"
+          message-send-mail-function 'message-send-mail-with-sendmail
+          ;; mail-from-style 'angles
+          mail-host-address "pniedzielski.net"
+          mail-specify-envelope-from t
+          ;; needed for debian’s message.el, cf. README.Debian.gz
+          message-sendmail-f-is-evil nil
+          mail-envelope-from 'header
+          message-sendmail-envelope-from 'header
+          message-citation-line-format "%f skribis:\n"
+          message-citation-line-function 'message-insert-formatted-citation-line
+          notmuch-fcc-dirs '(("patrick@pniedzielski.net" . "personal/Sent")
+                             ("pnski@mit.edu" . "mit/Sent"))
+          mml-secure-openpgp-sign-with-sender t)
+    :custom
+    (notumch-search-oldest-first nil
+     "Give me the most recent mail at the top."))
+#+end_src
+
 * Completion
 ** Ivy
 Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]] a
