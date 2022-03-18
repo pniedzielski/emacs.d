@@ -1043,7 +1043,7 @@ hook to turn on the ones we want.
 #+begin_src emacs-lisp
   (use-package haskell-mode
     :hook (haskell-mode . eglot)
-          (haskell-mode . turn-on-haskell-unicode-input-method)
+          (haskell-mode . haskell-unicode-input-method-enable)
           (haskell-mode . haskell-indentation-mode)
           (haskell-mode . haskell-decl-scan-mode)
           (haskell-mode . interactive-haskell-mode))
