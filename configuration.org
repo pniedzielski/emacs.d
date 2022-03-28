@@ -626,6 +626,18 @@ solution by Marcin Borkowski]].  I like the DWIMness of it, but there
 are enough open threads to this solution that, again, I think I would
 find it more annoying than helpful.
 
+*** Filling Paragraphs
+Most of the time, I want my paragraphs in plain text formats to be
+/filled/, the Emacs jargon for having hard line-breaks before a
+certain column.  It’s mostly easy to hit the ~M-q~ and refill the
+current paragraph as I type, but it’s even easier to let Emacs
+automatically break the line at the right point.  To do this, I add a
+hook to ~text-mode~:
+
+#+begin_src emacs-lisp
+  (add-hook 'text-mode-hook #'auto-fill-mode)
+#+end_src
+
 *** Typo Mode
 [[https://github.com/jorgenschaefer/typoel][~typo.el~]] is a package that contains two minor modes, ~typo-mode~ and
 ~typo-global-mode~.  The former is what we’re interested in: when
