@@ -865,7 +865,11 @@ some links to org-roam notes, so we add some mode-local keybindings:
                :unnarrowed t))
             org-roam-dailies-capture-templates
             '(("d" "default" entry
-               "* %?"
+               "* %?\n%U\n"
+               :if-new (file+head "%<%Y-%m-%d>.org"
+                                  "#+title: %<%Y-%m-%d>\n"))
+              ("e" "event" entry
+               "* %?\n%T\n"
                :if-new (file+head "%<%Y-%m-%d>.org"
                                   "#+title: %<%Y-%m-%d>\n"))))
       (org-roam-db-autosync-enable))
