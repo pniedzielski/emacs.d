@@ -872,6 +872,10 @@ some links to org-roam notes, so we add some mode-local keybindings:
                "* %?\n%T\n"
                :if-new (file+head "%<%Y-%m-%d>.org"
                                   "#+title: %<%Y-%m-%d>\n"))))
+      (setq org-roam-mode-section-functions
+            (list #'org-roam-backlinks-section
+                  #'org-roam-reflinks-section
+                  #'org-roam-unlinked-references-section))
       (org-roam-db-autosync-enable))
 
   (use-package org-roam-protocol :ensure nil :after org-roam :demand t)
