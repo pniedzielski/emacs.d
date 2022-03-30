@@ -1186,6 +1186,22 @@ is a bit verbose, my end goal is to get keys like
           bibtex-autokey-before-presentation-function #'downcase))
 #+end_src
 
+*** Org-cite
+Org-cite is a relatively recent addition to org-mode, which lets me
+include bibliography citations in my org files.  Although most serious
+things I write in LaTeX, setting this up is still very useful for my
+org-roam notes.
+
+For the moment, I do very little configuration of this, just setting
+where my bibliography is:
+
+#+begin_src emacs-lisp
+  (use-package oc                         ; org-cite is oc.el :(
+    :ensure nil
+    :after org
+    :custom (org-cite-global-bibliography '("~/Biblioteko/biblioteko.bib")))
+#+end_src
+
 *** Ebib
 [[https://joostkremers.github.io/ebib/][Ebib]] is a very nice replacement for software programs like [[https://www.mendeley.com/download-reference-manager/][Mendeley]],
 [[https://www.zotero.org/][Zotero]], and [[https://www.jabref.org/][JabRef]].  Each of these had some downside:
