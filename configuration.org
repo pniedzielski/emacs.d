@@ -692,23 +692,6 @@ language.  We’ll turn this on whenever we have flyspell on.
     :hook (flyspell-mode . auto-dictionary-mode))
 #+end_src
 
-Once flyspell detects a spelling error, we have two options to fix it.
-First, we can use the built-in command ~ispell~, which works on the
-whole buffer.  I use this pretty frequently.  Alternatively, the
-~flyspell-correct~ and ~flyspell-correct-ivy~ packages allow us to
-correct a spelling at the point, giving us a nice ivy-based completion
-interface for selecting the correct replacement.
-
-#+begin_src emacs-lisp
-  (use-package flyspell-correct
-    :after flyspell
-    :bind (:map flyspell-mode-map
-           ("C-;" . flyspell-correct-wrapper)))
-
-  (use-package flyspell-correct-ivy
-    :after flyspell ivy flyspell-correct)
-#+end_src
-
 *** Dictionary
 In addition to spell checking, it’s very useful to be able to lookup
 the definitions of words in some text.  Luckily, Emacs has a built-in
