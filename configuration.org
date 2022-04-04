@@ -1246,14 +1246,16 @@ porcelain, by far. For ease of access, I have the main Magit command,
 #+begin_src emacs-lisp
   (use-package magit
     :bind ("C-c g" . magit-status)
-    :config (setq magit-completing-read-function 'ivy-completing-read
-                  magit-repository-directories '(("~" . 3)))
+    :config (setq magit-repository-directories '(("~" . 3)))
     :commands (magit-status magit-blame magit-log-buffer-file magit-log-all)
     :after ivy)
 #+end_src
 
-We want Magit to use [[*Ivy][Ivy]] for completion, and we search for all
-projects nested three directories under home.
+We want Magit to search for all repositories nested three directories
+under home.  ([2022-04-04 lun 21:13] At some point, I will look into
+how this relates to Emacs’s own built-in project search; it’s not
+clear to me that I really need this configuration when I use
+~project.el~.)
 
 #+begin_src emacs-lisp
   (use-package magit-filenotify :after magit)
