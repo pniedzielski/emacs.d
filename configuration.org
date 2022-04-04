@@ -563,8 +563,8 @@ if ever there was one).
 
 However, it’s an unfortunate fact that certain automatically generated
 Emacs buffers having rampant trailing whitespace (a red flag, if ever
-there was one), including Ivy/Counsel in the minibuffer.  While we
-could create a list of modes to turn this setting off, for the
+there was one), including ~completing-read~ in the minibuffer.  While
+we could create a list of modes to turn this setting off, for the
 specific problem of special Emacs buffers with trailing whitespace, it
 appears the best cut is between /buffers I can edit/ and /buffers I
 cannot/​—or in other words programming and writing buffers on one hand,
