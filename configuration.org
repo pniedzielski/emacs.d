@@ -1456,6 +1456,7 @@ packages.  We’ll make sure it’s installed, then turn it on globally.
 
 #+begin_src emacs-lisp
   (use-package ivy :demand
+    :disabled
     :diminish ivy-mode
     :config
     (setq ivy-use-virtual-buffers t
@@ -1468,6 +1469,7 @@ more useful completion in a lot of common cases.
 
 #+begin_src emacs-lisp
   (use-package counsel :demand
+    :disabled
     :after ivy
     :diminish counsel-mode
     :config (counsel-mode))
@@ -1483,6 +1485,7 @@ hierarchy, parallel to ~occur~﻿’s.
 
 #+begin_src emacs-lisp
   (use-package swiper
+    :disabled
     :after ivy
     :bind ("M-s s" . swiper ))
 #+end_src
@@ -1494,6 +1497,7 @@ information in the minibuffer for each completion option.
 
 #+begin_src emacs-lisp
   (use-package ivy-rich
+    :disabled
     :config (ivy-rich-mode 1))
 #+end_src
 
@@ -1502,6 +1506,7 @@ listing all the operations I can perform on a search result.
 
 #+begin_src emacs-lisp
   (use-package ivy-hydra
+    :disabled
     :after ivy)
 #+end_src
 
