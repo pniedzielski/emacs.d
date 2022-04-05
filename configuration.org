@@ -1448,6 +1448,100 @@ installed on the system.
 #+end_src
 
 * Completion
+** Vertico                                                          :testing:
+For quite a long time, I used Ido for ~completing-read~, and it worked
+great.  It was nice, it was lightweight, and it was easy to setup.
+Especially compared to the only alternative at the time—Helm—it didn’t
+take up much screen real estate and never got in my way.  However,
+Ido was very limited with what it could do, and (through probably no
+fault of its own) was not well-integrated with third-party packages.
+When I stared playing with helm-bibtex/ivy-bibtex, it finally got me
+to switch to Ivy, the lighter-weight of those two alternatives.
+
+Nonetheless, although Ivy is not as heavy, it is not especially
+Emacs-y.  I’ve never fully understood the division of labor between
+Ivy and its related package Counsel, and the Ivy-ecosystem package
+that seems to be touted as its killer feature, Swiper, seems worse
+than isearch+occur.  For this reason, I’m taking a look at the new kid
+on the block, Vertico ([2022-04-03 dim]).
+
+As I understand it, Vertico is designed to do one thing well: be a
+~completing-read~ implementation.  It outsources many of the things in
+Ivy and Counsel to other packages to deal with.  In that way, I always
+found that ecosystem more confusing, but I think that’s because it’s
+exposing inherent complexity that that was always behind the scenes in
+Ivy.  This should also make it easier for me to modify exactly how my
+searches work, like giving me the ability to add tags back to the
+org-roam search very easily.
+
+Because I found this so unintuitive though, this is how I understand
+the ecosystem:
+
+  - selectrum :: This was the predecessor to Vertico, and it
+    implements ~completing-read~, i.e., reading a string from the
+    minibuffer and providing completion.  It was meant to be a lighter
+    version of Ivy, and to integrate more nicely with the default
+    Emacs ~completing-read~ framework.
+
+  - vertico :: Vertico provides an implementation of Emacs’s
+    ~completing-read~, allowing you to read a string from the
+    minibuffer and providing completion from a list of candidates.
+    Like selectrum before it, it slots into Emacs’s existing
+    ~completing-read~ framework.
+
+  - consult :: Consult enhances many of the commands in Emacs that use
+    ~completing-read~, and adds a few more ~completing-read~ commands
+    as well.  It’s analogous to Counsel in the Ivy world.
+
+  - embark :: Once you’ve found what you’re looking for with
+    ~completing-read~, Embark lets you run other commands on it than
+    the one you invoked.  For instance, if you search apropos for a
+    function, you can instead insert the function name.  It’s similar
+    to ~ivy-hydra~.
+
+  - marginalia :: Marginalia adds nice annotations to
+    ~completing-read~, like ~ivy-rich~.
+
+  - orderless :: This adds another filtering mechanism to
+    ~completing-read~, which is based on substring matching with
+    multiple space-deliminated terms.
+
+For the moment, I’m starting small: I’m only using Vertico, so I can
+get used to it.  In a way, this feels like using Ido mode again,
+although it has better integration across-the-board than Ido did when
+I last used it.
+
+#+begin_src emacs-lisp
+  (use-package vertico :demand
+    :diminish vertico-mode
+    :custom
+    (vertico-resize t "Grow and shrink the Vertico minibuffer")
+    :config
+    (vertico-mode))
+#+end_src
+
+Vertico has a handful of extensions that are included along with it.
+One very nice one makes editing text in the minibuffer more like Ido,
+which is something that I greatly missed when I switched to Ivy.
+
+#+begin_src emacs-lisp
+  (use-package vertico-directory
+    :after vertico
+    :ensure nil                           ; included with vertico
+    ;; Make vertico editing more like Ido.
+    :bind (:map vertico-map
+                ("RET"   . vertico-directory-enter)
+                ("DEL"   . vertico-directory-delete-char)
+                ("M-DEL" . vertico-directory-delete-word)))
+#+end_src
+
+Vertico [[info:vertico#org-refile][has some issues with org-refile]], if I use a completion style
+that isn’t just ~basic~—or more precisely, org-refile has some issues
+with other completion styles.  I never tried to fix this with Ido or
+Ivy, so when I started using ~org~ more, I went from ~flex~ completion
+back to ~basic~.  ~flex~ completion is nice, so at some point I will
+use one of the two solutions documented in the Vertico manual.
+
 ** Ivy
 Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]] a
 little while ago.  While it’s more heavyweight than Ido, it’s not too
@@ -1527,6 +1621,14 @@ last commit was on [2015-12-12 sab]).
   (use-package amx
     :config (amx-mode 1))
 #+end_src
+
+Now that I’m testing [[*Vertico][Vertico]] ([2022-04-05 mar]), I’m not sure that I
+need this package anymore.  Some of the things it does, like saving
+minibuffer history, can be done as well by built-in Emacs
+functionality (savehist, for instance).  However, it does still have a
+few nice features I’ve found myself using in the past, such as letting
+me find common commands that don’t have a keybinding.  For the moment,
+I’m keeping this, although I may revisit it later.
 
 * Visual Theming
 This is honestly the least important part of my configuration.  Fonts
