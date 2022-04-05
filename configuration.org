@@ -1247,8 +1247,7 @@ porcelain, by far. For ease of access, I have the main Magit command,
   (use-package magit
     :bind ("C-c g" . magit-status)
     :config (setq magit-repository-directories '(("~" . 3)))
-    :commands (magit-status magit-blame magit-log-buffer-file magit-log-all)
-    :after ivy)
+    :commands (magit-status magit-blame magit-log-buffer-file magit-log-all))
 #+end_src
 
 We want Magit to search for all repositories nested three directories
