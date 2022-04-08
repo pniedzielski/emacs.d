@@ -1817,6 +1817,56 @@ Emacs modes and buffers.
     :config (global-form-feed-mode))
 #+end_src
 
+** Icons
+In most cases, having icons in a text editor serve a similar purpose
+as syntax-highlighting: used sparingly, they can help understand new
+information at a glance.  The ~all-the-icons~ package gives us icons
+for most file/buffer types, using icon fonts.  In my view, it would be
+better to use the built-in Emacs SVG support for this purpose, but I
+don’t know of a package that does this.
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons)
+#+end_src
+
+I enable icons in three different places (which, of course, means I
+need three extra packages…): in dired, in abuser, and in file
+completion.  In each of these cases, the icons are complementary to
+the filenames themselves.  That is to say, if I know what the file I’m
+looking for is named, I don’t need to worry about the icons, or if I
+know what type of file I’m looking for, I can filter out everything
+else; if, on the other hand, I’m looking at a cluttered directory for
+the first time, or otherwise don’t know what exactly I’m searching
+for, icons give a good easy overview.
+
+First, set up the dired icons, by running a hook when dired is loaded.
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons-dired :demand
+    :after (dired all-the-icons)
+    :diminish all-the-icons-dired-mode
+    :hook (dired-mode . all-the-icons-dired-mode))
+#+end_src
+
+Next, set up the ibuffer icons.  Of course, it could’t be parallel to
+the above, so we need to enable a minor mode.
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons-ibuffer :demand
+    :after (ibuffer all-the-icons)
+    :diminish all-the-icons-ibuffer-mode
+    :config (all-the-icons-ibuffer-mode 1))
+#+end_src
+
+Third and finally, set up icons in filename completion.
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons-completion :demand
+    :after (marginalia all-the-icons)
+    :diminish all-the-icons-completion-mode
+    :config (all-the-icons-completion-mode))
+#+end_src
+
 ** Custom Theme
 Nowadays, Emacs has built-in support for custom themes.  It used to be
 that you needed to manually set colors, or load a package
