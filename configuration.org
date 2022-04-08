@@ -501,34 +501,6 @@ a replacement to ~multiple-cursors~, if I ever find the time (and,
 significantly, if it doesn’t have the same annoyance as I describe
 above).
 
-** Windmove                                                         :testing:
-I’m trying out the the ~windmove.el~ package, which is included in
-Emacs.  I think this will end up being quicker and more intuitive than
-the default ~C-x o~ and ~C-- C-x o~ keybindings for navigating around
-frames with more than two windows.  The default bindings I set up here
-use shift and arrows to move the currently selected window.
-
-There is a minor conflict between org mode and this package, where org
-mode wants to take over ~S-<UP>~ and so forth.  We could have selected
-another modifier, but I don’t use shift-selection in org mode anyway.
-Instead, we apply [[info:org#Conflicts][the documented fix from the Org Mode manual]].  I’m
-not sure if this is the right place to put the fix, but this is where
-it lives for now.  Coupled with the [[*Dimming Unused Windows][dimming]] package, I imagine this
-will become my preferred way of moving among windows.
-
-#+begin_src emacs-lisp
-  (use-package windmove
-    :ensure nil
-    ;; Make windmove work in org mode.
-    :hook ((org-shiftup-final-hook    . windmove-up)
-           (org-shiftleft-final-hook  . windmove-left)
-           (org-shiftdown-final-hook  . windmove-down)
-           (org-shiftright-final-hook . windmove-right))
-    :config
-    (windmove-default-keybindings)
-    (setq windmove-wrap-around t))
-#+end_src
-
 * Editing
 Even though I consider [[*Movement][movement]] the killer feature of Emacs as an
 editor, the actual editing functionality of Emacs is also very useful.
