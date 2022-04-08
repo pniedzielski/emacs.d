@@ -1554,6 +1554,38 @@ Ivy, so when I started using ~org~ more, I went from ~flex~ completion
 back to ~basic~.  ~flex~ completion is nice, so at some point I will
 use one of the two solutions documented in the Vertico manual.
 
+** Completion Annotations
+The Marginalia package adds nice annotations to ~completing-read~, in
+the manner of ~ivy-rich~.  This is something I really liked about the
+Ivy ecosystem, and I’m glad to have it still with Vertico.
+
+This configuration is mostly taken from the [[https://github.com/minad/marginalia/][Marginalia README]], but
+with one change:  The README says to start ~marginalia-mode~ in the
+~:init~ section of my ~use-package~ declaration:
+
+#+begin_src emacs-lisp   :tangle no
+  ;; Must be in the :init section of use-package such that the mode gets
+  ;; enabled right away. Note that this forces loading the package.
+#+end_src
+
+This doesn’t comport with what the [[info:use-package#preface init config][~use-package~ manual says]], namely
+that ~:init~ is run before the package is loaded!  We need to load
+Marginalia before we can turn on the mode.  I’m not sure why that
+configuration seems to work (does it have something to do with
+autoloading?), but the correct way to override the lazy loading from
+~:bind~ is [[info:use-package#defer demand][using ~:demand~]].
+
+#+begin_src emacs-lisp
+  (use-package marginalia :demand
+    :diminish marginalia-mode
+    :bind (:map minibuffer-local-map
+           ("M-A" . marginalia-cycle))
+    :config (marginalia-mode))
+#+end_src
+
+I haven’t found a use yet for ~marginalia-cycle~, but having it bound
+to ~M-A~ as the documentation suggests doesn’t seem to hurt anything.
+
 ** Ivy
 Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]] a
 little while ago.  While it’s more heavyweight than Ido, it’s not too
