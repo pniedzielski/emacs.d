@@ -156,6 +156,18 @@ repositories we plan to use.
                            ("melpa"  . "https://melpa.org/packages/")))
 #+end_src
 
+Then, we tell Emacs to prefer ELPA over Non-GNU ELPA over MELPA.  I
+have a lot more trust in ELPA than I do in MELPA, since the former
+requires explicit versioned uploads.  If it is ever an issue, I can
+pin a specific package from MELPA.  So far, though, that has never
+come up.
+
+#+begin_src emacs-lisp
+  (setq package-archive-priorities '(("gnu"    . 30)
+                                     ("nongnu" . 20)
+                                     ("melpa"  . 10)))
+#+end_src
+
 As of [2021-09-23 ĵaŭ], I’m trying out the Non-GNU ELPA repository.
 I’m not sure if this will cause conflicts with MELPA or not, but for
 now I’m prefering to use the official non-GNU package repository where
