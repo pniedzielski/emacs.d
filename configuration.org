@@ -307,6 +307,14 @@ functionality.
   (require 'server)
 #+end_src
 
+** XDG Directories
+Emacs knows about the XDG Basedirs Specification, but unfortunately
+the library is not loaded by default.
+
+#+begin_src emacs-lisp
+  (use-package xdg)
+#+end_src
+
 ** exec-path-from-shell
 Finally, I have [[https://github.com/pniedzielski/dotfiles-ng][a lot of modifications to my =PATH= variable and
 others]] that I want to import into Emacs, regardless of whether it was
@@ -1201,6 +1209,7 @@ it’s very easy to grow into the rest of the functionality, as it were.
 
 #+begin_src emacs-lisp
   (use-package ebib
+    :after xdg
     :bind ("<f7>" . ebib)
     :custom ((ebib-bibtex-dialect       'biblatex)
              (ebib-preload-bib-files    '("biblioteko.bib"))
