@@ -1612,6 +1612,24 @@ few nice features I’ve found myself using in the past, such as letting
 me find common commands that don’t have a keybinding.  For the moment,
 I’m keeping this, although I may revisit it later.
 
+** Minibuffer History
+I used to use [[https://github.com/DarwinAwardWinner/amx/][Amx]], and before that [[https://github.com/nonsequitur/smex][Smex]], as an enhanced
+~execute-extended-command~, which prioritized commands by use and
+showing keyboard shortcuts along with the command name.  Now that I’m
+using [[*Vertico][Vertico]], which (along with its ancillary packages) provides most
+of the functionality in Amx, it doesn’t make sense to use Amx anymore.
+
+The only missing functionality is saving the command history across
+sessions of Emacs.  Luckily, the built-in ~savehist~ minor mode
+replicates this functionality.  We just need to load it and turn it
+on, and it will periodically save our command history to a file,
+preserving it when Emacs is shutdown.
+
+#+begin_src emacs-lisp
+  (use-package savehist
+    :config (savehist-mode +1))
+#+end_src
+
 * Visual Theming
 This is honestly the least important part of my configuration.  Fonts
 and pretty are nice, and customizing the display to save a bit of
