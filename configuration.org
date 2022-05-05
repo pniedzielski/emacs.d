@@ -434,6 +434,17 @@ keybindings.
    :custom (free-keys-modifier . ("" "C" "M" "C-M" "H" "C-H")))
 #+end_src
 
+** Passwords
+I use [[https://www.passwordstore.org/][pass]] to manage my passwords, because in part because of how easy
+it is to synchronize and update the passwords across devices with Git.
+Emacs has nice integration with it as well.  The =password-store=
+package provides a programmatic interface to my pass database, which
+lets me keep passwords out of this (public) configuration.
+
+#+begin_src emacs-lisp
+  (use-package password-store)
+#+end_src
+
 * Movement
 The benefits in movement that Emacs gives are probably its killer
 feature as a text editor for me.  While some people really customize
@@ -1259,6 +1270,12 @@ We also want to integrate Magit into Emacs’s project functionality:
 #+begin_src emacs-lisp
   (use-package magit-extras
     :ensure nil)
+#+end_src
+
+** Git Commit
+#+begin_src emacs-lisp
+  (use-package git-commit
+    :custom ((git-commit-major-mode . 'markdown-mode)))
 #+end_src
 
 *** Magit Imerge
