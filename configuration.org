@@ -1458,7 +1458,7 @@ installed on the system.
 #+end_src
 
 * Completion
-** Vertico                                                          :testing:
+** Vertico
 For quite a long time, I used Ido for ~completing-read~, and it worked
 great.  It was nice, it was lightweight, and it was easy to setup.
 Especially compared to the only alternative at the time—Helm—it didn’t
@@ -1584,67 +1584,6 @@ autoloading?), but the correct way to override the lazy loading from
 I haven’t found a use yet for ~marginalia-cycle~, but having it bound
 to ~M-A~ as the documentation suggests doesn’t seem to hurt anything.
 
-** Ivy
-Although I used Ido for quite a long time, I made the switch to [[https://oremacs.com/swiper/][Ivy]] a
-little while ago.  While it’s more heavyweight than Ido, it’s not too
-heavy and provides a lot more nice features and integration with other
-packages.  We’ll make sure it’s installed, then turn it on globally.
-
-#+begin_src emacs-lisp
-  (use-package ivy :demand
-    :disabled
-    :diminish ivy-mode
-    :config
-    (setq ivy-use-virtual-buffers t
-          ivy-count-format "%d/%d ")
-    (ivy-mode 1))
-#+end_src
-
-The Counsel package builds on Ivy, to provide more intelligent and
-more useful completion in a lot of common cases.
-
-#+begin_src emacs-lisp
-  (use-package counsel :demand
-    :disabled
-    :after ivy
-    :diminish counsel-mode
-    :config (counsel-mode))
-#+end_src
-
-The third of the Ivy trio is Swiper, which is halfway between Emacs’s
-search functionality and its ~occur~ functionality.  While some people
-swear by using it for search, I use Emacs incremental search primarily
-as a movement command, so that’s not for me.  Instead, I use Swiper
-more like ~occur~, allowing me to see all results and jump between
-them efficiently.  I bind this to a keybinding under the ~M-s~ search
-hierarchy, parallel to ~occur~﻿’s.
-
-#+begin_src emacs-lisp
-  (use-package swiper
-    :disabled
-    :after ivy
-    :bind ("M-s s" . swiper ))
-#+end_src
-
-One of the nice thing about Ivy is the number of packages that
-integrate with it in various ways.  One nice-to-have package, although
-by no means necessary, is the ~ivy-rich~ package, which gives more
-information in the minibuffer for each completion option.
-
-#+begin_src emacs-lisp
-  (use-package ivy-rich
-    :disabled
-    :config (ivy-rich-mode 1))
-#+end_src
-
-I also have found that I like ~ivy-hydra~, which pops up a buffer
-listing all the operations I can perform on a search result.
-
-#+begin_src emacs-lisp
-  (use-package ivy-hydra
-    :disabled
-    :after ivy)
-#+end_src
 
 ** Amx
 From the [[https://github.com/DarwinAwardWinner/amx/][Amx website]],
