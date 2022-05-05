@@ -1543,7 +1543,9 @@ which is something that I greatly missed when I switched to Ivy.
     :bind (:map vertico-map
                 ("RET"   . vertico-directory-enter)
                 ("DEL"   . vertico-directory-delete-char)
-                ("M-DEL" . vertico-directory-delete-word)))
+                ("M-DEL" . vertico-directory-delete-word))
+    ;; Tidy shadowed names.
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 #+end_src
 
 Vertico [[info:vertico#org-refile][has some issues with org-refile]], if I use a completion style
