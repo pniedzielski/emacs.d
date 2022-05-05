@@ -1517,7 +1517,8 @@ the ecosystem:
     multiple space-deliminated terms.
 
 For the moment, I’m starting small: I’m only using Vertico, so I can
-get used to it.  In a way, this feels like using Ido mode again,
+get used to it, and Marginalia, since the annotations are very, very
+useful to me.  In a way, this feels like using Ido mode again,
 although it has better integration across-the-board than Ido did when
 I last used it.
 
