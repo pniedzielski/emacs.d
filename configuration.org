@@ -760,6 +760,8 @@ modifiable, and human-readable nature of Org mode.
                                         ("CANCELED"  :foreground "forest green" :weight bold)
                                         ("MEETING"   :foreground "red"          :weight bold)))
     <<org-latex-export>>
+    :config
+    <<org-clock-config>>
     :bind (("C-c a" . org-agenda)
            ("C-c l" . org-store-link)
            ("C-c !" . org-time-stamp-inactive)
@@ -768,6 +770,79 @@ modifiable, and human-readable nature of Org mode.
 #+end_src
 
 Let’s take these configurations in turn.
+
+**** Work Tracking
+*Note as of [2022-05-06 ven 21:53]*: I haven’t used this in quite a
+while, but because I’m slowly moving over my org configuration into a
+git repository, I’m keeping it here for the moment.
+
+[[info:org#Clocking Work Time][Org mode includes clocking functionality]] that tracks how much time you
+spend working on a particular project in your org agenda.  I think the
+primary use case of this is for contractors who bill by the hour;
+having a detailed list of hours spent on each task is simply necessary
+for such a job.  I am not at all in that position.  However, some time
+during the early part of 2021, I experimented with tracking my tasks
+for a week, to see how much time I spent on different parts of a paper
+I was working on.  I found this very informative, but moreover, I
+found that having something how much time I work on each task made me
+focus on each one a bit more, rather than flitting to and fro between
+tasks—a bad habit I’ve picked up over the course of the COVID-19
+pandemic.  I thought this might help me better estimate how much time
+I need to spend on something to complete it, but it didn’t help this
+at all.  It seems to be a purely psychological trick, and part of me
+hopes I’ll be able to grow out of it.
+
+And so, I am by no means religious about this, and it strikes me that
+giving this any more than the minimum amount of thought would be
+_counterproductive_ rather than helpful.  Luckily, the configuration
+for this is dead simple.  We teach Emacs to remember both our time
+history and the time of any currently running clock across restarts
+and also set up hooks that actually perform the persistence.
+
+#+begin_src emacs-lisp   :tangle no   :noweb-ref org-clock-config
+  (setq org-clock-persist t)
+  (org-clock-persistence-insinuate) ;weird name, org-mode
+#+end_src
+
+At this point, work tracking works very simply.  All the relevant
+keybindings live under the ~C-c C-x~ prefix (along with seemingly half
+of org’s keybindings).  These are the ones I use:
+
+  - ~C-c C-x C-i~ ::
+      Start a work clock on the heading under point.
+  - ~C-u C-c C-x C-i~ ::
+      Start a work clock on a recent task.
+  - ~C-c C-x C-o~ ::
+      Stop a work clock.
+
+***** Pomodoro Technique
+[[https://www.pomodorotechnique.com/][The Pomodoro Technique]] divides tasks into roughly 25 minute blocks
+(“pomodoros”), with 5 minute breaks in between.  I prefer to work in
+longer blocks when I can, without distraction, but when I don’t have
+the motivation or interest to maintain that level of focus, dividing
+work into shorter blocks of time can do wonders.  It’s a mental trick,
+and should be reserved for those times when you need mental tricks to
+get something done.  It won’t magically make you more productive.
+
+If you want to do this, just use a phone timer or such.  I don’t think
+it’s worth integrating this into Emacs specifically *except* if you
+use work timing as above.  And even then, it is only a minor
+convenience—otherwise there’s really no point.  But, if you do use
+work tracking in org mode, you can use the [[https://github.com/marcinkoziej/org-pomodoro][org-pomodoro]] package, whose
+singular benefit is to start a work clock at the beginning of a
+pomodoro, and stop the work clock at the end of the pomodoro.
+
+The one configuration we make is to send Pomodoro alerts as system
+alerts.  Otherwise, I am liable to miss them.
+
+#+begin_src emacs-lisp
+  (use-package org-pomodoro
+    :after alert
+    :commands (org-pomodoro)              ;only load when we call this
+    :config
+    (add-to-list 'alert-user-configuration
+                 '(((:category . "org-pomodoro")) libnotify nil)))
+#+end_src
 
 **** Exporting
 I didn’t used to have much use for Org mode exporting: my main use of
