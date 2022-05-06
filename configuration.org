@@ -769,7 +769,7 @@ modifiable, and human-readable nature of Org mode.
 
 Let’s take these configurations in turn.
 
-***** Exporting
+**** Exporting
 I didn’t used to have much use for Org mode exporting: my main use of
 Org mode was for writing, reading, and using the package landscape
 built-up around Org mode.  However, I’ve found more and more that
