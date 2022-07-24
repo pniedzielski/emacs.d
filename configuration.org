@@ -670,6 +670,13 @@ detect which to use based on the ispell dictionary, but for the moment
 I use English as a default, and manually change the quote style when
 needed.
 
+Indeed, there is similar functionality built-in to Emacs in the form
+of [[info:emacs#Quotation Marks][~electric-quote-mode~]], but it only replaces quotation marks, and
+only to their English typographic equivalent.  I find myself using
+dashes and ellipses quite often, and as well it isn’t infrequent that
+I edit texts in other languages, with different typographic
+traditions.  ~typo.el~ works out of the box.
+
 *** Spell Checking
 I am terrible at spelling—much more terrible than a recovering
 Indo-Europeanist should be.  Flyspell marks my spelling errors
