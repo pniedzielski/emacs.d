@@ -1825,6 +1825,76 @@ preserving it when Emacs is shutdown.
     :config (savehist-mode +1))
 #+end_src
 
+** Completion at Point                                              :testing:
+Although minibuffer completion is by far the most important sort of
+completion to my Emacs usage, I do make use of /completion at point/
+fairly frequently as well, especially when programming.  However, even
+moreso than the default completing read, I find the default completion
+at point to be very annoying to use whenever there are more than a
+small number of options.  For this reason, I have always replaced
+completion at point with a 3rd party package that display a popup for
+completion candidates, rather than opening a side window to display
+them.  For the longest time, I used [[https://company-mode.github.io/][company-mode]], which does work very
+well, but has started to feel very big and bolted-on, especially as
+Emacs’s built-in completion framework has matured.  I’m now trying
+[[https://github.com/minad/corfu][corfu]], which performs the same basic UI function as company-mode, but
+which relies only on the Emacs completion functionality to propose
+candidates.
+
+#+begin_src emacs-lisp
+  (use-package corfu
+    :custom
+    (tab-always-indent 'complete
+     "On TAB, first indent the line, then complete.")
+    :config
+    (global-corfu-mode))
+#+end_src
+
+Unlike company-mode, corfu does not provide any backends for
+collecting completion candidates, instead relying on Emacs’s built-in
+completion at point functions to do that job.  This is, by and large,
+fine, because the completion at point backends have gotten much better
+in recent versions of Emacs.  Furthermore, more and more modes and
+packages, notably including [[*LSP][Eglot]], have targetted completion at point
+functions to provide completion candidates.  If I ever need something
+like the addition backends that Company provides, I can always try the
+[[https://github.com/minad/cape][Cape]] package, which provides similar backends as completion at point
+functions.
+
+One of the nice things about corfu is how extensible it is.  This
+comes in several forms, such as the pluggable completion at point
+backends above, but even its UI can be modified.  There are two
+packages that I’m trying with corfu, because I used their equivalents
+with company:
+
+  1. [[https://github.com/galeo/corfu-doc][corfu-doc]] provides inline documentation for candidates that
+     include it, making it easier to select between similar
+     alternatives when programming.
+     #+begin_src emacs-lisp
+       (use-package corfu-doc
+         :after corfu
+         :hook (corfu-mode . corfu-doc-mode)
+         :bind
+         (:map corfu-map
+          ("M-p" . corfu-doc-scroll-down)
+          ("M-n" . corfu-doc-scroll-up)
+          ("M-d" . corfu-doc-toggle)))
+     #+end_src
+
+  2. [[https://github.com/jdtsmith/kind-icon][kind-icon]] uses the ~:company-kind~ property to add icons or
+     visual text prefixes to completion candidates, making it easier
+     to filter completion candidates at a glance.
+     #+begin_src emacs-lisp
+       (use-package kind-icon
+         :after corfu
+         :custom
+         (kind-icon-default-face 'corfu-default
+          "Use the same font as corfu for icons")
+         :config
+         (add-to-list 'corfu-margin-formatters
+                      #'kind-icon-margin-formatter))
+     #+end_src
+
 * Visual Theming
 This is honestly the least important part of my configuration.  Fonts
 and pretty are nice, and customizing the display to save a bit of
