@@ -1536,6 +1536,17 @@ installed on the system.
      "Give me the most recent mail at the top."))
 #+end_src
 
+* Finances
+** Ledger Mode
+I use John Wiegley’s [[https://www.ledger-cli.org/][ledger]] program to manage my finances.  Ledger is
+a plain text-based double-entry accounting system that lets me keep
+track of exactly where every cent goes.  Luckily, ledger has an Emacs
+mode as well, which helps in managing my budget.
+
+#+begin_src emacs-lisp
+  (use-package ledger-mode)
+#+end_src
+
 * Completion
 ** Vertico
 For quite a long time, I used Ido for ~completing-read~, and it worked
