@@ -233,14 +233,19 @@ we’ll have a handful of loose configured options set up here at the
 start.  We chose to be a bit more verbose in what we output, so that
 we can keep track of what is going on in the systemd journal.  We also
 make sure download packages by default if they aren’t already
-installed (known in =use-package=-speak as /ensuring/).
+installed (known in =use-package=-speak as /ensuring/).  Finally, we
+turn off the default of adding a ~-hook~ suffix to symbols that appear
+in the ~:hook~ section of a ~use-package~ declaration; the default
+means we can’t configure [[info:emacs#Hooks][abnormal hooks]] in the same way as normal
+hooks.
 
 #+name: use-package-config
 #+begin_src emacs-lisp   :tangle no
   (setq use-package-verbose            t
         use-package-expand-minimally   nil
         use-package-compute-statistics t
-        use-package-always-ensure      t)
+        use-package-always-ensure      t
+        use-package-hook-name-suffix   nil)
 #+end_src
 
 Finally, to avoid unnecessary garbage collection during start up,
@@ -653,7 +658,7 @@ functionality in program modes as we do in text modes, when needed.
 
 #+begin_src emacs-lisp
   (use-package typo
-    :hook (text-mode . typo-mode)
+    :hook (text-mode-hook . typo-mode)
     :config (typo-global-mode 1)
     (setq-default typo-language "English"))
 #+end_src
@@ -679,8 +684,8 @@ turn on flyspell only in comments for modes that are derived from
 #+begin_src emacs-lisp
   (use-package flyspell
     :diminish flyspell
-    :hook ((text-mode . flyspell-mode)
-           (prog-mode . flyspell-prog-mode)))
+    :hook ((text-mode–hook . flyspell-mode)
+           (prog-mode-hook . flyspell-prog-mode)))
 #+end_src
 
 My systems tend to have Esperanto as their default language (for
@@ -692,7 +697,7 @@ language.  We’ll turn this on whenever we have flyspell on.
 #+begin_src emacs-lisp
   (use-package auto-dictionary
     :after flyspell
-    :hook (flyspell-mode . auto-dictionary-mode))
+    :hook (flyspell-mode-hook . auto-dictionary-mode))
 #+end_src
 
 *** Dictionary
@@ -1038,7 +1043,7 @@ modification with the results of =tree-sitter=’s parsing.
 
 #+begin_src emacs-lisp
   (use-package tree-sitter
-    :hook (tree-sitter-after-on . tree-sitter-hl-mode)
+    :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
     :config (global-tree-sitter-mode))
   (use-package tree-sitter-langs)
 #+end_src
@@ -1126,11 +1131,11 @@ hook to turn on the ones we want.
 
 #+begin_src emacs-lisp
   (use-package haskell-mode
-    :hook (haskell-mode . eglot)
-          (haskell-mode . haskell-unicode-input-method-enable)
-          (haskell-mode . haskell-indentation-mode)
-          (haskell-mode . haskell-decl-scan-mode)
-          (haskell-mode . interactive-haskell-mode))
+    :hook (haskell-mode-hook . eglot-ensure)
+          (haskell-mode-hook . haskell-unicode-input-method-enable)
+          (haskell-mode-hook . haskell-indentation-mode)
+          (haskell-mode-hook . haskell-decl-scan-mode)
+          (haskell-mode-hook . interactive-haskell-mode))
 #+end_src
 
 There are some keybindings in Haskell Mode that are very useful, but
@@ -1620,7 +1625,7 @@ which is something that I greatly missed when I switched to Ivy.
                 ("DEL"   . vertico-directory-delete-char)
                 ("M-DEL" . vertico-directory-delete-word))
     ;; Tidy shadowed names.
-    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+    :hook (rfn-eshadow-update-overlay-hook . vertico-directory-tidy))
 #+end_src
 
 Vertico [[info:vertico#org-refile][has some issues with org-refile]], if I use a completion style
@@ -1991,7 +1996,7 @@ First, set up the dired icons, by running a hook when dired is loaded.
   (use-package all-the-icons-dired :demand
     :after (dired all-the-icons)
     :diminish all-the-icons-dired-mode
-    :hook (dired-mode . all-the-icons-dired-mode))
+    :hook (dired-mode-hook . all-the-icons-dired-mode))
 #+end_src
 
 Next, set up the ibuffer icons.  Of course, it could’t be parallel to
