@@ -1191,7 +1191,6 @@ need when we load a PDF for the first time.
     (require 'pdf-isearch)
     (require 'pdf-history)
     (require 'pdf-links)
-    (pdf-loader-install :no-query)
     (setq pdf-view-continuous nil)
     :functions
     (pdf-tools-disable-cursor pdf-tools-advice-evil-refresh-cursor))
