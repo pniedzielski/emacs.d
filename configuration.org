@@ -2088,6 +2088,65 @@ Third and finally, set up icons in filename completion.
     :config (all-the-icons-completion-mode))
 #+end_src
 
+** ANSI Coloring
+More and more terminal programs have been using [[https://en.wikipedia.org/wiki/ANSI_escape_code][ANSI color codes]], or
+their extensions, such as [[https://invisible-island.net/xterm/ctlseqs/ctlseqs.html][XTERM-256]], to provide richer formatting of
+their human-readable outputs.  However, by default, Emacs does not
+render these correctly (namely, as colors) in ~compilation-mode~ or
+Eshell​—the two places where I am most likely to encounter has become
+more of an issue as I write more Haskell code, as the commonly used
+[[https://hackage.haskell.org/package/tasty][Tasty testing framework]] by default prints test results with color,
+making it easier to see at a glance which tests have passed and which
+tests have failed.  This is decidedly a good thing, but when I run the
+tests in ~compilation-mode~, I see the raw escape codes.
+
+There are two solutions to this problem: the first is the built-in
+~ansi-color.el~, which filters a buffer or region for ANSI color codes
+and sets text properties accordingly.  This is fairly easy to set up,
+but requires us to configure each of the places we want to use
+it individually:
+
+#+begin_src emacs-lisp   :noweb yes
+  (use-package ansi-color
+    :ensure nil                           ;built-in
+    :defer nil
+    :hook (
+      <<ansi-color-compilation-hook>>
+      <<ansi-color-comint-hook>>
+      <<ansi-color-eshell-hook>>))
+#+end_src
+
+Modes that are derived from ~compilation-mode~ accomplish this by
+adding a filter function to ~compilation-filter-hook~:
+
+#+name: ansi-color-compilation-hook
+#+begin_src emacs-lisp   :tangle no
+  (compilation-filter-hook . ansi-color-compilation-filter)
+#+end_src
+
+Similarly, for ~comint~ modes (like ~shell-mode~), we add a filter
+function to a hook.  This hook, however, is an [[info:emacs#Hooks][abnormal hook]], which
+takes an argument, and we need to use the function
+~ansi-color-process-output~:
+
+#+name: ansi-color-comint-hook
+#+begin_src emacs-lisp   :tangle no
+  (comint-preoutput-filter-functions . ansi-color-process-output)
+#+end_src
+
+The process for configuring Eshell is the same:
+
+#+name: ansi-color-eshell-hook
+#+begin_src emacs-lisp   :tangle no
+  (eshell-preoutput-filter-functions . ansi-color-process-output)
+#+end_src
+
+The second solution for this problem is the [[https://github.com/atomontage/xterm-color][xterm-color package]], which
+supports more control codes than the basic ANSI ones.  At the moment I
+don’t need to use it, but it’s worth keeping in mind if I find I need
+to commonly use an application that uses XTERM 256 or Truecolor
+output.
+
 ** Custom Theme
 Nowadays, Emacs has built-in support for custom themes.  It used to be
 that you needed to manually set colors, or load a package
