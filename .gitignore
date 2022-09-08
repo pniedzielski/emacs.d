@@ -10,3 +10,13 @@
 /custom.el
 /forge-database.sqlite
 /transient/
+/session*
+/\#!*
+/.cache
+/projects
+/tramp
+/org-clock-save.el
+/history
+/eshell/
+/.mc-lists.el
+/org-roam.db
