@@ -1543,6 +1543,58 @@ installed on the system.
      "Give me the most recent mail at the top."))
 #+end_src
 
+** RSS
+RSS has been and remains one of the best ways of consuming syndicated
+articles on the web.  Although its heyday seems to have gone (being
+too commonly replaced by [[https://indieweb.org/walled_garden][walled gardens]] and email newsletters), there
+still are plenty of RSS feeds out there, as well as services that
+convert public data into RSS feeds.
+
+I use [[https://freshrss.org/][FreshRSS]] on my personal server to collect and synchronize my
+feeds across all my devices (personal computers, web, and mobile
+phone), and so I need an Emacs package that supports one of FreshRSS’s
+APIs.  Luckily, the Emacs feedreader [[https://github.com/skeeto/elfeed][elfeed]], when augmented with a
+separate extension named [[https://github.com/fasheng/elfeed-protocol][elfeed-protocol]], is able to communicate with
+my FreshRSS server, synchronizing its local database with the online
+server.
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :config (setq elfeed-use-curl t
+                  elfeed-db-directory (concat user-emacs-directory "elfeed"))
+            (elfeed-set-timeout 36000)
+    :bind (:map elfeed-search-mode-map
+                ("m" . elfeed-toggle-star)
+                ("M" . elfeed-toggle-star)))
+
+  (use-package elfeed-goodies
+    :config (elfeed-goodies/setup))
+
+  (use-package elfeed-protocol
+    :defer nil
+    :init
+    (defun pn/elfeed-refresh ()
+      "Refresh elfeed feeds from Fever API."
+      (interactive)
+      (save-mark-and-excursion
+        (push-mark (point))
+        (push-mark (point-max) nil t)
+        (goto-char (point-min))
+        (cl-loop for entry in (elfeed-search-selected)
+                 do (elfeed-untag-1 entry 'unread))
+        (elfeed-search-update--force)
+        (elfeed-protocol-fever-reinit "https://pniedzielski@rss.pniedzielski.net")))
+    :config
+    (setq elfeed-feeds
+          `(("fever+https://pniedzielski@rss.pniedzielski.net"
+             :api-url "https://rss.pniedzielski.net/api/fever.php"
+             :password ,(password-store-get "api/rss.pniedzielski.net")))
+          elfeed-protocol-enabled-protocols '(fever))
+    (elfeed-protocol-enable)
+    :bind (:map elfeed-search-mode-map
+                ("G" . pn/elfeed-refresh)))
+#+end_src
+
 * Finances
 ** Ledger Mode
 I use John Wiegley’s [[https://www.ledger-cli.org/][ledger]] program to manage my finances.  Ledger is
