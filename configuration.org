@@ -346,6 +346,44 @@ needs it.
         user-mail-address "patrick@pniedzielski.net")
 #+end_src
 
+** Consistent Configuration Storage
+Originally, Emacs’s configuration was stored as the single dotfile
+~$HOME/.emacs~, an elisp file directly under the user’s home
+directory.  Any program in Emacs that wanted to store additional
+configuration or persistent data would need to make its own dotfile,
+and there were no conventions on how to do that.  Eventually, Emacs
+started understanding ~$HOME/.emacs.d/init.el~ (and later the XDG
+standard ~$HOME/.config/emacs/init.el~, which is what I use), giving
+these packages a directory to store their own configuration and data.
+Without any structure within this ~user-emacs-directory~, though, and
+because of the legacy of old packages storing their configuration and
+data right in the user’s home directory, in practice packages leave
+their junk all over the place.
+
+However, most packages have a configuration variable that lets you
+customize where the file goes (this is Emacs!).  However, making sure
+that each and every package’s variables are properly configured is
+troublesome to say the least.  It’s worth pulling in the [[https://github.com/emacscollective/no-littering][no-littering]]
+package, which does this for us.  This needs to come very early on in
+our configuration, before other packages set their defaults.
+
+#+begin_src emacs-lisp
+  (use-package no-littering)
+#+end_src
+
+This package stows as many files as it can under two directories
+within the ~user-emacs-directory~​—the ~etc~ subdirectory, for
+configuration files, and the ~var~ subdirectory, for persistent data.
+This is useful in the context of our own published Emacs
+configuration, where (by default) ~etc~ files can be stored in the
+repo and ~var~ files can be safely ignored.
+
+A useful interface provided by this package is the pair of
+~no-littering-expand-etc-file-name~ and
+~no-littering-expand-var-file-name~, which take a relative path and
+returns a correctly stowed path for either configuration (the ~etc~
+variant) or persistent data (the ~var~ variant).
+
 ** Custom File
 By default, Emacs modifies our ~init.el~ file to save customizations
 made with the /Customize/ mode.  I don’t want to mess up my ~init.el~
@@ -354,7 +392,7 @@ tell Emacs where that file is, and then I’ll load any customizations
 we had.
 
 #+begin_src emacs-lisp
-  (setq custom-file (concat user-emacs-directory "custom.el"))
+  (setq custom-file (no-littering-expand-etc-file-name "custom.el"))
   (load custom-file)
 #+end_src
 
@@ -368,17 +406,6 @@ everywhere]]).
   (prefer-coding-system 'utf-8)
 #+end_src
 
-** Backups
-Emacs places backups in the same directory as the normal file by
-default.  This is almost certainly not what we want, so we put them in
-a separate directory under our user directory.
-
-#+begin_src emacs-lisp
-  (setq backup-directory-alist
-        `((".*" . ,(concat user-emacs-directory "backups")))
-        auto-save-file-name-transforms
-        `((".*" ,(concat user-emacs-directory "backups") t)))
-#+end_src
 
 ** EasyPGP
 [[http://epg.sourceforge.jp/][EasyPGP]], which is bundled with Emacs, lets us easily encrypt and
@@ -1560,8 +1587,7 @@ server.
 
 #+begin_src emacs-lisp
   (use-package elfeed
-    :config (setq elfeed-use-curl t
-                  elfeed-db-directory (concat user-emacs-directory "elfeed"))
+    :config (setq elfeed-use-curl t)
             (elfeed-set-timeout 36000)
     :bind (:map elfeed-search-mode-map
                 ("m" . elfeed-toggle-star)
