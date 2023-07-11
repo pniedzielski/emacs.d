@@ -1041,7 +1041,7 @@ Emacs.  Currently, this requires an external package, which we have to
 install separately, and which integrates highlighting, navigation, and
 modification with the results of =tree-sitter=’s parsing.
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp   :tangle no
   (use-package tree-sitter
     :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
     :config (global-tree-sitter-mode))
@@ -1135,7 +1135,26 @@ hook to turn on the ones we want.
           (haskell-mode-hook . haskell-unicode-input-method-enable)
           (haskell-mode-hook . haskell-indentation-mode)
           (haskell-mode-hook . haskell-decl-scan-mode)
-          (haskell-mode-hook . interactive-haskell-mode))
+          (haskell-mode-hook . interactive-haskell-mode)
+          (haskell-mode-hook . subword-mode)
+    :custom (haskell-process-suggest-remove-import-lines t)
+            (haskell-process-auto-import-loaded-modules t)
+            (haskell-process-log t)
+    :bind (:map haskell-mode-map
+           ("C-x C-d" . nil)
+           ("C-c C-z" . haskell-interactive-switch)
+           ("C-c C-l" . haskell-process-load-file)
+           ("C-c C-b" . haskell-interactive-switch)
+           ("C-c C-t" . haskell-process-do-type)
+           ("C-c C-i" . haskell-process-do-info)
+           ("C-c C-c" . haskell-process-cabal-build)
+           ("C-c c"   . haskell-process-cabal)
+           ("C-c M-." . nil)
+           :map haskell-cabal-mode-map
+           ("C-c C-z" . haskell-interactive-switch)
+           ("C-c C-k" . haskell-interactive-mode-clear)
+           ("C-c C-c" . haskell-process-cabal-build)
+           ("C-c c"   . haskell-process-cabal)))
 #+end_src
 
 There are some keybindings in Haskell Mode that are very useful, but
@@ -1786,13 +1805,13 @@ narrowing.
     ;; For some commands and buffer sources it is useful to configure the
     ;; :preview-key on a per-command basis using the `consult-customize' macro.
     (consult-customize
-     consult-theme
-     :preview-key '(:debounce 0.2 any)
+     consult-theme :preview-key '(:debounce 0.2 any)
      consult-ripgrep consult-git-grep consult-grep
      consult-bookmark consult-recent-file consult-xref
-     consult--source-bookmark consult--source-recent-file
-     consult--source-project-recent-file
-     :preview-key (kbd "M-."))
+     consult--source-bookmark consult--source-file-register
+     consult--source-recent-file consult--source-project-recent-file
+     ;; :preview-key "M-."
+     :preview-key '(:debounce 0.4 any))
 
     ;; Optionally configure the narrowing key.
     ;; Both < and C-+ work reasonably well.
@@ -2122,8 +2141,7 @@ it individually:
     :defer nil
     :hook (
       <<ansi-color-compilation-hook>>
-      <<ansi-color-comint-hook>>
-      <<ansi-color-eshell-hook>>))
+      <<ansi-color-comint-hook>>))
 #+end_src
 
 Modes that are derived from ~compilation-mode~ accomplish this by
@@ -2141,14 +2159,14 @@ takes an argument, and we need to use the function
 
 #+name: ansi-color-comint-hook
 #+begin_src emacs-lisp   :tangle no
-  (comint-preoutput-filter-functions . ansi-color-process-output)
+  (comint-output-filter-functions . ansi-color-process-output)
 #+end_src
 
 The process for configuring Eshell is the same:
 
 #+name: ansi-color-eshell-hook
 #+begin_src emacs-lisp   :tangle no
-  (eshell-preoutput-filter-functions . ansi-color-process-output)
+  (eshell-output-filter-functions . ansi-color-process-output)
 #+end_src
 
 The second solution for this problem is the [[https://github.com/atomontage/xterm-color][xterm-color package]], which

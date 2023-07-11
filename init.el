@@ -5,3 +5,4 @@
   (if (file-readable-p elc-file)
       (load-file elc-file)
     (org-babel-load-file org-file)))
+(put 'narrow-to-page 'disabled nil)
