@@ -1415,6 +1415,12 @@ case, unstaged as well).
     (diff-hl-change ((t (:background "#335533" :foreground "green4" :inherit diff-added)))))
 #+end_src
 
+** Xref
+#+begin_src emacs-lisp
+  (use-package xref
+    :custom ((xref-search-program #'ripgrep "Use ripgrep for identifier search.")))
+#+end_src
+
 * Calendar
 ** Alerts
 Emacs’s built-in way of alerting you of something is by appending to
