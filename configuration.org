@@ -1397,6 +1397,24 @@ We also want to integrate Magit into Emacs’s project functionality:
     :after magit)
 #+end_src
 
+** Highlight Uncommited Changes
+Even though the ~M-x magit-status~ command gives a good overview of
+uncommited and unstaged changse, it is also useful to see a visual
+representation of those changes inline in a buffer.  For this, we use
+the ~diff-hl~ package, which displays a marker in the gutter (on the
+left side of the window) for hunks that are uncommited (or in git’s
+case, unstaged as well).
+
+#+begin_src emacs-lisp
+  (use-package diff-hl
+    :hook (magit-post-refresh-hook . diff-hl-magit-post-refresh)
+    :config (global-diff-hl-mode +1)
+    :custom-face
+    (diff-hl-change ((t (:background "#444466" :foreground "blue3"))))
+    (diff-hl-delete ((t (:background "#553333" :foreground "red3" :inherit diff-removed))))
+    (diff-hl-change ((t (:background "#335533" :foreground "green4" :inherit diff-added)))))
+#+end_src
+
 * Calendar
 ** Alerts
 Emacs’s built-in way of alerting you of something is by appending to
