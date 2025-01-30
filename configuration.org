@@ -2154,51 +2154,65 @@ Emacs modes and buffers.
 ** Icons
 In most cases, having icons in a text editor serve a similar purpose
 as syntax-highlighting: used sparingly, they can help understand new
-information at a glance.  The ~all-the-icons~ package gives us icons
-for most file/buffer types, using icon fonts.  In my view, it would be
-better to use the built-in Emacs SVG support for this purpose, but I
-don’t know of a package that does this.
+information at a glance.  The ~nerd-icons~ package gives us icons for
+most file/buffer types, using icon fonts.
 
 #+begin_src emacs-lisp
-  (use-package all-the-icons)
+  (use-package nerd-icons)
 #+end_src
 
-I enable icons in three different places (which, of course, means I
-need three extra packages…): in dired, in abuser, and in file
-completion.  In each of these cases, the icons are complementary to
-the filenames themselves.  That is to say, if I know what the file I’m
-looking for is named, I don’t need to worry about the icons, or if I
-know what type of file I’m looking for, I can filter out everything
-else; if, on the other hand, I’m looking at a cluttered directory for
-the first time, or otherwise don’t know what exactly I’m searching
-for, icons give a good easy overview.
+I enable icons in four different places (which, of course, means I
+need four extra packages…): in dired, in ibuffer, and in
+completion-at-point, in minibuffer completion.  In each of these
+cases, the icons are complementary to the filenames themselves.  That
+is to say, if I know what the file I’m looking for is named, I don’t
+need to worry about the icons, or if I know what type of file I’m
+looking for, I can filter out everything else; if, on the other hand,
+I’m looking at a cluttered directory for the first time, or otherwise
+don’t know what exactly I’m searching for, icons give a good easy
+overview.
 
 First, set up the dired icons, by running a hook when dired is loaded.
 
 #+begin_src emacs-lisp
-  (use-package all-the-icons-dired :demand
-    :after (dired all-the-icons)
-    :diminish all-the-icons-dired-mode
-    :hook (dired-mode-hook . all-the-icons-dired-mode))
+  (use-package nerd-icons-dired :demand
+    :after (dired nerd-icons)
+    :diminish nerd-icons-dired-mode
+    :hook (dired-mode-hook . nerd-icons-dired-mode))
 #+end_src
 
 Next, set up the ibuffer icons.  Of course, it could’t be parallel to
 the above, so we need to enable a minor mode.
 
 #+begin_src emacs-lisp
-  (use-package all-the-icons-ibuffer :demand
-    :after (ibuffer all-the-icons)
-    :diminish all-the-icons-ibuffer-mode
-    :config (all-the-icons-ibuffer-mode 1))
+  (use-package nerd-icons-ibuffer :demand
+    :after (ibuffer nerd-icons)
+    :diminish nerd-icons-ibuffer-mode
+    :hook (ibuffer-mode-hook . nerd-icons-ibuffer-mode))
 #+end_src
 
-Third and finally, set up icons in filename completion.
+Third, set up completion-at-point icons in corfu:
 
 #+begin_src emacs-lisp
-  (use-package all-the-icons-completion :demand
-    :after (marginalia all-the-icons)
-    :diminish all-the-icons-completion-mode
-    :config (all-the-icons-completion-mode))
+  (use-package nerd-icons-corfu :demand
+    :after (corfu nerd-icons)
+    :config
+    (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter)
+
+    (setq nerd-icons-corfu-mapping
+      '((array :style "cod" :icon "symbol_array" :face font-lock-type-face)
+        (boolean :style "cod" :icon "symbol_boolean" :face font-lock-builtin-face)
+        (t :style "cod" :icon "code" :face font-lock-warning-face))))
+#+end_src
+
+Fourth and finally, set up icons in filename completion.
+
+#+begin_src emacs-lisp
+  (use-package nerd-icons-completion :demand
+    :after (marginalia nerd-icons)
+    :diminish nerd-icons-completion-mode
+    :config (nerd-icons-completion-mode)
+    :hook (marginalia-mode-hook . nerd-icons-completion-marginalia-setup))
 #+end_src
 
 ** Display Fill Column
