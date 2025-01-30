@@ -2201,6 +2201,24 @@ Third and finally, set up icons in filename completion.
     :config (all-the-icons-completion-mode))
 #+end_src
 
+** Display Fill Column
+A nice built-in feature of modern Emacsen is to display an indicator
+line at the fill-column.  This gives agood visual for how long lines
+should be in a given project, whetehr or not you are manually or
+automatically filling paragraphs.
+
+I like to have this minor mode on in both text- and program-editing
+modes, but I leave it off for all other modes, where at best it
+doesn’t provide any useful information, and at worst it can throw-off
+the layout.
+
+#+begin_src emacs-lisp
+  (use-package display-fill-column-indicator
+    :ensure nil                           ;built-in
+    :hook ((prog-mode-hook text-mode-hook) .
+           display-fill-column-indicator-mode))
+#+end_src
+
 ** ANSI Coloring
 More and more terminal programs have been using [[https://en.wikipedia.org/wiki/ANSI_escape_code][ANSI color codes]], or
 their extensions, such as [[https://invisible-island.net/xterm/ctlseqs/ctlseqs.html][XTERM-256]], to provide richer formatting of
