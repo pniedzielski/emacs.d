@@ -54,7 +54,7 @@ not have everything that my active configuration has.  The ultimate
 goal is to migrate entirely over to this configuration.
 
 ** License
-Copyright © 2016-2022, Patrick M. Niedzielski.
+Copyright © 2016-2022, 2025, Patrick M. Niedzielski.
 
 The following license applies both to this Org file and to the
 corresponding Emacs configuration file that can be generated from this
