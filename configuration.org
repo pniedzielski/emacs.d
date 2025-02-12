@@ -1645,6 +1645,147 @@ server.
                 ("G" . pmn:elfeed-refresh)))
 #+end_src
 
+** AI Assistants
+AI Assistants like ChatGPT are very useful tools to help with writing,
+programming, and thinking, so long as you are aware of their strengths
+and weaknesses.  There are already a few ChatGPT clients for Emacs,
+but I’m trying Karthick Chikmagalur’s [[https://github.com/karthink/gptel][GPTel]] client, which allows me to
+interact with ChatGPT from any buffer, using Org Mode syntax, and
+asynchronously!
+
+GPTel provides a transient-based interface as its starting point, so I
+bind this command to an easy-to-remember global keybinding ~C-c g~.
+
+#+begin_src emacs-lisp   :noweb yes   :noweb-prefix no
+  (use-package gptel
+    :bind (("C-c g" . gptel-menu))
+    :init
+    <<gptel-ollama-get-models>>
+    :hook
+    (<<gptel-fill-region>>)
+    :config
+    <<gptel-groq>>
+    ;; Set this in `config` section to avoid recursive `require`.
+    (setq gptel-backend <<gptel-ollama>>)
+    :custom
+    (<<gptel-openai>>
+     (gptel-model "phi4"
+      "Use Phi4 as our default model.")
+     <<gptel-org-mode>>
+     <<gptel-org-headings>>
+     (gptel-expert-commands t
+      "Let’s try experimental features.")
+     (gptel-org-branching-context t
+      "LLMs use only parent headings as context.")))
+#+end_src
+
+I have three different model backends configured:
+
+  - OpenAI :: Despite its cost and being annoyingly censored in what
+    it’s willing to produce (often mistaking perfectly harmless things
+    for things more sinister), I still think OpenAI’s models are the
+    best out there.  Like ChatGPT, its flagship product (I’ve trained
+    him to respond to “Chad”), OpenAI’s API still sets the standard
+    for remote LLM access.
+
+    GPTel has native support for Chad’s API.  ALl we have to do is
+    configure the ~gptel-api-key~ variable to a function that returns
+    our API key:
+
+    #+name: gptel-openai
+    #+begin_src emacs-lisp   :tangle no
+      (gptel-api-key
+       (lambda () (password-store-get-field "ai/openai.com" "GPTEL"))
+       "Retrieve the OpenAI key from `pass`.")
+    #+end_src
+
+  - Groq :: Groq provides incredibly fast access for many open-source
+    models, because they make use of their own proprietary hardware
+    for running LLMs.  They are also free, and in fact do not yet
+    provide a paid usage tier.  Despite being free and fast, though,
+    Groq has relatively low token limits.  It’s fun to play around
+    with, and can work pretty well in certain circumstances.
+
+    Configuring GPTel to use Groq is also fairly easy, because Groq
+    provides an OpenAI-compatible API.
+
+    #+name: gptel-groq
+    #+begin_src emacs-lisp   :tangle no
+      (gptel-make-openai "Groq"
+        :host "api.groq.com"
+        :endpoint "/openai/v1/chat/completions"
+        :stream t
+        :key (lambda ()
+               (password-store-get-field "ai/groq.com" "GPTEL"))
+        :models '("llama3-70b-8192"
+                  "mixtral-8x7b-32768"
+                  "llama-3.3-70b-versatile"
+                  "deepseek-r1-distill-llama-70b"))
+    #+end_src
+
+  - Ollama :: Ollama runs LLMs completely locally on your own GPU.
+    While this means I can only run smaller models, the results tend
+    to be very fast and can still be useful, even if the smaller
+    models don’t know as much or struggle in certain reasoning tasks.
+
+    #+name: gptel-ollama
+    #+begin_src emacs-lisp   :tangle no
+      (gptel-make-ollama "Ollama"
+        :host "localhost:11434"
+        :stream t
+        :models (pmn:get-ollama-models))
+    #+end_src
+
+    GPTel does not have the ability to dynamically query from Ollama
+    what models are available, though, so we provide our own function
+    ~pmn:get-ollama-models~ that does this for us.
+
+    #+name: gptel-ollama-get-models
+    #+begin_src emacs-lisp   :tangle no
+      (defun pmn:get-ollama-models ()
+      "Fetch the list of installed Ollama models."
+      (let* ((output (shell-command-to-string "ollama list"))
+             (lines (split-string output "\n" t))
+             models)
+        (dolist (line (cdr lines))        ;Skip the first line
+          (when (string-match "^\\([^[:space:]]+\\)" line)
+            (push (match-string 1 line) models)))
+        (nreverse models)))
+    #+end_src
+
+I also want to do a little post-processing on the output of models.
+By default GPTel converts output to org-mode if we tell it to use
+org-mode as our conversations’ mode:
+
+#+name: gptel-org-mode
+#+begin_src emacs-lisp   :tangle no
+  (gptel-default-mode 'org-mode "Make LLMs output in `org-mode`.")
+#+end_src
+
+While we’re at it, GPTel defaults to having our prompts be 3rd level
+headers in both Markdown and org-mode.  Let’s fix that:
+
+#+name: gptel-org-headings
+#+begin_src emacs-lisp   :tangle no
+  (gptel-prompt-prefix-alist '((markdown-mode . "# ")
+                               (org-mode . "* ")
+                               (text-mode . "# "))
+   "Use top-level headers for our conversation prompts.")
+#+end_src
+
+LLMs also don’t respect our fill column, either, but we can easily fix
+this by adding ~fill-region~ as a hook after LLMs insert.
+
+#+name: gptel-fill-region
+#+begin_src emacs-lisp   :tangle no
+  (gptel-post-response-functions . fill-region)
+#+end_src
+
+Now, from any buffer, we can call ~M-x gptel-send~ to send the current
+region to a new conversation with ChatGPT, or ~C-u M-x gptel-send~ to
+modify the chat parameters.  If we want a dedicated buffer, we can use
+~M-x gptel~, and ~C-u M-x gptel~ to start a new session.
+
 * Finances
 ** Ledger Mode
 I use John Wiegley’s [[https://www.ledger-cli.org/][ledger]] program to manage my finances.  Ledger is
