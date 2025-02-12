@@ -115,15 +115,18 @@ our configuration org file, we tangle it and compile it.  In our
 tangle and load the =.org= file.
 
 #+begin_src emacs-lisp
-  (defun pmn/tangle-dotfiles ()
+  (defun pmn:tangle-dotfiles ()
     "If the current file is this file, the code blocks are tangled."
-    (letrec ((org-file (expand-file-name "configuration.org" user-emacs-directory))
-             (el-file  (concat (file-name-sans-extension org-file) ".el")))
+    (interactive)
+    (letrec ((org-file (expand-file-name "configuration.org"
+                                         user-emacs-directory))
+             (el-file  (concat (file-name-sans-extension org-file)
+                               ".el")))
       (when (equal (buffer-file-name) org-file)
         (org-babel-tangle nil el-file)
         (byte-compile-file el-file))))
 
-  (add-hook 'after-save-hook #'pmn/tangle-dotfiles)
+  (add-hook 'after-save-hook #'pmn:tangle-dotfiles)
 #+end_src
 
 * Package Installation and Dependencies
@@ -266,11 +269,11 @@ installed locally (as it used to be, before =package.el=).  I put
 these packages in a subdirectory of my Emacs directory,
 ~.config/emacs/lisp/~.  For each local package we load outside of
 MELPA, we will need to add a directory to the ~load-path~ variable.
-To make this easy, I add a variable called =pn/local-lisp-directory=
+To make this easy, I add a variable called =pmn:local-lisp-directory=
 that points to the right place.
 
 #+begin_src emacs-lisp
-  (setq pn/local-lisp-directory (concat user-emacs-directory "lisp/"))
+  (setq pmn:local-lisp-directory (concat user-emacs-directory "lisp/"))
 #+end_src
 
 ** Native Compilation
@@ -1507,7 +1510,7 @@ Next, I make two functions that I can call in an org file with diary
 expressions, which return a string with the sunrise and sunset,
 respectively:
 #+begin_src emacs-lisp
-  (defun pn/diary-sunrise ()
+  (defun pmn:diary-sunrise ()
     "Local time of sunrise as a diary entry.
   Accurate to a few seconds."
     ;; To be called from diary-list-sexp-entries, where DATE is bound.
@@ -1521,7 +1524,7 @@ respectively:
                   (eval calendar-location-name))
         "No sunrise")))
 
-  (defun pn/diary-sunset ()
+  (defun pmn:diary-sunset ()
     "Local time of sunset as a diary entry.
   Accurate to a few seconds."
     ;; To be called from diary-list-sexp-entries, where DATE is bound.
@@ -1623,7 +1626,7 @@ server.
   (use-package elfeed-protocol
     :defer nil
     :init
-    (defun pn/elfeed-refresh ()
+    (defun pmn:elfeed-refresh ()
       "Refresh elfeed feeds from Fever API."
       (interactive)
       (save-mark-and-excursion
@@ -1642,7 +1645,7 @@ server.
           elfeed-protocol-enabled-protocols '(fever))
     (elfeed-protocol-enable)
     :bind (:map elfeed-search-mode-map
-                ("G" . pn/elfeed-refresh)))
+                ("G" . pmn:elfeed-refresh)))
 #+end_src
 
 * Finances
