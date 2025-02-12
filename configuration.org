@@ -246,7 +246,6 @@ hooks.
 #+begin_src emacs-lisp   :tangle no
   (setq use-package-verbose            t
         use-package-expand-minimally   nil
-        use-package-compute-statistics t
         use-package-always-ensure      t
         use-package-hook-name-suffix   nil)
 #+end_src
