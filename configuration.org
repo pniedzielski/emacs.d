@@ -370,7 +370,8 @@ package, which does this for us.  This needs to come very early on in
 our configuration, before other packages set their defaults.
 
 #+begin_src emacs-lisp
-  (use-package no-littering)
+  (use-package no-littering
+    :config (no-littering-theme-backups))
 #+end_src
 
 This package stows as many files as it can under two directories
@@ -379,6 +380,13 @@ configuration files, and the ~var~ subdirectory, for persistent data.
 This is useful in the context of our own published Emacs
 configuration, where (by default) ~etc~ files can be stored in the
 repo and ~var~ files can be safely ignored.
+
+We additionally turn on a (poorly-named) function called
+~no-littering-theme-backups~.  This causes backups and other temporary
+files to be written in one location, rather than spread across the
+filesystem.  This may not be safe, if you have sensitive data in them.
+For me, I’d rather keep all my data in a single place than worry about
+this issue.
 
 A useful interface provided by this package is the pair of
 ~no-littering-expand-etc-file-name~ and
