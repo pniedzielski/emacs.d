@@ -1359,12 +1359,10 @@ exclusively use git as version control.  While git has a very nice
 data model, its user interface is somewhat lacking.  Luckily, the
 Emacs ecosystem provides us with a much nicer interface to git.  In
 fact, I would go as far as to say that [[http://magit.vc/][Magit]] is *the best* git
-porcelain, by far. For ease of access, I have the main Magit command,
-=magit-status=, bound to =C-c g=.
+porcelain, by far.
 
 #+begin_src emacs-lisp
   (use-package magit
-    :bind ("C-c g" . magit-status)
     :config (setq magit-repository-directories '(("~" . 3)))
     :commands (magit-status magit-blame magit-log-buffer-file magit-log-all))
 #+end_src
