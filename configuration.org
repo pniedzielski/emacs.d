@@ -1864,11 +1864,11 @@ the ecosystem:
     ~completing-read~, which is based on substring matching with
     multiple space-deliminated terms.
 
-For the moment, I’m starting small: I’m only using Vertico, so I can
-get used to it, and Marginalia, since the annotations are very, very
-useful to me.  In a way, this feels like using Ido mode again,
-although it has better integration across-the-board than Ido did when
-I last used it.
+I started small, using only Vertico and Marginalia and the built-in
+commands.  A bit later, I began using Embark, which I have found to be
+a very useful way of interacting with Emacs, even outside of any
+completion framework.  I’ve also begun using Consult, although I’m not
+convinced whether I like the preview feature yet.
 
 #+begin_src emacs-lisp
   (use-package vertico :demand
@@ -2073,6 +2073,72 @@ narrowing.
     ;;;; 4. locate-dominating-file
     ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
     )
+#+end_src
+
+** Contextual Commands at Point
+Sometimes when moving around the buffer, you find you want to run some
+command on the object that your point is currently on: you may want to
+open the file whos name is at the point, regardless of what mode
+you’re in; you may want to browse a given URL or download the file to
+which it points; you may want to kill a buffer presented as a
+completion option in the minibuffer when selecting a buffer to switch
+to.  With the standard way of interacting with Emacs, this means
+cancelling out of the action you were currently forming, starting a
+new action, and yanking in whatever value your point was at as an
+argument to the action.
+
+Embark presents a new, additional way of composing actions, presenting
+a contextual menu of options based on what your point is curently
+on.  This works from aynwhere in Emacs—from a standard buffer, from
+the minibuffer, or even from within another Embark session.  Thsi
+means that Embark lets you perform actions while you are forming
+different actions, without forcing you to serialize them one after
+another.  At its core is the function ~embark-act~, which i bind to
+~C-.~.  This keybinding is iconic: it means “do something on what’s at
+the point (~.~).”  ~embark-act~ then acts as a prefix command, after a
+short delay presenting you with a buffer descrbing the set of actions
+you can do with the given object.
+
+In addition to ~embark-act~, there is a function ~embark-dwim~, which
+which I have bound to ~M-.~.  This is the “I’m Feeling Lucky” version
+of ~embark-act~, and it runs the default action for whatever your
+point is on.  This is the same as ~C-. RET~, so I’m not sure that I
+will use it too much, but I have it set in case I find it more
+ergonomic than the ~embark-act~ keybinding.  This keybinding is
+recommended in the Emark manual, as it by default is bound to
+~xref-find-definitions~.  I use this command quite frequently, and the
+default Emark action for symbols in program modes is to find
+definitions as well, so it doesn’t interfere with any existing muscle
+memory.
+
+Embark has some other cool functionality, like letting you select
+candidates for what it should treat the thing at point as, if multiple
+options are available; at the moment, my usage is still quite basic
+(though increasingly frequent).  In this particular case, the same
+functionality is available simply by typing ~C-.~ again after
+~embark-act~.
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :bind
+    (("C-." . embark-act)
+     ("M-." . embark-dwim)
+     ("C-h B" . embark-bindings))
+
+    :init
+    (setq prefix-help-command #'embark-prefix-help-command)
+
+    :config
+    (add-to-list 'display-buffer-alist
+                 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                   nil
+                   (window-parameters (mode-line-format . none)))))
+
+  ;; Consult users will also want the embark-consult package.
+  (use-package embark-consult
+    :ensure t ; only need to install it, embark loads it after consult if found
+    :hook
+    (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 
 ** Minibuffer History
