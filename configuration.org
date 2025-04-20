@@ -2311,13 +2311,16 @@ necessary.
 #+end_src
 
 ** Fonts and Ligatures
-The font I’m currently using is [[https://github.com/microsoft/cascadia-code][Cascadia Code]] (which, luckily, is
-packaged in Debian as =fonts-cascadia-code=).  I find this font is
-very easy to read for long periods of time, and at different sizes; I
-value that more than its looks or its ligatures.
+The font I’m currently using is [[https://github.com/tonsky/FiraCode][Fira Code]] (which, luckily, is
+packaged in Debian as =fonts-firacode=).  This font has excellent
+Unicode coverage, and is also quite easy to read, both in code and in
+prose.
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Cascadia Code PL")
+  (use-package emacs
+    :if (find-font (font-spec :name "Fira Code"))
+    :init
+    (set-face-attribute 'default nil :font "Fira Code"))
 #+end_src
 
 ** Dimming Unused Windows
