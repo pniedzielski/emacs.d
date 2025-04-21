@@ -1875,6 +1875,7 @@ convinced whether I like the preview feature yet.
     :diminish vertico-mode
     :custom
     (vertico-resize t "Grow and shrink the Vertico minibuffer")
+    (completion-styles '(basic partial-completion flex) "Use flex completion")
     :config
     (vertico-mode))
 #+end_src
@@ -1902,6 +1903,19 @@ with other completion styles.  I never tried to fix this with Ido or
 Ivy, so when I started using ~org~ more, I went from ~flex~ completion
 back to ~basic~.  ~flex~ completion is nice, so at some point I will
 use one of the two solutions documented in the Vertico manual.
+
+** Orderless Completion Style
+Orderless is a completion style, which lets you type tokens separated
+by spaces, and completion candidates that match those tokens, in any
+order, will be selected.
+
+#+begin_src emacs-lisp
+  (use-package orderless
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides
+     '((file (styles basic partial-completion)))))
+#+end_src
 
 ** Completion Annotations
 The Marginalia package adds nice annotations to ~completing-read~, in
