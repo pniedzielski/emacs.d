@@ -2141,7 +2141,8 @@ functionality is available simply by typing ~C-.~ again after
     (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 
-** Minibuffer History
+** Minibuffer and File History
+
 I used to use [[https://github.com/DarwinAwardWinner/amx/][Amx]], and before that [[https://github.com/nonsequitur/smex][Smex]], as an enhanced
 ~execute-extended-command~, which prioritized commands by use and
 showing keyboard shortcuts along with the command name.  Now that I’m
@@ -2157,6 +2158,15 @@ preserving it when Emacs is shutdown.
 #+begin_src emacs-lisp
   (use-package savehist
     :config (savehist-mode +1))
+#+end_src
+
+We can get something similar for files we’ve recently visited using
+the ~recentf~ package, which is built-in to EMacs.
+
+#+begin_src emacs-lisp
+  (use-package recentf
+    :ensure nil
+    :config (recentf-mode +1))
 #+end_src
 
 ** Completion at Point                                              :testing:
