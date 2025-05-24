@@ -136,45 +136,41 @@ built-in =package.el=, and the =use-package= macro.
 ** =package.el= Configuration
 Most of our packages we install using =package.el=, which is bundled
 with Emacs 24 and later.  There are four major package repositories
-for Emacs packages; we use the first three listed here.
+for Emacs packages:
 
   * ELPA         :: The repository for packages with FSF-copyright
                     assignment.
   * Non-GNU ELPA :: The repository for GNU-sanctioned packages without
                     copyright assignment.
-  * MELPA        :: Contains the largest selection of pcakages and is
-                    built directly from source in the package’s VCS.
-  * Marmalade    :: Packages are uploaded by users and so tend to be
-                    at stable (albeit old versions)
+  * MELPA        :: Contains the largest selection of packages and is
+                    built directly from the latest source in the
+                    package’s VCS.
+  * MELPA Stable :: Contains many of the same packages as MELPA, but
+                    only includes stable releases, rather than
+                    whatever is at HEAD at the time.
 
-We do not use Marmalade because it often has the same packages as
-MELPA, only with older versions.  This can sometimes lead to conflicts
-that we want to avoid.  So, we can set up the three package
-repositories we plan to use.
+Let’s set up the four package repositories we plan to use:
 
 #+begin_src emacs-lisp
   (require 'package)
-  (setq package-archives '(("gnu"    . "http://elpa.gnu.org/packages/")
-                           ("nongnu" . "http://elpa.gnu.org/nongnu/")
-                           ("melpa"  . "https://melpa.org/packages/")))
+  (setq package-archives
+        '(("gnu"          . "http://elpa.gnu.org/packages/")
+          ("nongnu"       . "http://elpa.gnu.org/nongnu/")
+          ("melpa-stable" . "https://stable.melpa.org/packages/")
+          ("melpa"        . "https://melpa.org/packages/")))
 #+end_src
 
-Then, we tell Emacs to prefer ELPA over Non-GNU ELPA over MELPA.  I
-have a lot more trust in ELPA than I do in MELPA, since the former
-requires explicit versioned uploads.  If it is ever an issue, I can
-pin a specific package from MELPA.  So far, though, that has never
-come up.
+Then, we tell Emacs to prefer ELPA over Non-GNU ELPA over MELPA Stable
+over MELPA.  I have a lot more trust in the former three than I do in
+normal MELPA, since they requires explicit versioned uploads.  In the
+few places it is an issue, I can pin a specific package from MELPA.
 
 #+begin_src emacs-lisp
-  (setq package-archive-priorities '(("gnu"    . 30)
-                                     ("nongnu" . 20)
-                                     ("melpa"  . 10)))
+  (setq package-archive-priorities '(("gnu"          . 30)
+                                     ("nongnu"       . 20)
+                                     ("melpa-stable" . 10)
+                                     ("melpa"        . 5)))
 #+end_src
-
-As of [2021-09-23 ĵaŭ], I’m trying out the Non-GNU ELPA repository.
-I’m not sure if this will cause conflicts with MELPA or not, but for
-now I’m prefering to use the official non-GNU package repository where
-possible.
 
 It’s very useful to keep all our installed packages in a single place,
 separate from any local Lisp code we have.  This gives us the option
@@ -695,6 +691,7 @@ functionality in program modes as we do in text modes, when needed.
 
 #+begin_src emacs-lisp
   (use-package typo
+    :pin melpa-stable
     :hook (text-mode-hook . typo-mode)
     :config (typo-global-mode 1)
     (setq-default typo-language "English"))
@@ -954,6 +951,7 @@ some links to org-roam notes, so we add some mode-local keybindings:
 
 #+begin_src emacs-lisp   :noweb yes
   (use-package org-roam
+    :pin melpa
     :after org
     :custom
       (org-roam-directory "~/Dokumentoj/org/notes/")
