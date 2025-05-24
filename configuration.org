@@ -2631,3 +2631,15 @@ Let’s load some alternative themes up that I can manually engage.
 (This package contains all the color themes that the old =color-theme=
 package contains, but updated for the new, built-in custom theme
 mechanism.
+
+** Mode Line
+The default Emacs modeline can get a little bit busy, especially if
+you have many minor modes engaged.  While `use-package` and `diminish`
+can tame that somewhat, I find that having a cleaner modeline package
+means I don’t have to worry about using `diminish` as much.  The Doom
+Emacs modeline is nice enough, so let’s use it.
+
+#+begin_src emacs-lisp
+  (use-package doom-modeline
+    :hook (server-after-make-frame-hook . doom-modeline-mode))
+#+end_src
