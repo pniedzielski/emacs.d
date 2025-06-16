@@ -692,7 +692,8 @@ functionality in program modes as we do in text modes, when needed.
 
 #+begin_src emacs-lisp
   (use-package typo
-    :pin melpa-stable
+    :vc (:url "https://github.com/jorgenschaefer/typoel.git"
+              :rev :newest)
     :hook (text-mode-hook . typo-mode)
     :config (typo-global-mode 1)
     (setq-default typo-language "English"))
