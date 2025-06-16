@@ -90,7 +90,7 @@ The tangled file should have the license text and a note reminding us
 to modify the org-mode file instead of the tangled source file.
 
 #+begin_src emacs-lisp :noweb yes   :comments no
-  ;;; configuration.el --- Emacs configuration file
+  ;;; configuration.el --- Emacs configuration file  -*- lexical-binding: t -*-
 
   ;; This source file has been generated from an org-mode file.
   ;; Modifications should be performed on the org-mode file!
