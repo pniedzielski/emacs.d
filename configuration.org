@@ -808,6 +808,8 @@ modifiable, and human-readable nature of Org mode.
                                         ("CANCELED"  :foreground "forest green" :weight bold)
                                         ("MEETING"   :foreground "red"          :weight bold)))
     <<org-latex-export>>
+    :custom
+    (org-imenu-depth 4 "Increase the depth of org headlines in imenu")
     :config
     <<org-clock-config>>
     :bind (("C-c a" . org-agenda)
