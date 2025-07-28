@@ -135,27 +135,30 @@ built-in =package.el=, and the =use-package= macro.
 
 ** =package.el= Configuration
 Most of our packages we install using =package.el=, which is bundled
-with Emacs 24 and later.  There are four major package repositories
+with Emacs 24 and later.  There are five major package repositories
 for Emacs packages:
 
-  * ELPA         :: The repository for packages with FSF-copyright
-                    assignment.
-  * Non-GNU ELPA :: The repository for GNU-sanctioned packages without
-                    copyright assignment.
-  * MELPA        :: Contains the largest selection of packages and is
-                    built directly from the latest source in the
-                    package’s VCS.
-  * MELPA Stable :: Contains many of the same packages as MELPA, but
-                    only includes stable releases, rather than
-                    whatever is at HEAD at the time.
+  * ELPA           :: The repository for packages with FSF-copyright
+                      assignment.
+  * Non-GNU ELPA   :: The repository for GNU-sanctioned packages without
+                      copyright assignment.
+  * GNU-Devel ELPA :: The repository with the same packages as ELPA,
+                      built from their trunk frequently.
+  * MELPA          :: Contains the largest selection of packages and is
+                      built directly from the latest source in the
+                      package’s VCS.
+  * MELPA Stable   :: Contains many of the same packages as MELPA, but
+                      only includes stable releases, rather than
+                      whatever is at HEAD at the time.
 
 Let’s set up the four package repositories we plan to use:
 
 #+begin_src emacs-lisp
   (require 'package)
   (setq package-archives
-        '(("gnu"          . "http://elpa.gnu.org/packages/")
-          ("nongnu"       . "http://elpa.gnu.org/nongnu/")
+        '(("gnu"          . "https://elpa.gnu.org/packages/")
+          ("nongnu"       . "https://elpa.gnu.org/nongnu/")
+          ("gnu-devel"    . "https://elpa.gnu.org/devel/")
           ("melpa-stable" . "https://stable.melpa.org/packages/")
           ("melpa"        . "https://melpa.org/packages/")))
 #+end_src
@@ -166,10 +169,12 @@ normal MELPA, since they requires explicit versioned uploads.  In the
 few places it is an issue, I can pin a specific package from MELPA.
 
 #+begin_src emacs-lisp
-  (setq package-archive-priorities '(("gnu"          . 30)
-                                     ("nongnu"       . 20)
-                                     ("melpa-stable" . 10)
-                                     ("melpa"        . 5)))
+  (setq package-archive-priorities
+        '(("gnu"          . 30)
+          ("nongnu"       . 20)
+          ("melpa-stable" . 10)
+          ("melpa"        . 5)
+          ("gnu-devel"    . 0)))
 #+end_src
 
 It’s very useful to keep all our installed packages in a single place,
