@@ -2316,6 +2316,32 @@ Next, we add our new function to the spacing cycle:
                             restore))
 #+end_src
 
+** Kill Filename/Lineno Relative to Project
+When communicating with other developers, it’s useful to be able to
+“serialize” information about the point, in the form =filename:lineno=.
+But, often we don’t want to include the full file path, though, as
+that usually includes things like our home directory or the full path to
+a git-clone.  Instead, we only want to list out the file path relative
+to our project’s root.  This may be the version control repo directory,
+or some other project root.  Luckily, we can compute this with
+~project.el~’s project root functionality.
+
+Let’s define a function that kills the filename and line number of the
+point, and echos it to the minibuffer as well:
+
+#+begin_src emacs-lisp
+    (defun pmn:project-file-line ()
+      "Add the filename and line number of the point, relative to the project
+    root, to the kill-ring."
+      (interactive)
+      (let* ((root-dir (project-root (project-current)))
+             (output (concat (file-relative-name buffer-file-name root-dir)
+                             ":"
+                             (number-to-string (line-number-at-pos)))))
+        (message output)
+        (kill-new output)))
+#+end_src
+
 * Visual Theming
 This is honestly the least important part of my configuration.  Fonts
 and pretty are nice, and customizing the display to save a bit of
