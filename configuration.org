@@ -2017,16 +2017,33 @@ back to ~basic~.  ~flex~ completion is nice, so at some point I will
 use one of the two solutions documented in the Vertico manual.
 
 ** Orderless Completion Style
-Orderless is a completion style, which lets you type tokens separated
-by spaces, and completion candidates that match those tokens, in any
-order, will be selected.
+The way Emacs takes the prefix you’ve type and turns it into a set of
+completion candidates is called a /completion style/.  There are
+several of these built into Emacs, ranging from the old default
+~emacs22~ completion behavior to ~flex~, which considers the prefix as
+an subsequence within each potential completion candidate.  You can
+also enable multiple completion styles at once, or have different
+completion styles depending on which category of completion you are
+dealing with−files, for instance, or buffers.  The default list of
+completion styles is ~'(basic partial-completion emacs22)~, which
+searches by prefix or by word (separated by spaces or hyphens),
+falling back to the old default Emacs behavior.
+
+The Orderless package provides a completion style that divides the
+user input into a series of space-separated components, and then
+matches each component separately, in any order (thus “orderless”).
+The way each component can be matched is also flexible: it can be
+configured to match each component in the same way as several of the
+default completion styles, such as basic, regex, or flex.
 
 #+begin_src emacs-lisp
   (use-package orderless
     :custom
     (completion-styles '(orderless basic))
     (completion-category-overrides
-     '((file (styles basic partial-completion)))))
+     '((file (styles basic partial-completion flex))
+       (eglot (styles orderless flex))))
+    (orderless-component-separator "[ -/]+"))
 #+end_src
 
 ** Completion Annotations
