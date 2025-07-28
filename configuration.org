@@ -2267,6 +2267,55 @@ with company:
                       #'kind-icon-margin-formatter))
      #+end_src
 
+* Miscellaneous Functions
+** Right Align Cycle Spacing
+The ~M-x cycle-spacing~ command (bound to ~M-SPC~), expands or contracts
+the space at point in various ways, cycling with each invocation.
+Luckly, the actions this function performs are extensible, and can be
+modified by customizing the ~cycle-spacing-actions~ variable.
+
+A somewhat tedious action I find myself performing quite a lot is
+right-aligning everything on a line after the point.  So, for example,
+if I have the following line, with my cursor at the point marked ~^~ and
+with the fill column represented with ~|~:
+
+#+begin_example
+  This is some line of text that I want to modify.
+                   ^                                            |
+#+end_example
+
+I want to modify this line in the following way:
+
+#+begin_example
+  This is some line               of text that I want to modify.
+                                  ^                             |
+#+end_example
+
+This is tedious, but I find I do it fairly commonly.
+
+Here, we extend ~M-x cycle-spacing~ to add this behavior to the cycle.
+First, let’s define a function for the functionality we want:
+
+#+begin_src emacs-lisp
+  (defun pmn:align-to-fill-column (ARG)
+    "Right-align everything on the line after the point to the fill-column."
+    (interactive)
+    (delete-horizontal-space)
+    (let* ((line-length (- (line-end-position) (line-beginning-position)))
+           (spaces-needed (max 1 (- fill-column line-length))))
+      (insert (make-string spaces-needed ?\s))))
+#+end_src
+
+Next, we add our new function to the spacing cycle:
+
+#+begin_src emacs-lisp
+  (customize-set-variable 'cycle-spacing-actions
+                          '(just-one-space
+                            delete-all-space
+                            pmn:align-to-fill-column
+                            restore))
+#+end_src
+
 * Visual Theming
 This is honestly the least important part of my configuration.  Fonts
 and pretty are nice, and customizing the display to save a bit of
