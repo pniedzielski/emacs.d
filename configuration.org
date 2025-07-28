@@ -219,10 +219,9 @@ modeline, and =bind-key=, which lets us bind keys more easily.  Both
 of these are integrated nicely into =use-package=.
 
 #+begin_src emacs-lisp   :noweb yes   :comments no
-  (unless (and (package-installed-p 'use-package)
-  	     (package-installed-p 'diminish))
-    (package-refresh-contents)
-    (package-install 'use-package)
+  (unless (package-installed-p 'use-package)
+    (package-install 'use-package))
+  (unless (package-installed-p 'diminish)
     (package-install 'diminish))
 
   <<use-package-config>>
