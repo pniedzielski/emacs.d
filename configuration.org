@@ -2564,6 +2564,34 @@ the layout.
            display-fill-column-indicator-mode))
 #+end_src
 
+** Highlight Current Line
+The built-in ~hl-line~ mode sets a face on the line the point is at,
+highlighting the line.  I’ve used this mode when presenting a few times,
+because it can be hard for others to follow the cursor around the buffer
+when it’s moving quickly, and that extra visual indicator is a great
+help.  To turn it on, we can use the minor mode ~global-hl-line-mode~.
+
+#+begin_src emacs-lisp   :noweb yes
+  (use-package hl-line
+    :ensure nil                           ;built-in
+    :config (global-hl-line-mode)
+    :custom-face
+    <<hl-line-face>>)
+#+end_src
+
+But, by default, the face ~hl-line~ uses to highlight the current line
+is the ~highlight~ face, which in my color theme has a red background
+color.  This may be nice when helping someone follow my movements, but
+it is too much for everyday Emacsing.  Instead, I’m picking a color
+that’s just slightly brighter than the background color of my theme,
+which makes the line highlight a little more subtle, without affecting
+proper highlights.
+
+#+name: hl-line-face
+#+begin_src emacs-lisp   :tangle no
+  (hl-line ((t (:background "#3c4444" :extend t))))
+#+end_src
+
 ** ANSI Coloring
 More and more terminal programs have been using [[https://en.wikipedia.org/wiki/ANSI_escape_code][ANSI color codes]], or
 their extensions, such as [[https://invisible-island.net/xterm/ctlseqs/ctlseqs.html][XTERM-256]], to provide richer formatting of
