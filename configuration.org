@@ -1387,6 +1387,70 @@ it’s very easy to grow into the rest of the functionality, as it were.
 For working with my different writing and programming projects, I have
 some external Emacs packages to make things easier.
 
+** Working with Diffs
+A common task working on text in a collaborative environment (be it
+software or writing; multiple people or a single person over time), is
+comparing different versions of the same text file.  The standard
+tooling for comparing two different versions of a text file is the
+[[man:diff(1)][diff(1)]] command, which consolidates the versions to only show lines that
+are added or removed.  This is frequently shown in version control as
+well, with each version being represented as a diff from the previous
+version.  It’s not just important to view and navigate diffs, though:
+when taking two divergent versions of the same file, we may want to
+merge the two, possibily incompatible changes into one output file.
+
+For this reason, it would be nice to have an Emacs interface for not
+just viewing but also modfiying diffs.  Luckily, Emacs has a very
+powerful interface for doing just that, called [[info:ediff][Ediff]].  Despite being
+very powerful, I find Ediff very unintuitive, and out-of-the-box the
+defaults feel very un-Emacsy to me.  This section details the ways I
+configure Ediff to be a little more friendly, so I can make use of it
+more frequently.
+
+First, let’s load up the package.  It’s built-in, so we don’t need to
+try to download it from any package repository.
+
+#+begin_src emacs-lisp   :noweb yes
+  (use-package ediff
+    :ensure nil                           ;built-in
+    :custom
+    (
+     <<ediff-window-setup>>
+     <<ediff-side-by-side>>
+     <<ediff-variants>>))
+#+end_src
+
+In an X11 or Wayland session, Ediff launches the buffer you use to
+interact with diffs as a new, small frame.  This is frustrating, because
+it requires mouse interaction to use.  I’d much rather it use the same
+frame I was in, spliting the frame as it sees fit.  Luckily, Ediff
+provides a customizable variable to control how it sets up its windows.
+
+#+name: ediff-window-setup
+#+begin_src emacs-lisp   :tangle no
+  (ediff-window-setup-function 'ediff-setup-windows-plain
+   "Don’t let Ediff launch a new frame on graphical systems.")
+#+end_src
+
+I also want to make sure diffs are shown side-by-side, which I can do with
+this:
+
+#+name: ediff-side-by-side
+#+begin_src emacs-lisp   :tangle no
+  (ediff-split-window-function 'split-window-horizontally
+   "Show diffs side-by-side.")
+#+end_src
+
+Ediff does not do a good job cleaning up after itself, either, so we
+configure it to get rid of the variant buffers when we exit a diffing
+session.
+
+#+name: ediff-variants
+#+begin_src emacs-lisp   :tangle no
+  (ediff-keep-variants nil
+   "Destroy variants at end of session.")
+#+end_src
+
 ** Magit
 Version control is a big part of my project management, and I almost
 exclusively use git as version control.  While git has a very nice
