@@ -802,6 +802,27 @@ spelling, but prefixed with ~C-c~.
     ("C-c M-TAB" . dictionary-search))
 #+end_src
 
+*** Focusing on the Text
+When writing, it’s nice to eliminate as many distractions as possible.
+One nice way to do this is with the Olivetti package, which performs
+some tricks to center the text you’re editing in the window, making
+margins on the left and right of equal size.  While this can sometimes
+be wasted screen real estate, when trying to avoid distractions, it can
+help immensely.  When we have this on, we also want to avoid drawing the
+fill-column indictator.
+
+For the moment, I turn this on for org-mode by default, but on individual cases
+I can always turn it on for any other mode by calling ~M-x olivetti-mode~.
+
+#+begin_src emacs-lisp
+  (use-package olivetti
+    :hook ((org-mode-hook . (lambda () (olivetti-mode +1)))
+           (olivetti-mode-on-hook
+            . (lambda () (display-fill-column-indicator-mode -1)))
+           (olivetti-mode-off-hook
+            . (lambda () (display-fill-column-indicator-mode +1)))))
+#+end_src
+
 *** Org Mode
 It’s hard to know where to put my [[http://orgmode.org/][Org]] configuration, because of how
 deeply Org has inserted its tendrils into everything I do.  But, I
