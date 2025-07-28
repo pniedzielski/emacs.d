@@ -2850,9 +2850,9 @@ mechanism.)
 
 ** Mode Line
 The default Emacs modeline can get a little bit busy, especially if
-you have many minor modes engaged.  While `use-package` and `diminish`
+you have many minor modes engaged.  While ~use-package~ and ~diminish~
 can tame that somewhat, I find that having a cleaner modeline package
-means I don’t have to worry about using `diminish` as much.  The Doom
+means I don’t have to worry about using ~diminish~ as much.  The Doom
 Emacs modeline is nice enough, so let’s use it.
 
 #+begin_src emacs-lisp
