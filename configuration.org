@@ -274,7 +274,9 @@ To make this easy, I add a variable called =pmn:local-lisp-directory=
 that points to the right place.
 
 #+begin_src emacs-lisp
-  (setq pmn:local-lisp-directory (concat user-emacs-directory "lisp/"))
+  (defvar pmn:local-lisp-directory
+    (concat user-emacs-directory "lisp/")
+    "The subdirectory containing my local elisp libraries.")
 #+end_src
 
 ** Native Compilation
