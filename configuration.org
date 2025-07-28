@@ -1542,6 +1542,14 @@ case, unstaged as well).
 #+end_src
 
 * Calendar
+
+#+begin_src emacs-lisp
+  (use-package calendar
+    :ensure nil
+    :custom
+    (calendar-christian-all-holidays-flag t "Show all Christian holidays"))
+#+end_src
+
 ** Alerts
 Emacs’s built-in way of alerting you of something is by appending to
 the =Messages= buffer, which also shows up in the minibuffer.  This is
