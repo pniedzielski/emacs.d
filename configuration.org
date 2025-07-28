@@ -478,6 +478,25 @@ keybindings.
    :custom (free-keys-modifier . ("" "C" "M" "C-M" "H" "C-H")))
 #+end_src
 
+** Helpful
+The built-in help functionality of EMacs is very useful, allowing you
+to look up the documentation of any function, variable, macro, or
+command quickly and easily.  However, the actual formatting of the
+documentation this provides is unstructured, and feels quite dated.
+It’s hard to scan through some of the longer help buffers.
+
+The ~helpful~ package is a drop-in replacement for these.
+
+#+begin_src emacs-lisp
+  (use-package helpful
+    :bind (([remap describe-function] . helpful-callable)
+           ([remap describe-variable] . helpful-variable)
+           ([remap describe-key]      . helpful-key)
+           ([remap describe-command]  . helpful-command)
+           ;; Overrides display-local-help
+           ("C-h ." . helpful-at-point)))
+#+end_src
+
 ** Passwords
 I use [[https://www.passwordstore.org/][pass]] to manage my passwords, because in part because of how easy
 it is to synchronize and update the passwords across devices with Git.
